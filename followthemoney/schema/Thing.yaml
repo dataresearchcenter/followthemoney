@@ -103,3 +103,61 @@ Thing:
       label: "Retrieved on"
       type: date
       matchable: false
+    # FTG identifiers
+    doi:
+      label: "DOI"
+      type: identifier
+      description: "Digital Object Identifier"
+    orcId:
+      label: "ORCID"
+      type: identifier
+      description: "Open Researcher and Contributor ID"
+    issn:
+      label: "ISSN"
+      type: identifier
+      description: "International Standard Serial Number"
+    isni:
+      label: "ISNI"
+      type: identifier
+      description: "International Standard Name Identifier"
+    rorId:
+      label: "ROR id"
+      type: identifier
+      description: "Research Organization Registry (ROR) ID"
+    gridId:
+      label": "GRID id"
+      type: identifier
+      description: "Global Research Identifier Database ID"
+    pmid:
+      label: "PubMed ID"
+      type: identifier
+    pmc:
+      label: "Pubmed Central ID"
+      type: identifier
+    magId:
+      label: "Microsoft Academic Graph UID"
+      type: identifier
+    arxivId:
+      label: "arXiv ID"
+      type: identifier
+    openaireId:
+      label: "OpenAIRE graph ID"
+      type: identifier
+    s2Id:
+      label: "Semantic Scholar ID "
+      type: identifier
+      description: "The Semantic Scholar Open Research Corpus ID"
+    openalexId:
+      label: "OpenAlex ID"
+      type: identifier
+    scopusId:
+      label: "Scopus Author ID"
+      type: identifier
+      description: "Scopus citation database"
+    oai:
+      label: "OAI identifier"
+      type: identifier
+      description: "Globally unique identifiers used by data providers, including repositories, publishers and archives."
+    coreId:
+      label: "CORE Dataset ID"
+      type: identifier
