@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # 
 # Translators:
-# pudo <friedrich@pudo.org>, 2021
+# pudo <friedrich@pudo.org>, 2022
 # jen occrp, 2023
 # 
 #, fuzzy
@@ -12,22 +12,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-10 14:09+0100\n"
-"PO-Revision-Date: 2021-05-07 13:11+0000\n"
+"POT-Creation-Date: 2023-08-10 19:38+0200\n"
+"PO-Revision-Date: 2022-11-21 11:38+0000\n"
 "Last-Translator: jen occrp, 2023\n"
-"Language-Team: Russian (https://www.transifex.com/aleph/teams/76591/ru/)\n"
+"Language-Team: Russian (https://app.transifex.com/aleph/teams/76591/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: followthemoney/property.py:166
+#: followthemoney/property.py:170
 msgid "Property cannot be written"
 msgstr "Не удалось сохранить свойство"
 
-#: followthemoney/property.py:169
+#: followthemoney/property.py:173
 msgid "Invalid value"
 msgstr "Недопустимое значение"
 
@@ -35,21 +35,21 @@ msgstr "Недопустимое значение"
 msgid "No schema for entity."
 msgstr "Для сущности отсутствует схема."
 
-#: followthemoney/proxy.py:115
+#: followthemoney/proxy.py:119
 #, python-format
 msgid "Unknown property (%s): %s"
 msgstr "Неизвестный параметр (1%s): 1%s"
 
-#: followthemoney/proxy.py:188
+#: followthemoney/proxy.py:191
 #, python-format
 msgid "Stub property (%s): %s"
 msgstr "Неизвестное свойство (1%s): 1%s"
 
-#: followthemoney/schema.py:373
+#: followthemoney/schema.py:383
 msgid "Required"
 msgstr "Обязательное значение"
 
-#: followthemoney/schema.py:377
+#: followthemoney/schema.py:387
 msgid "Entity validation failed"
 msgstr "Сущность не прошла валидацию"
 
@@ -94,7 +94,7 @@ msgstr "Абонентский ящик"
 
 #. Address.properties.postOfficeBox.description
 #: followthemoney/schema/Address.yaml
-msgid "A mailbox indentifier at the post office"
+msgid "A mailbox identifier at the post office"
 msgstr "Номер абонентского ящика в почтовом отделении"
 
 #. Address.properties.street.label
@@ -597,10 +597,12 @@ msgid "CfT unique id"
 msgstr "ID тендера"
 
 #. CallForTenders.properties.title.label
+#. Contract.properties.title.label
 #. Document.properties.title.label
 #. Person.properties.title.label
 #: followthemoney/schema/CallForTenders.yaml
-#: followthemoney/schema/Document.yaml followthemoney/schema/Person.yaml
+#: followthemoney/schema/Contract.yaml followthemoney/schema/Document.yaml
+#: followthemoney/schema/Person.yaml
 msgid "Title"
 msgstr "Название"
 
@@ -610,7 +612,9 @@ msgid "Name of contracting authority"
 msgstr "Наименование заказчика"
 
 #. CallForTenders.properties.authority.reverse.label
+#. ContractAward.properties.callForTenders.label
 #: followthemoney/schema/CallForTenders.yaml
+#: followthemoney/schema/ContractAward.yaml
 msgid "Call For Tenders"
 msgstr "Тендер"
 
@@ -665,8 +669,10 @@ msgid "The nature of the contractual agreement that will result from this CfT"
 msgstr "Характер договорного соглашения вследствие завершения данного тендера"
 
 #. CallForTenders.properties.cpvCode.label
+#. ContractAward.properties.cpvCode.label
 #: followthemoney/schema/CallForTenders.yaml
-msgid "CPV codes"
+#: followthemoney/schema/ContractAward.yaml
+msgid "CPV code"
 msgstr "CPV-код"
 
 #. CallForTenders.properties.cpvCode.description
@@ -680,8 +686,10 @@ msgid "Inclusion of e-Auctions"
 msgstr "Включает электронный аукцион"
 
 #. CallForTenders.properties.nutsCode.label
+#. ContractAward.properties.nutsCode.label
 #: followthemoney/schema/CallForTenders.yaml
-msgid "NUTS codes"
+#: followthemoney/schema/ContractAward.yaml
+msgid "NUTS code"
 msgstr "NUTS-код"
 
 #. CallForTenders.properties.nutsCode.description
@@ -851,6 +859,15 @@ msgstr "Номер налогоплательщика в Азербайжане"
 msgid "COATO / SOATO / OKATO"
 msgstr "ОКАТО"
 
+#. Company.properties.coatoCode.description
+#: followthemoney/schema/Company.yaml
+msgid ""
+"Soviet classifier for territories, regions, districts, villages. Aka. SOATO "
+"and same as OKATO"
+msgstr ""
+"Система обозначения объектов административно-территориального деления (также"
+" ОКАТО)"
+
 #. Company.properties.irsCode.label
 #: followthemoney/schema/Company.yaml
 msgid "IRS Number"
@@ -988,8 +1005,26 @@ msgstr "ОКСМ"
 
 #. Company.properties.oksmCode.description
 #: followthemoney/schema/Company.yaml
-msgid "Russian (ОКСМ) countries classifer"
+msgid "Russian (ОКСМ) countries classifier"
 msgstr "Общероссийский классификатор стран мира"
+
+#. Company.properties.isinCode.label
+#. Security.properties.isin.label
+#: followthemoney/schema/Company.yaml followthemoney/schema/Security.yaml
+msgid "ISIN"
+msgstr "ISIN-код"
+
+#. Company.properties.isinCode.description
+#. Security.properties.isin.description
+#: followthemoney/schema/Company.yaml followthemoney/schema/Security.yaml
+msgid "International Securities Identification Number"
+msgstr "Международный идентификационный код ценной бумаги"
+
+#. Company.properties.ticker.label
+#. Security.properties.ticker.label
+#: followthemoney/schema/Company.yaml followthemoney/schema/Security.yaml
+msgid "Stock ticker symbol"
+msgstr "Тикер"
 
 #. Contract.label
 #. ContractAward.properties.contract.label
@@ -1019,11 +1054,6 @@ msgstr ""
 "Контракт или лот, размещённый гос. органом. Исполнителями отдельных лотов в "
 "рамках одного контракта могут быть определены различные поставщики (см. "
 "Контракты).\n"
-
-#. Contract.properties.title.label
-#: followthemoney/schema/Contract.yaml
-msgid "Contract title"
-msgstr "Наименование контракта"
 
 #. Contract.properties.authority.label
 #: followthemoney/schema/Contract.yaml
@@ -1097,11 +1127,13 @@ msgstr "Количество контрактов"
 #. CourtCase.properties.status.label
 #. Interest.properties.status.label
 #. LegalEntity.properties.status.label
+#. Occupancy.properties.status.label
 #. Project.properties.status.label
 #. Sanction.properties.status.label
 #: followthemoney/schema/Contract.yaml followthemoney/schema/CourtCase.yaml
 #: followthemoney/schema/Interest.yaml followthemoney/schema/LegalEntity.yaml
-#: followthemoney/schema/Project.yaml followthemoney/schema/Sanction.yaml
+#: followthemoney/schema/Occupancy.yaml followthemoney/schema/Project.yaml
+#: followthemoney/schema/Sanction.yaml
 msgid "Status"
 msgstr "Статус"
 
@@ -1180,11 +1212,6 @@ msgstr "Получено контрактов"
 msgid "Lots awarded"
 msgstr "Лоты"
 
-#. ContractAward.properties.callForTenders.label
-#: followthemoney/schema/ContractAward.yaml
-msgid "Call For Tender"
-msgstr "Тендер"
-
 #. ContractAward.properties.callForTenders.reverse.label
 #: followthemoney/schema/ContractAward.yaml
 msgid "Contract Awards"
@@ -1212,20 +1239,10 @@ msgstr "Тип документа"
 msgid "Decision reason"
 msgstr "Причина решения"
 
-#. ContractAward.properties.cpvCode.label
-#: followthemoney/schema/ContractAward.yaml
-msgid "CPV code"
-msgstr "CPV-код"
-
 #. ContractAward.properties.cpvCode.description
 #: followthemoney/schema/ContractAward.yaml
 msgid "Contract Procurement Vocabulary (what type of goods/services, EU)"
 msgstr "Единый закупочный классификатор (классификация товаров/услуг, ЕС)"
-
-#. ContractAward.properties.nutsCode.label
-#: followthemoney/schema/ContractAward.yaml
-msgid "NUTS code"
-msgstr "NUTS-код"
 
 #. ContractAward.properties.nutsCode.description
 #: followthemoney/schema/ContractAward.yaml
@@ -1387,7 +1404,7 @@ msgstr "Должник"
 
 #. Debt.properties.creditor.label
 #: followthemoney/schema/Debt.yaml
-msgid "creditor"
+msgid "Creditor"
 msgstr "Кредитор"
 
 #. Debt.properties.creditor.reverse.label
@@ -1419,10 +1436,12 @@ msgstr "Директор"
 #. Directorship.properties.organization.label
 #. Membership.properties.organization.label
 #. Organization.label
+#. Position.properties.organization.label
 #. Post.properties.organization.label
 #: followthemoney/schema/Directorship.yaml
 #: followthemoney/schema/Membership.yaml
-#: followthemoney/schema/Organization.yaml followthemoney/schema/Post.yaml
+#: followthemoney/schema/Organization.yaml followthemoney/schema/Position.yaml
+#: followthemoney/schema/Post.yaml
 msgid "Organization"
 msgstr "Организация"
 
@@ -1587,6 +1606,26 @@ msgstr "Статус обработки"
 #: followthemoney/schema/Document.yaml
 msgid "Processing error"
 msgstr "Ошибка обработки"
+
+#. Document.properties.processingAgent.label
+#: followthemoney/schema/Document.yaml
+msgid "Processing agent"
+msgstr "Документ обработан"
+
+#. Document.properties.processingAgent.description
+#: followthemoney/schema/Document.yaml
+msgid "Name and version of the processing agent used to process the Document"
+msgstr "Имя и версия обработчика документа"
+
+#. Document.properties.processedAt.label
+#: followthemoney/schema/Document.yaml
+msgid "Processed at"
+msgstr "Дата обработки документа"
+
+#. Document.properties.processedAt.description
+#: followthemoney/schema/Document.yaml
+msgid "Date and time of the most recent ingestion of the Document"
+msgstr "Дата и время последней загрузки документа"
 
 #. Documentation.label
 #: followthemoney/schema/Documentation.yml
@@ -2368,7 +2407,8 @@ msgid "The date the legal entity was incorporated"
 msgstr "Дата регистрации юридического лица"
 
 #. LegalEntity.properties.dissolutionDate.label
-#: followthemoney/schema/LegalEntity.yaml
+#. Position.properties.dissolutionDate.label
+#: followthemoney/schema/LegalEntity.yaml followthemoney/schema/Position.yaml
 msgid "Dissolution date"
 msgstr "Дата расторжения"
 
@@ -2694,6 +2734,44 @@ msgstr "Примечания"
 msgid "An annotation that applies to a document or entity.\n"
 msgstr "Примечание к документу или сущности.\n"
 
+#. Occupancy.label
+#: followthemoney/schema/Occupancy.yaml
+msgid "Occupancy"
+msgstr "Должность"
+
+#. Occupancy.plural
+#. Occupancy.properties.post.reverse.label
+#: followthemoney/schema/Occupancy.yaml
+msgid "Occupancies"
+msgstr "Должности"
+
+#. Occupancy.description
+#: followthemoney/schema/Occupancy.yaml
+msgid ""
+"The occupation of a position by a person for a specific period of time.\n"
+msgstr "Занимаемая должность в течение определённого периода времени.\n"
+
+#. Occupancy.edge.label
+#: followthemoney/schema/Occupancy.yaml
+msgid "holds"
+msgstr "заняты"
+
+#. Occupancy.properties.holder.label
+#. Post.properties.holder.label
+#: followthemoney/schema/Occupancy.yaml followthemoney/schema/Post.yaml
+msgid "Holder"
+msgstr "Должностное лицо"
+
+#. Occupancy.properties.holder.reverse.label
+#: followthemoney/schema/Occupancy.yaml
+msgid "Position Occupancies"
+msgstr "Должность занята"
+
+#. Occupancy.properties.post.label
+#: followthemoney/schema/Occupancy.yaml
+msgid "Position occupied"
+msgstr "Занимаемая должность"
+
 #. Organization.plural
 #: followthemoney/schema/Organization.yaml
 msgid "Organizations"
@@ -2704,7 +2782,7 @@ msgstr "Организации"
 msgid ""
 "Any type of incorporated entity that cannot be owned by another (see "
 "Company). This might include charities, foundations or state-owned "
-"enterprises, depending on their  juristiction.\n"
+"enterprises, depending on their  jurisdiction.\n"
 msgstr ""
 "Любой тип юридического лица, который не может быть объектом собственности "
 "(см. Компания). Например, благотворительные организации, фонды или "
@@ -3006,13 +3084,24 @@ msgstr "Матроним"
 msgid "Last name"
 msgstr "Фамилия"
 
+#. Person.properties.nameSuffix.label
+#: followthemoney/schema/Person.yaml
+msgid "Name suffix"
+msgstr "Фамильное окончание"
+
+#. Person.properties.birthCountry.label
+#: followthemoney/schema/Person.yaml
+msgid "Country of birth"
+msgstr "Страна рождения"
+
 #. Person.properties.deathDate.label
 #: followthemoney/schema/Person.yaml
 msgid "Death date"
 msgstr "Дата смерти"
 
 #. Person.properties.position.label
-#: followthemoney/schema/Person.yaml
+#. Position.label
+#: followthemoney/schema/Person.yaml followthemoney/schema/Position.yaml
 msgid "Position"
 msgstr "Должность"
 
@@ -3056,6 +3145,36 @@ msgstr "Текстовые файлы"
 msgid "Text files, like .txt or source code.\n"
 msgstr "Текстовые файлы, например, .txt или исходный код.\n"
 
+#. Position.plural
+#. Position.properties.organization.reverse.label
+#: followthemoney/schema/Position.yaml
+msgid "Positions"
+msgstr "Должности"
+
+#. Position.description
+#: followthemoney/schema/Position.yaml
+msgid ""
+"A post, role or position within an organization or body. This describes a position one or more people may occupy and not the occupation of the post by a specific individual at a  specific point in time.\n"
+"'subnationalArea' should be used to further restrict the scope of the position. It should not simply represent some regional aspect of the role - e.g. the constituency of a national member of parliament - when their legislative jurisdiction is nationwide.\n"
+msgstr ""
+"Должность, роль или пост в организации или государственном органе. Описывает должность с точки зрения организации, которую может занимать один или несколько человек в разное время, а не роль, как свойство отдельного человека в определённый момент времени.\n"
+"'Территориальная юрисдикция' служит для уточнения территориальной юрисдикции должности — как например, избирательный округ члена парламента, — кроме случаев, когда должность является общегосударственной, федеральной.\n"
+
+#. Position.properties.inceptionDate.label
+#: followthemoney/schema/Position.yaml
+msgid "Inception date"
+msgstr "Дата начала"
+
+#. Position.properties.subnationalArea.label
+#: followthemoney/schema/Position.yaml
+msgid "Subnational jurisdiction name or code"
+msgstr "Наименование территориальной юрисдикции или код"
+
+#. Position.properties.numberOfSeats.label
+#: followthemoney/schema/Position.yaml
+msgid "Total number of seats"
+msgstr "Общее количество мест"
+
 #. Post.label
 #: followthemoney/schema/Post.yaml
 msgid "Post"
@@ -3077,20 +3196,16 @@ msgstr ""
 "для описания пребывания в должности в определённый период времени, а не "
 "абстрактного представления должности).\n"
 
-#. Post.properties.holder.label
-#: followthemoney/schema/Post.yaml
-msgid "Holder"
-msgstr "Должностное лицо"
-
 #. Post.properties.holder.reverse.label
 #: followthemoney/schema/Post.yaml
 msgid "Posts held"
 msgstr "Занимаемые должности"
 
 #. Post.properties.wikidataId.label
-#: followthemoney/schema/Post.yaml
-msgid "Wikidata ID of the post"
-msgstr "Wikidata ID должности"
+#. Thing.properties.wikidataId.label
+#: followthemoney/schema/Post.yaml followthemoney/schema/Thing.yaml
+msgid "Wikidata ID"
+msgstr "Wikidata ID"
 
 #. Project.plural
 #. ProjectParticipant.properties.participant.reverse.label
@@ -3333,21 +3448,6 @@ msgstr "Ценные бумаги"
 msgid "A tradeable financial asset."
 msgstr "Котируемый финансовый актив."
 
-#. Security.properties.isin.label
-#: followthemoney/schema/Security.yaml
-msgid "ISIN"
-msgstr "ISIN-код"
-
-#. Security.properties.isin.description
-#: followthemoney/schema/Security.yaml
-msgid "International Securities Identification Number"
-msgstr "Международный идентификационный код ценной бумаги"
-
-#. Security.properties.ticker.label
-#: followthemoney/schema/Security.yaml
-msgid "Ticker"
-msgstr "Тикер"
-
 #. Security.properties.issuer.label
 #: followthemoney/schema/Security.yaml
 msgid "Issuer"
@@ -3557,11 +3657,6 @@ msgstr "Другое название"
 msgid "Wikipedia Article"
 msgstr "Статья в Википедии"
 
-#. Thing.properties.wikidataId.label
-#: followthemoney/schema/Thing.yaml
-msgid "Wikidata ID"
-msgstr "Wikidata ID"
-
 #. Thing.properties.keywords.label
 #: followthemoney/schema/Thing.yaml
 msgid "Keywords"
@@ -3759,6 +3854,11 @@ msgstr "Дата постройки"
 #: followthemoney/schema/Vehicle.yaml
 msgid "Registration Date"
 msgstr "Дата регистрации"
+
+#. Vehicle.properties.deregistrationDate.label
+#: followthemoney/schema/Vehicle.yaml
+msgid "De-registration Date"
+msgstr "Дата снятия с регистрации"
 
 #. Vessel.label
 #: followthemoney/schema/Vessel.yaml
@@ -4171,7 +4271,7 @@ msgid "Financial advisor"
 msgstr "Финансовый консультант"
 
 #: followthemoney/types/topic.py:49
-msgid "Politician"
+msgid "Political"
 msgstr "Политик"
 
 #: followthemoney/types/topic.py:50
@@ -4235,10 +4335,14 @@ msgid "Sanctioned entity"
 msgstr "Объект санкций"
 
 #: followthemoney/types/topic.py:66
+msgid "Sanction-linked entity"
+msgstr "Подсанкционное физическое или юридическое лицо"
+
+#: followthemoney/types/topic.py:67
 msgid "Debarred entity"
 msgstr "Физическое или юридическое лицо, лишённое полномочий"
 
-#: followthemoney/types/topic.py:67
+#: followthemoney/types/topic.py:68
 msgid "Person of interest"
 msgstr "Подозрительный персонаж"
 

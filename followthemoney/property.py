@@ -8,6 +8,7 @@ from followthemoney.util import gettext, get_entity_id
 
 if TYPE_CHECKING:
     from followthemoney.schema import Schema
+    from followthemoney.model import Model
 
 
 class ReverseSpec(TypedDict, total=False):
@@ -22,6 +23,7 @@ class PropertyDict(TypedDict, total=False):
     type: Optional[str]
     hidden: Optional[bool]
     matchable: Optional[bool]
+    deprecated: Optional[bool]
     # stub: Optional[bool]
     rdf: Optional[str]
     range: Optional[str]
@@ -54,6 +56,7 @@ class Property:
         "hidden",
         "type",
         "matchable",
+        "deprecated",
         "_range",
         "range",
         "stub",
@@ -66,8 +69,6 @@ class Property:
     RESERVED = ["id", "caption", "schema", "schemata"]
 
     def __init__(self, schema: "Schema", name: str, data: PropertySpec) -> None:
-        self.model = schema.model
-
         #: The schema which the property is defined for. This is always the
         #: most abstract schema that has this property, not the possible
         #: child schemata that inherit it.
@@ -86,8 +87,11 @@ class Property:
         self._label = data.get("label", name)
         self._description = data.get("description")
 
+        #: This property is deprecated and should not be used.
+        self.deprecated = as_bool(data.get("deprecated", False))
+
         #: This property should not be shown or mentioned in the user interface.
-        self.hidden = as_bool(data.get("hidden", False))
+        self.hidden = as_bool(data.get("hidden"))
 
         type_ = data.get("type", "string")
         if type_ is None or type_ not in registry.named:
@@ -124,19 +128,19 @@ class Property:
         #: RDF term for this property (i.e. the predicate URI).
         self.uri = URIRef(cast(str, data.get("rdf", NS[self.qname])))
 
-    def generate(self) -> None:
+    def generate(self, model: "Model") -> None:
         """Setup method used when loading the model in order to build out the reverse
         links of the property."""
-        self.model.properties.add(self)
+        model.properties.add(self)
 
         if self.type == registry.entity:
             if self.range is None and self._range is not None:
-                self.range = self.model.get(self._range)
+                self.range = model.get(self._range)
 
             if self.reverse is None and self.range and self._reverse:
                 if not is_mapping(self._reverse):
                     raise InvalidModel("Invalid reverse: %s" % self)
-                self.reverse = self.range._add_reverse(self._reverse, self)
+                self.reverse = self.range._add_reverse(model, self._reverse, self)
 
     @property
     def label(self) -> str:
@@ -193,6 +197,8 @@ class Property:
             data["matchable"] = True
         if self.hidden:
             data["hidden"] = True
+        if self.deprecated:
+            data["deprecated"] = True
         if self.range is not None:
             data["range"] = self.range.name
         if self.reverse is not None:

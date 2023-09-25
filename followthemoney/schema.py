@@ -52,6 +52,7 @@ class SchemaSpec(TypedDict, total=False):
     hidden: bool
     generated: bool
     matchable: bool
+    deprecated: Optional[bool]
 
 
 class SchemaToDict(TypedDict, total=False):
@@ -70,6 +71,7 @@ class SchemaToDict(TypedDict, total=False):
     hidden: bool
     generated: bool
     matchable: bool
+    deprecated: bool
 
 
 class Schema:
@@ -95,6 +97,7 @@ class Schema:
         "matchable",
         "featured",
         "required",
+        "deprecated",
         "caption",
         "edge",
         "_edge_label",
@@ -128,6 +131,9 @@ class Schema:
         #: Do not store or emit entities of this type, it is used only for
         #: inheritance.
         self.abstract = as_bool(data.get("abstract"), False)
+
+        #: This schema is deprecated and should not be used.
+        self.deprecated = as_bool(data.get("deprecated", False))
 
         #: Hide this schema in listings.
         self.hidden = as_bool(data.get("hidden"), False)
@@ -170,11 +176,12 @@ class Schema:
         self.edge_caption = ensure_list(edge.get("caption", []))
         self._edge_label = edge.get("label", self._label)
 
-        #: Flag to indicate if the edge should be presented as directed to the user, e.g.
-        #: by showing an error at the target end of the edge.
+        #: Flag to indicate if the edge should be presented as directed to the user,
+        #: e.g. by showing an error at the target end of the edge.
         self.edge_directed = as_bool(edge.get("directed", True))
 
-        #: Specify which properties should be used to represent this schema in a timeline.
+        #: Specify which properties should be used to represent this schema in a
+        #: timeline.
         temporal_extent = data.get("temporalExtent", {})
         self.temporal_start = set(temporal_extent.get("start", []))
         self.temporal_end = set(temporal_extent.get("end", []))
@@ -183,7 +190,8 @@ class Schema:
         self._extends = ensure_list(data.get("extends", []))
         self.extends: Set["Schema"] = set()
 
-        #: All parents of this schema (including indirect parents and the schema itself).
+        #: All parents of this schema (including indirect parents and the schema
+        #: itself).
         self.schemata = set([self])
 
         #: All names of :attr:`~schemata`.
@@ -200,14 +208,14 @@ class Schema:
         for name, prop in data.get("properties", {}).items():
             self.properties[name] = Property(self, name, prop)
 
-    def generate(self) -> None:
+    def generate(self, model: "Model") -> None:
         """While loading the schema, this function will validate and
         load the hierarchy, properties, and flags of the definition."""
         for extends in self._extends:
-            parent = self.model.get(extends)
+            parent = model.get(extends)
             if parent is None:
                 raise InvalidData("Invalid extends: %r" % extends)
-            parent.generate()
+            parent.generate(model)
 
             for name, prop in parent.properties.items():
                 if name not in self.properties:
@@ -223,7 +231,7 @@ class Schema:
             self.temporal_end |= parent.temporal_end
 
         for prop in list(self.properties.values()):
-            prop.generate()
+            prop.generate(model)
 
         for featured in self.featured:
             if self.get(featured) is None:
@@ -249,7 +257,9 @@ class Schema:
                 msg = "Missing edge target: %s" % self.edge_target
                 raise InvalidModel(msg)
 
-    def _add_reverse(self, data: ReverseSpec, other: Property) -> Property:
+    def _add_reverse(
+        self, model: "Model", data: ReverseSpec, other: Property
+    ) -> Property:
         name = data.get("name")
         if name is None:
             raise InvalidModel("Unnamed reverse: %s" % other)
@@ -265,7 +275,7 @@ class Schema:
             }
             prop = Property(self, name, spec)
             prop.stub = True
-            prop.generate()
+            prop.generate(model)
             self.properties[name] = prop
         return prop
 
@@ -301,13 +311,15 @@ class Schema:
 
     @property
     def temporal_start_props(self) -> Set[Property]:
-        """The entity properties to be used as the start when representing the entity in a timeline."""
+        """The entity properties to be used as the start when representing the entity
+        in a timeline."""
         props = [self.get(prop_name) for prop_name in self.temporal_start]
         return set([prop for prop in props if prop is not None])
 
     @property
     def temporal_end_props(self) -> Set[Property]:
-        """The entity properties to be used as the end when representing the entity in a timeline."""
+        """The entity properties to be used as the end when representing the entity
+        in a timeline."""
         props = [self.get(prop_name) for prop_name in self.temporal_end]
         return set([prop for prop in props if prop is not None])
 
@@ -326,8 +338,8 @@ class Schema:
 
     @property
     def matchable_schemata(self) -> Set["Schema"]:
-        """Return the set of schemata to which it makes sense to compare with this schema.
-        For example, it makes sense to compare a legal entity with a company,
+        """Return the set of schemata to which it makes sense to compare with this
+        schema. For example, it makes sense to compare a legal entity with a company,
         but it does not make sense to compare a car and a person."""
         if self._matchable_schemata is None:
             self._matchable_schemata = set()
@@ -351,7 +363,9 @@ class Schema:
     def is_a(self, other: Union[str, "Schema"]) -> bool:
         """Check if the schema or one of its parents is the same as the given
         candidate ``other``."""
-        return self.model.get(other) in self.schemata
+        if not isinstance(other, str):
+            other = other.name
+        return other in self.names
 
     def get(self, name: Optional[str]) -> Optional[Property]:
         """Retrieve a property defined for this schema by its name."""
@@ -421,6 +435,8 @@ class Schema:
             data["generated"] = True
         if self.matchable:
             data["matchable"] = True
+        if self.deprecated:
+            data["deprecated"] = True
         properties: Dict[str, PropertyToDict] = {}
         for name, prop in self.properties.items():
             if prop.schema == self:

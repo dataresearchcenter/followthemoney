@@ -79,18 +79,23 @@ class EntityProxy(object):
         #: than ``id``, ``schema`` or ``properties``, they will be kept in here
         #: and re-added upon serialization.
         self.context = data
-        self._properties: Dict[str, Set[str]] = {}
+        self._properties: Dict[str, List[str]] = {}
         self._size = 0
 
-        for key, value in properties.items():
+        for key, values in properties.items():
             if key not in self.schema.properties:
                 continue
-            if not cleaned:
-                self.add(key, value, cleaned=cleaned, quiet=True)
+            if cleaned:
+                # This does not call `self.add` as it might be called millions of times
+                # in some context and we want to avoid the performance overhead of
+                # doing so.
+                seen: Set[str] = set()
+                seen_add = seen.add
+                unique_values = [v for v in values if not (v in seen or seen_add(v))]
+                self._properties[key] = unique_values
+                self._size += sum([len(v) for v in unique_values])
             else:
-                values = set(value)
-                self._properties[key] = values
-                self._size += sum([len(v) for v in values])
+                self.add(key, values, quiet=True)
 
     def make_id(self, *parts: Any) -> Optional[str]:
         """Generate a (hopefully unique) ID for the given entity, composed
@@ -127,11 +132,10 @@ class EntityProxy(object):
         prop_name = self._prop_name(prop, quiet=quiet)
         if prop_name is None:
             return []
-        return list(self._properties.get(prop_name, []))
+        return self._properties.get(prop_name, [])
 
     def first(self, prop: P, quiet: bool = False) -> Optional[str]:
-        """Get only the first value set for the property, in no particular
-        order.
+        """Get only the first value set for the property.
 
         :param prop: can be given as a name or an instance of
             :class:`~followthemoney.property.Property`.
@@ -217,8 +221,9 @@ class EntityProxy(object):
                     # log.warning(msg, prop.name)
                     return None
             self._size += value_size
-            self._properties.setdefault(prop.name, set())
-            self._properties[prop.name].add(value)
+            self._properties.setdefault(prop.name, list())
+            if value not in self._properties[prop.name]:
+                self._properties[prop.name].append(value)
         return None
 
     def set(
@@ -275,7 +280,7 @@ class EntityProxy(object):
         if prop_name is not None and prop_name in self._properties:
             try:
                 self._properties[prop_name].remove(value)
-            except KeyError:
+            except (KeyError, ValueError):
                 pass
 
     def iterprops(self) -> List[Property]:
@@ -331,8 +336,9 @@ class EntityProxy(object):
 
     @property
     def temporal_start(self) -> Optional[Tuple[Property, str]]:
-        """Get a date that can be used to represent the start of the entity in a timeline.
-        If there are multiple possible dates, the earliest date is returned."""
+        """Get a date that can be used to represent the start of the entity in a
+        timeline. If there are multiple possible dates, the earliest date is
+        returned."""
         values = []
 
         for prop in self.schema.temporal_start_props:
@@ -463,7 +469,7 @@ class EntityProxy(object):
     def __hash__(self) -> int:
         if not self.id:
             warnings.warn(
-                "Taking the hash of an EntityProxy without an ID set results in undefined behaviour",
+                "Hashing an EntityProxy without an ID results in undefined behaviour",
                 RuntimeWarning,
             )
         return hash(self.id)
@@ -472,7 +478,7 @@ class EntityProxy(object):
         try:
             if self.id is None or other.id is None:
                 warnings.warn(
-                    "Comparing EntityProxys without an ID set results in undefined behaviour",
+                    "Comparing EntityProxys without IDs results in undefined behaviour",
                     RuntimeWarning,
                 )
             return bool(self.id == other.id)
