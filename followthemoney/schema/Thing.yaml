@@ -103,7 +103,7 @@ Thing:
       label: "Retrieved on"
       type: date
       matchable: false
-    # FTG identifiers
+    # Common identifiers (mostly used in science or public ontologies)
     doi:
       label: "DOI"
       type: identifier
@@ -160,4 +160,10 @@ Thing:
       description: "Globally unique identifiers used by data providers, including repositories, publishers and archives."
     coreId:
       label: "CORE Dataset ID"
+      type: identifier
+    gndId:
+      label: "German Integrated Authority Files ID"
+      type: identifier
+    viafId:
+      label: "Virtual International Authority File ID"
       type: identifier
