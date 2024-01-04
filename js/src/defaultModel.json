@@ -1133,6 +1133,14 @@
           "qname": "Company:okvedCode",
           "type": "string"
         },
+        "permId": {
+          "description": "LSEG/Refinitiv code for a company",
+          "label": "PermID",
+          "matchable": true,
+          "name": "permId",
+          "qname": "Company:permId",
+          "type": "identifier"
+        },
         "pfrNumber": {
           "description": "(RU, \u041f\u0424\u0420) Pension Fund Registration number. AAA-BBB-CCCCCC, where AAA is organisation region, BBB is district, CCCCCC number at a specific branch",
           "label": "PFR Number",
@@ -1146,6 +1154,13 @@
           "matchable": true,
           "name": "registrationNumber",
           "qname": "Company:registrationNumber",
+          "type": "identifier"
+        },
+        "ricCode": {
+          "label": "Reuters Instrument Code",
+          "matchable": true,
+          "name": "ricCode",
+          "qname": "Company:ricCode",
           "type": "identifier"
         },
         "ticker": {
@@ -5063,6 +5078,16 @@
           "qname": "RealEstate:longitude",
           "type": "number"
         },
+        "parent": {
+          "description": "If this entity is a subunit, another entity (real estate) is its parent",
+          "label": "Parent unit",
+          "matchable": true,
+          "name": "parent",
+          "qname": "RealEstate:parent",
+          "range": "RealEstate",
+          "reverse": "subunits",
+          "type": "entity"
+        },
         "propertyType": {
           "label": "Property type",
           "name": "propertyType",
@@ -5075,6 +5100,16 @@
           "name": "registrationNumber",
           "qname": "RealEstate:registrationNumber",
           "type": "identifier"
+        },
+        "subunits": {
+          "label": "Subunits",
+          "matchable": true,
+          "name": "subunits",
+          "qname": "RealEstate:subunits",
+          "range": "RealEstate",
+          "reverse": "parent",
+          "stub": true,
+          "type": "entity"
         },
         "tenure": {
           "label": "Tenure",
@@ -5279,6 +5314,13 @@
           "name": "collateral",
           "qname": "Security:collateral",
           "type": "string"
+        },
+        "figiCode": {
+          "label": "Financial Instrument Global Identifier",
+          "matchable": true,
+          "name": "figiCode",
+          "qname": "Security:figiCode",
+          "type": "identifier"
         },
         "isin": {
           "description": "International Securities Identification Number",
@@ -5816,7 +5858,7 @@
           "label": "Weak alias",
           "name": "weakAlias",
           "qname": "Thing:weakAlias",
-          "type": "string"
+          "type": "name"
         },
         "wikidataId": {
           "label": "Wikidata ID",
@@ -6441,6 +6483,7 @@
         "cn-xz": "Tibet",
         "co": "Colombia",
         "cp": "Clipperton Island",
+        "cq": "Sark",
         "cr": "Costa Rica",
         "cshh": "Czechoslovakia",
         "csxx": "Serbia and Montenegro",
@@ -6635,7 +6678,7 @@
         "tm": "Turkmenistan",
         "tn": "Tunisia",
         "to": "Tonga",
-        "tr": "Turkey",
+        "tr": "T\u00fcrkiye",
         "tt": "Trinidad & Tobago",
         "tv": "Tuvalu",
         "tw": "Taiwan",
@@ -6856,10 +6899,12 @@
       "values": {
         "asset.frozen": "Frozen asset",
         "corp.offshore": "Offshore",
+        "corp.public": "Public listed company",
         "corp.shell": "Shell company",
         "crime": "Crime",
         "crime.boss": "Criminal leadership",
         "crime.cyber": "Cybercrime",
+        "crime.env": "Environmental violations",
         "crime.fin": "Financial crime",
         "crime.fraud": "Fraud",
         "crime.terror": "Terrorism",
@@ -6869,11 +6914,13 @@
         "crime.traffick.human": "Human trafficking",
         "crime.war": "War crimes",
         "debarment": "Debarred entity",
+        "export.control": "Export controlled",
         "fin": "Financial services",
         "fin.adivsor": "Financial advisor",
         "fin.bank": "Bank",
         "fin.fund": "Fund",
         "gov": "Government",
+        "gov.admin": "Civil service",
         "gov.executive": "Executive branch of government",
         "gov.financial": "Central banking and financial integrity",
         "gov.head": "Head of government or state",
