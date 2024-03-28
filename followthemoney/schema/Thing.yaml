@@ -146,7 +146,7 @@ Thing:
       label: "OpenAIRE graph ID"
       type: identifier
     s2Id:
-      label: "Semantic Scholar ID "
+      label: "Semantic Scholar ID"
       type: identifier
       description: "The Semantic Scholar Open Research Corpus ID"
     openalexId:
@@ -168,4 +168,7 @@ Thing:
       type: identifier
     viafId:
       label: "Virtual International Authority File ID"
+      type: identifier
+    fatcatId:
+      label: "Fatcat ID"
       type: identifier
