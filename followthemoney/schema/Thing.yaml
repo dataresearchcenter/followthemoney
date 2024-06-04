@@ -172,3 +172,6 @@ Thing:
     fatcatId:
       label: "Fatcat ID"
       type: identifier
+    crossrefId:
+      label: "Crossref ID"
+      type: identifier
