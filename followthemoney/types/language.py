@@ -22,6 +22,7 @@ class LanguageType(EnumType):
     label = _("Language")
     plural = _("Languages")
     matchable = False
+    max_length = 16
 
     # Language whitelist
     LANGUAGES = [

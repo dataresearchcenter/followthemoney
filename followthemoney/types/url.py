@@ -23,6 +23,7 @@ class UrlType(PropertyType):
     plural = _("URLs")
     matchable = True
     pivot = True
+    max_length = 4096
 
     def clean_text(
         self,

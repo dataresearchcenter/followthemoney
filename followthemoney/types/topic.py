@@ -21,6 +21,7 @@ class TopicType(EnumType):
     label = _("Topic")
     plural = _("Topics")
     matchable = False
+    max_length = 64
 
     _TOPICS = {
         "crime": _("Crime"),
@@ -35,6 +36,7 @@ class TopicType(EnumType):
         "crime.traffick": _("Trafficking"),
         "crime.traffick.drug": _("Drug trafficking"),
         "crime.traffick.human": _("Human trafficking"),
+        "wanted": _("Wanted"),
         "corp.offshore": _("Offshore"),
         "corp.shell": _("Shell company"),
         "corp.public": _("Public listed company"),
@@ -70,6 +72,7 @@ class TopicType(EnumType):
         "role.oligarch": _("Oligarch"),
         "role.journo": _("Journalist"),
         "role.act": _("Activist"),
+        "role.lobby": _("Lobbyist"),
         "pol.party": _("Political party"),
         "pol.union": _("Union"),
         "rel": _("Religion"),
@@ -79,6 +82,7 @@ class TopicType(EnumType):
         "sanction.linked": _("Sanction-linked entity"),
         "sanction.counter": _("Counter-sanctioned entity"),
         "export.control": _("Export controlled"),
+        "export.risk": _("Trade risk"),
         "debarment": _("Debarred entity"),
         "poi": _("Person of interest"),
     }

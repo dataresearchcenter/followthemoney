@@ -504,7 +504,7 @@
         "iban",
         "accountNumber"
       ],
-      "description": "An account held at a bank and controlled by an owner. This may also be used  to describe more complex arrangements like correspondent bank settlement accounts.\n",
+      "description": "An account held at a bank and controlled by an owner. This may also be used to describe more complex arrangements like correspondent bank settlement accounts.\n",
       "extends": [
         "Asset"
       ],
@@ -2042,7 +2042,7 @@
       }
     },
     "Documentation": {
-      "description": "Links some entity to a document, which might provide further detail or  evidence regarding the entity.\n",
+      "description": "Links some entity to a document, which might provide further detail or evidence regarding the entity.\n",
       "edge": {
         "caption": [
           "role"
@@ -3114,8 +3114,8 @@
           "type": "date"
         },
         "dunsCode": {
-          "description": "Dun & Bradstreet identifier",
-          "label": "D-U-N-S",
+          "description": "Data Universal Numbering System - Dun & Bradstreet identifier",
+          "label": "DUNS",
           "matchable": true,
           "name": "dunsCode",
           "qname": "LegalEntity:dunsCode",
@@ -3320,6 +3320,14 @@
           "reverse": "sender",
           "stub": true,
           "type": "entity"
+        },
+        "npiCode": {
+          "description": "National Provider Identifier",
+          "label": "NPI",
+          "matchable": true,
+          "name": "npiCode",
+          "qname": "LegalEntity:npiCode",
+          "type": "identifier"
         },
         "ogrnCode": {
           "description": "Major State Registration Number",
@@ -3951,7 +3959,7 @@
       "caption": [
         "name"
       ],
-      "description": "Any type of incorporated entity that cannot be owned by another (see Company). This might include charities, foundations or state-owned enterprises, depending on their  jurisdiction.\n",
+      "description": "Any type of incorporated entity that cannot be owned by another (see Company). This might include charities, foundations or state-owned enterprises, depending on their jurisdiction.\n",
       "extends": [
         "LegalEntity"
       ],
@@ -3974,6 +3982,14 @@
           "reverse": "bank",
           "stub": true,
           "type": "entity"
+        },
+        "cageCode": {
+          "description": "Commercial and Government Entity Code (CAGE)",
+          "label": "CAGE",
+          "matchable": true,
+          "name": "cageCode",
+          "qname": "Organization:cageCode",
+          "type": "identifier"
         },
         "directorshipOrganization": {
           "label": "Directors",
@@ -4470,6 +4486,12 @@
       "matchable": true,
       "plural": "People",
       "properties": {
+        "appearance": {
+          "label": "Physical appearance",
+          "name": "appearance",
+          "qname": "Person:appearance",
+          "type": "string"
+        },
         "associates": {
           "label": "Associates",
           "matchable": true,
@@ -4510,6 +4532,13 @@
           "qname": "Person:birthPlace",
           "type": "string"
         },
+        "citizenship": {
+          "label": "Citizenship",
+          "matchable": true,
+          "name": "citizenship",
+          "qname": "Person:citizenship",
+          "type": "country"
+        },
         "deathDate": {
           "label": "Death date",
           "matchable": true,
@@ -4537,6 +4566,12 @@
           "label": "Ethnicity",
           "name": "ethnicity",
           "qname": "Person:ethnicity",
+          "type": "string"
+        },
+        "eyeColor": {
+          "label": "Eye color",
+          "name": "eyeColor",
+          "qname": "Person:eyeColor",
           "type": "string"
         },
         "familyPerson": {
@@ -4576,6 +4611,18 @@
           "name": "gender",
           "qname": "Person:gender",
           "type": "gender"
+        },
+        "hairColor": {
+          "label": "Hair color",
+          "name": "hairColor",
+          "qname": "Person:hairColor",
+          "type": "string"
+        },
+        "height": {
+          "label": "Height",
+          "name": "height",
+          "qname": "Person:height",
+          "type": "number"
         },
         "images": {
           "label": "Images",
@@ -4669,11 +4716,24 @@
           "qname": "Person:secondName",
           "type": "string"
         },
+        "socialSecurityNumber": {
+          "label": "Social security number",
+          "matchable": true,
+          "name": "socialSecurityNumber",
+          "qname": "Person:socialSecurityNumber",
+          "type": "identifier"
+        },
         "title": {
           "label": "Title",
           "name": "title",
           "qname": "Person:title",
           "type": "string"
+        },
+        "weight": {
+          "label": "Weight",
+          "name": "weight",
+          "qname": "Person:weight",
+          "type": "number"
         }
       },
       "required": [
@@ -4723,7 +4783,7 @@
       "caption": [
         "name"
       ],
-      "description": "A post, role or position within an organization or body. This describes a position one or more people may occupy and not the occupation of the post by a specific individual at a  specific point in time.\n'subnationalArea' should be used to further restrict the scope of the position. It should not simply represent some regional aspect of the role - e.g. the constituency of a national member of parliament - when their legislative jurisdiction is nationwide.\n",
+      "description": "A post, role or position within an organization or body. This describes a position one or more people may occupy and not the occupation of the post by a specific individual at a specific point in time.\n'subnationalArea' should be used to further restrict the scope of the position. It should not simply represent some regional aspect of the role - e.g. the constituency of a national member of parliament - when their legislative jurisdiction is nationwide.\n",
       "extends": [
         "Thing"
       ],
@@ -4805,7 +4865,7 @@
         "role"
       ],
       "deprecated": true,
-      "description": "A post, role or position held by an individual within an organization  or body. This describes the period for which the position is held, not the abstract concept of the post.\n",
+      "description": "A post, role or position held by an individual within an organization or body. This describes the period for which the position is held, not the abstract concept of the post.\n",
       "extends": [
         "Interest"
       ],
@@ -6418,6 +6478,7 @@
       "group": "addresses",
       "label": "Address",
       "matchable": true,
+      "max_length": 250,
       "pivot": true,
       "plural": "Addresses"
     },
@@ -6426,6 +6487,7 @@
       "group": "checksums",
       "label": "Checksum",
       "matchable": true,
+      "max_length": 40,
       "pivot": true,
       "plural": "Checksums"
     },
@@ -6434,6 +6496,7 @@
       "group": "countries",
       "label": "Country",
       "matchable": true,
+      "max_length": 16,
       "plural": "Countries",
       "values": {
         "ac": "Ascension Island",
@@ -6727,6 +6790,7 @@
       "group": "dates",
       "label": "Date",
       "matchable": true,
+      "max_length": 32,
       "plural": "Dates"
     },
     "email": {
@@ -6734,6 +6798,7 @@
       "group": "emails",
       "label": "E-Mail Address",
       "matchable": true,
+      "max_length": 250,
       "pivot": true,
       "plural": "E-Mail Addresses"
     },
@@ -6742,6 +6807,7 @@
       "group": "entities",
       "label": "Entity",
       "matchable": true,
+      "max_length": 250,
       "pivot": true,
       "plural": "Entities"
     },
@@ -6749,6 +6815,7 @@
       "description": "A human gender. This is not meant to be a comprehensive model of\nthe social realities of gender but a way to capture data from (mostly)\ngovernment databases and represent it in a way that can be used by\nstructured tools. I'm not sure this justifies the simplification.",
       "group": "genders",
       "label": "Gender",
+      "max_length": 16,
       "plural": "Genders",
       "values": {
         "female": "female",
@@ -6759,6 +6826,7 @@
     "html": {
       "description": "Properties that contain raw hypertext markup (HTML).\n\nUser interfaces rendering properties of this type need to take extreme\ncare not to allow attacks such as cross-site scripting. It is recommended\nto perform server-side sanitisation, or to not render this property at all.",
       "label": "HTML",
+      "max_length": 65000,
       "plural": "HTMLs"
     },
     "iban": {
@@ -6766,6 +6834,7 @@
       "group": "ibans",
       "label": "IBAN",
       "matchable": true,
+      "max_length": 64,
       "pivot": true,
       "plural": "IBANs"
     },
@@ -6774,6 +6843,7 @@
       "group": "identifiers",
       "label": "Identifier",
       "matchable": true,
+      "max_length": 64,
       "pivot": true,
       "plural": "Identifiers"
     },
@@ -6782,18 +6852,21 @@
       "group": "ips",
       "label": "IP-Address",
       "matchable": true,
+      "max_length": 64,
       "pivot": true,
       "plural": "IP-Addresses"
     },
     "json": {
       "description": "An encoded JSON object. This is used to store raw HTTP headers for documents\nand some other edge cases. It's a really bad idea and we should try to get rid\nof JSON properties.",
       "label": "Nested data",
+      "max_length": 250,
       "plural": "Nested data"
     },
     "language": {
       "description": "A human written language. This list is arbitrarily limited for some\nweird upstream technical reasons, but we'll happily accept pull requests\nfor additional languages once there is a specific need for them to be\nsupported.",
       "group": "languages",
       "label": "Language",
+      "max_length": 16,
       "plural": "Languages",
       "values": {
         "afr": "Afrikaans",
@@ -6864,6 +6937,7 @@
       "description": "A MIME media type are a specification of a content type on a network.\nEach MIME type is assigned by IANA and consists of two parts: the type\nand sub-type. Common examples are: `text/plain`, `application/json` and\n`application/pdf`.\n\nMIME type properties do not contain parameters as used in HTTP headers,\nlike `charset=UTF-8`.",
       "group": "mimetypes",
       "label": "MIME-Type",
+      "max_length": 250,
       "plural": "MIME-Types"
     },
     "name": {
@@ -6871,12 +6945,14 @@
       "group": "names",
       "label": "Name",
       "matchable": true,
+      "max_length": 250,
       "pivot": true,
       "plural": "Names"
     },
     "number": {
       "description": "A numeric value, like the size of a piece of land, or the value of a\ncontract. Since all property values in FtM are strings, this is also a\nstring and there is no specified format (e.g. `1,000.00` vs. `1.000,00`).\n\nIn the future we might want to enable annotations for format, units, or\neven to introduce a separate property type for monetary values.",
       "label": "Number",
+      "max_length": 250,
       "plural": "Numbers"
     },
     "phone": {
@@ -6884,23 +6960,27 @@
       "group": "phones",
       "label": "Phone number",
       "matchable": true,
+      "max_length": 64,
       "pivot": true,
       "plural": "Phone numbers"
     },
     "string": {
       "description": "A simple string property with no additional semantics.",
       "label": "Label",
+      "max_length": 1024,
       "plural": "Labels"
     },
     "text": {
       "description": "Longer text fragments, such as descriptions or document text. Unlike\nstring properties, it might make sense to treat properties of this type as\nfull-text search material.",
       "label": "Text",
+      "max_length": 65000,
       "plural": "Texts"
     },
     "topic": {
       "description": "Topics define a controlled vocabulary of terms applicable to some\nentities, such as companies and people. They describe categories of\njournalistic interest which may apply to the given entity, for example\nif a given person is a criminal or a politician.\n\nBesides the informative value, topics are ultimately supposed to bear\nfruits in the context of graph-based data analysis, where they would\nenable queries such as _find all paths between a government procurement\naward and a politician_.",
       "group": "topics",
       "label": "Topic",
+      "max_length": 64,
       "plural": "Topics",
       "values": {
         "asset.frozen": "Frozen asset",
@@ -6922,6 +7002,7 @@
         "crime.war": "War crimes",
         "debarment": "Debarred entity",
         "export.control": "Export controlled",
+        "export.risk": "Trade risk",
         "fin": "Financial services",
         "fin.adivsor": "Financial advisor",
         "fin.bank": "Bank",
@@ -6953,6 +7034,7 @@
         "role.journo": "Journalist",
         "role.judge": "Judge",
         "role.lawyer": "Lawyer",
+        "role.lobby": "Lobbyist",
         "role.oligarch": "Oligarch",
         "role.pep": "Politician",
         "role.pol": "Non-PEP",
@@ -6960,7 +7042,8 @@
         "role.spy": "Spy",
         "sanction": "Sanctioned entity",
         "sanction.counter": "Counter-sanctioned entity",
-        "sanction.linked": "Sanction-linked entity"
+        "sanction.linked": "Sanction-linked entity",
+        "wanted": "Wanted"
       }
     },
     "url": {
@@ -6968,6 +7051,7 @@
       "group": "urls",
       "label": "URL",
       "matchable": true,
+      "max_length": 4096,
       "pivot": true,
       "plural": "URLs"
     }

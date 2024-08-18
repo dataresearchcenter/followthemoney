@@ -26,6 +26,7 @@ class IdentifierType(PropertyType):
     plural = _("Identifiers")
     matchable = True
     pivot = True
+    max_length = 64
 
     def clean_text(
         self,
