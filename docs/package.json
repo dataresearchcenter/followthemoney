@@ -15,11 +15,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@alephdata/followthemoney": "^3.6.4",
+    "@alephdata/followthemoney": "^3.7.1",
     "@astrojs/markdown-component": "^1.0.5",
     "astro": "^2.10.15",
     "astro-theme-docs": "github:alephdata/astro-theme-docs",
-    "mermaid": "^10.9.1",
+    "mermaid": "^11.0.2",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
