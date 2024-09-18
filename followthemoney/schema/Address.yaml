@@ -51,6 +51,8 @@ Address:
     city:
       label: "City"
       description: "City, town, village or other locality"
+    municipality:
+      label: "Municipality"
     postalCode:
       label: "Postal code"
       description: "Zip code or postcode."
@@ -58,6 +60,8 @@ Address:
     region:
       label: "Region"
       description: "Also province or area."
+    province:
+      label: "Province"
     state:
       label: "State"
       description: "State or federal unit."
