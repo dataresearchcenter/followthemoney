@@ -46,6 +46,10 @@ LegalEntity:
       label: Incorporation date
       type: date
       description: "The date the legal entity was incorporated"
+    registrationDate:
+      label: Registration date
+      type: date
+      description: "The date the legal entity was registered, if different from incorporation date"
     dissolutionDate:
       label: Dissolution date
       type: date
@@ -134,6 +138,9 @@ LegalEntity:
       description: "National Provider Identifier"
       type: identifier
       maxLength: 32
+    duineCode:
+      label: Código DUINE
+      type: identifier
     swiftBic:
       label: "SWIFT/BIC"
       description: "Bank identifier code"
