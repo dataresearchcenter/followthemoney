@@ -231,7 +231,7 @@
           "hidden": true,
           "label": "Detected companies",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "companiesMentioned",
           "qname": "Analyzable:companiesMentioned",
           "type": "name"
@@ -291,7 +291,7 @@
           "hidden": true,
           "label": "Detected names",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "namesMentioned",
           "qname": "Analyzable:namesMentioned",
           "type": "name"
@@ -300,7 +300,7 @@
           "hidden": true,
           "label": "Detected people",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "peopleMentioned",
           "qname": "Analyzable:peopleMentioned",
           "type": "name"
@@ -1246,15 +1246,6 @@
           "name": "okvedCode",
           "qname": "Company:okvedCode",
           "type": "string"
-        },
-        "permId": {
-          "description": "LSEG/Refinitiv code for a company",
-          "label": "PermID",
-          "matchable": true,
-          "maxLength": 16,
-          "name": "permId",
-          "qname": "Company:permId",
-          "type": "identifier"
         },
         "pfrNumber": {
           "description": "(RU, ПФР) Pension Fund Registration number. AAA-BBB-CCCCCC, where AAA is organisation region, BBB is district, CCCCCC number at a specific branch",
@@ -3142,7 +3133,7 @@
           "hidden": true,
           "label": "Detected names",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "namesMentioned",
           "qname": "Interval:namesMentioned",
           "type": "name"
@@ -4069,7 +4060,7 @@
         "name": {
           "label": "Name",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "name",
           "qname": "Mention:name",
           "type": "name"
@@ -4386,6 +4377,15 @@
           "reverse": "organization",
           "stub": true,
           "type": "entity"
+        },
+        "permId": {
+          "description": "LSEG/Refinitiv code for a company",
+          "label": "PermID",
+          "matchable": true,
+          "maxLength": 16,
+          "name": "permId",
+          "qname": "Organization:permId",
+          "type": "identifier"
         },
         "positions": {
           "label": "Positions",
@@ -6239,7 +6239,7 @@
         "alias": {
           "label": "Other name",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "alias",
           "qname": "Thing:alias",
           "type": "name"
@@ -6335,7 +6335,7 @@
         "name": {
           "label": "Name",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "name",
           "qname": "Thing:name",
           "type": "name"
@@ -6361,7 +6361,7 @@
         "previousName": {
           "label": "Previous name",
           "matchable": true,
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "previousName",
           "qname": "Thing:previousName",
           "type": "name"
@@ -6460,7 +6460,7 @@
         },
         "weakAlias": {
           "label": "Weak alias",
-          "maxLength": 250,
+          "maxLength": 384,
           "name": "weakAlias",
           "qname": "Thing:weakAlias",
           "type": "name"
@@ -7154,7 +7154,6 @@
         "dm": "Dominica",
         "do": "Dominican Republic",
         "dz": "Algeria",
-        "ea": "Ceuta & Melilla",
         "ec": "Ecuador",
         "ee": "Estonia",
         "eg": "Egypt",
@@ -7163,7 +7162,6 @@
         "es": "Spain",
         "et": "Ethiopia",
         "eu": "European Union",
-        "ez": "Eurozone",
         "fi": "Finland",
         "fj": "Fiji",
         "fk": "Falkland Islands",
@@ -7180,7 +7178,6 @@
         "ge-ab": "Abkhazia (Occupied Georgia)",
         "gf": "French Guiana",
         "gg": "Guernsey",
-        "gg-srk": "Sark",
         "gh": "Ghana",
         "gi": "Gibraltar",
         "gl": "Greenland",
@@ -7208,6 +7205,7 @@
         "in": "India",
         "io": "British Indian Ocean Territory",
         "iq": "Iraq",
+        "iq-kr": "Kurdistan",
         "ir": "Iran",
         "is": "Iceland",
         "it": "Italy",
@@ -7280,6 +7278,7 @@
         "pg": "Papua New Guinea",
         "ph": "Philippines",
         "pk": "Pakistan",
+        "pk-km": "Kashmir",
         "pl": "Poland",
         "pm": "St. Pierre & Miquelon",
         "pn": "Pitcairn Islands",
@@ -7289,7 +7288,6 @@
         "pw": "Palau",
         "py": "Paraguay",
         "qa": "Qatar",
-        "qo": "Outlying Oceania",
         "re": "Réunion",
         "ro": "Romania",
         "rs": "Serbia",
@@ -7355,8 +7353,6 @@
         "wf": "Wallis & Futuna",
         "ws": "Samoa",
         "x-so": "South Ossetia (Occupied Georgia)",
-        "xa": "Pseudo-Accents",
-        "xb": "Pseudo-Bidi",
         "xk": "Kosovo",
         "ye": "Yemen",
         "yt": "Mayotte",
@@ -7528,7 +7524,7 @@
       "group": "names",
       "label": "Name",
       "matchable": true,
-      "maxLength": 250,
+      "maxLength": 384,
       "pivot": true,
       "plural": "Names"
     },
