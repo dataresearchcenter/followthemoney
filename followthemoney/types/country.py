@@ -28,6 +28,7 @@ class CountryType(EnumType):
         names = {
             "zz": gettext("Global"),
             "eu": gettext("European Union"),
+            "un": gettext("United Nations"),
             "zr": gettext("Zaire"),
             # Overwrite "Czechia" label:
             "cz": gettext("Czech Republic"),
@@ -45,12 +46,14 @@ class CountryType(EnumType):
             "so-som": gettext("Somaliland"),
             "cy-trnc": gettext("Northern Cyprus"),
             "az-nk": gettext("Nagorno-Karabakh"),
+            "iq-kr": gettext("Kurdistan"),
             "cn-xz": gettext("Tibet"),
-            "gg-srk": gettext("Sark"),
+            "cq": gettext("Sark"),
             "gb-wls": gettext("Wales"),
             "gb-sct": gettext("Scotland"),
             "gb-nir": gettext("Northern Ireland"),
             "md-pmr": gettext("Transnistria (PMR)"),
+            "pk-km": gettext("Kashmir"),
         }
         for code, label in locale.territories.items():
             code = code.lower()
@@ -60,6 +63,12 @@ class CountryType(EnumType):
                 int(code)
             except ValueError:
                 names[code] = label
+        # Remove some ISO-3611 codes that are not countries:
+        names.pop("xa", None)
+        names.pop("xb", None)
+        names.pop("qo", None)
+        names.pop("ea", None)
+        names.pop("ez", None)
         return names
 
     def clean_text(
