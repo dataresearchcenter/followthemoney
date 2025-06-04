@@ -19,17 +19,20 @@ release: clean dist
 docker:
 	docker build -t alephdata/followthemoney .
 
-build: default-model translate
+build: default-model ontology
+
+ontology:
+	mkdir -p docs/public/ns
+	python followthemoney/ontology.py docs/public/ns/
 
 default-model:
 	ftm dump-model -o js/src/defaultModel.json
+	ftm dump-model -o java/src/main/resources/defaultModel.json
 
 # initialize a new language:
 # pybabel init -i followthemoney/translations/messages.pot -d followthemoney/translations -l de -D followthemoney
 translate:
 	pybabel extract -F babel.cfg -o followthemoney/translations/messages.pot followthemoney
-	tx push --source
-	tx pull --all
 	pybabel compile -d followthemoney/translations -D followthemoney -f
 
 clean:

@@ -1,15 +1,16 @@
-FROM ubuntu:24.04
+FROM ubuntu:latest
 
-LABEL org.opencontainers.image.title "FollowTheMoney"
-LABEL org.opencontainers.image.licenses MIT
-LABEL org.opencontainers.image.source https://github.com/alephdata/followthemoney
+LABEL org.opencontainers.image.title="FollowTheMoney"
+LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.source=https://github.com/alephdata/followthemoney
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # build-essential 
 RUN apt-get -qq -y update \
     && apt-get -qq -y install locales ca-certificates tzdata curl \
-    python3-pip libpq-dev python3-icu python3-psycopg2 \
+    python3-pip libpq-dev python3-icu python3-psycopg2 \ 
+    libicu74 libicu-dev icu-devtools pkg-config \
     python3-venv python3-cryptography \
     && apt-get -qq -y autoremove \
     && apt-get clean \
@@ -26,9 +27,9 @@ ENV LANG="en_US.UTF-8" \
 
 RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
-RUN pip3 install -q --no-cache-dir -U pip setuptools six psycopg2-binary 
+RUN pip3 install -q --no-cache-dir -U pip psycopg2-binary 
 COPY . /opt/followthemoney
 RUN pip3 install -q --no-cache-dir -e /opt/followthemoney
 WORKDIR /opt/followthemoney/docs
 
-CMD ftm
+CMD ["ftm"]

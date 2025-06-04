@@ -1,6 +1,10 @@
 name: build
-
 on: [push]
+
+permissions:
+  id-token: write
+  packages: write
+  contents: read
 
 jobs:
   python:
@@ -8,7 +12,6 @@ jobs:
     strategy:
       matrix:
         python:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
@@ -27,7 +30,7 @@ jobs:
         run: |
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq libicu-dev
-          pip install wheel pyicu setuptools
+          python -m pip install --upgrade pip wheel pyicu
           pip install -e ".[dev]"
       - name: Run checks for default model
         run: |
@@ -49,21 +52,23 @@ jobs:
           make typecheck
       - name: Build a followthemoney distribution
         run: |
-          python setup.py sdist bdist_wheel
+          python3 -m build --wheel
       - name: Publish followthemoney to PyPI
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.pypi_password }}
           packages-dir: dist/
           skip-existing: true
+          verbose: true
 
   nodejs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [22.x]
+    defaults:
+      run:
+        working-directory: ./js
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js ${{ matrix.node-version }}
@@ -72,23 +77,51 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: |
-          cd js
           npm install
           npm run build
       - name: Run the tests
         run: |
-          cd js
           npm run test:prod && npm run lint
       - name: Publish to NPM
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         run: |
-          cd js
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm run build
           npm publish
         env:
           CI: true
           NPM_AUTH_TOKEN: ${{ secrets.npm_auth_token }}
+
+  java:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./java
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      - name: Publish package
+        run: mvn -P release --batch-mode deploy -DskipTests
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
   docker:
     runs-on: ubuntu-latest

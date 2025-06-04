@@ -14,6 +14,7 @@ from banal import is_mapping, unique_list, ensure_list
 
 MEGABYTE = 1024 * 1024
 DEFAULT_LOCALE = "en"
+ENTITY_ID_LEN = 200
 
 T = TypeVar("T")
 K = TypeVar("K")
@@ -102,6 +103,11 @@ def join_text(*parts: Any, sep: str = " ") -> Optional[str]:
     if not len(texts):
         return None
     return sep.join(texts)
+
+
+def const_case(text: str) -> str:
+    """Convert the given text to a constant case."""
+    return text.upper().replace(" ", "_")
 
 
 def get_entity_id(obj: Any) -> Optional[str]:

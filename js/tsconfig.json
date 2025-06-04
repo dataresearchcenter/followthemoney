@@ -17,8 +17,8 @@
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/lib",
+    "declarationDir": "./dist",
+    "outDir": "./dist",
     "typeRoots": [
       "./node_modules/@types"
     ]

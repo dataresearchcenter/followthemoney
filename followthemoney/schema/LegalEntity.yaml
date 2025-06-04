@@ -34,6 +34,7 @@ LegalEntity:
       label: Phone
       type: phone
       description: "Phone number"
+      maxLength: 32
     website:
       label: Website
       type: url
@@ -78,6 +79,10 @@ LegalEntity:
       label: Tax Number
       type: identifier
       description: "Tax identification number"
+    licenseNumber:
+      label: License Number
+      type: identifier
+      description: "For licenses granted to an entity"
     vatCode:
       label: "V.A.T. Identifier"
       description: "(EU) VAT number"
@@ -109,13 +114,13 @@ LegalEntity:
       label: "INN"
       description: "Russian company ID"
       type: identifier
-      # format: inn
+      format: inn
       maxLength: 32
     ogrnCode:
       label: "OGRN"
       description: "Major State Registration Number"
       type: identifier
-      # format: ogrn
+      format: ogrn
       maxLength: 32
     leiCode:
       # cf. https://www.gleif.org/en/about-lei/introducing-the-legal-entity-identifier-lei
@@ -128,12 +133,19 @@ LegalEntity:
       label: "DUNS"
       description: "Data Universal Numbering System - Dun & Bradstreet identifier"
       type: identifier
+      maxLength: 16
+    uniqueEntityId:
+      label: "Unique Entity ID"
+      description: "UEI from SAM.gov"
+      type: identifier
+      format: uei
       maxLength: 32
     npiCode:
       label: "NPI"
       description: "National Provider Identifier"
       type: identifier
-      maxLength: 32
+      format: npi
+      maxLength: 16
     swiftBic:
       label: "SWIFT/BIC"
       description: "Bank identifier code"
@@ -141,6 +153,8 @@ LegalEntity:
       format: bic
       maxLength: 16
     parent:
+      # Use `Ownership` link instead.
+      deprecated: true
       label: "Parent company"
       description: "If this entity is a subsidiary, another entity (company or organisation) is its parent"
       reverse:

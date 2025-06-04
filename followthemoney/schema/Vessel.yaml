@@ -20,6 +20,7 @@ Vessel:
     imoNumber:
       label: IMO Number
       type: identifier
+      format: imo
       maxLength: 16
     crsNumber:
       label: CRS Number
@@ -33,6 +34,7 @@ Vessel:
       label: Navigation Area
     tonnage:
       label: Tonnage
+      type: number
     grossRegisteredTonnage:
       label: Gross Registered Tonnage
       type: number
@@ -44,6 +46,7 @@ Vessel:
       type: identifier
     pastFlags:
       label: Past Flags
+      type: country
     pastTypes:
       label: Past Types
     #buildDate:

@@ -7,7 +7,7 @@ Passport:
     - Identification
   matchable: false
   featured:
-    - passportNumber
+    - number
     - country
     - type
     - holder
@@ -15,15 +15,16 @@ Passport:
     - endDate
   required:
     - holder
-    - passportNumber
     - number
   caption:
     - passportNumber
     - number
   properties:
     passportNumber:
+      # FIXME: Use `number` from `Identification` instead!!
       label: "Passport number"
       type: identifier
+      hidden: true
     surname:
       label: "Surname"
     givenName:
@@ -35,6 +36,7 @@ Passport:
       label: "Place of birth"
     gender:
       label: "Gender"
+      type: gender
     personalNumber:
       label: "Personal number"
       type: identifier

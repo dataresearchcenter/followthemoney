@@ -15,16 +15,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@alephdata/followthemoney": "^3.7.4",
-    "@astrojs/markdown-component": "^1.0.5",
-    "astro": "^2.10.15",
+    "@alephdata/followthemoney": "^3.8.4",
+    "astro": "^5.8.1",
     "astro-theme-docs": "github:alephdata/astro-theme-docs",
-    "mermaid": "^11.4.0",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@untitaker/hyperlink": "^0.1.43",
-    "prettier": "^3.3.3"
+    "@untitaker/hyperlink": "^0.1.44",
+    "prettier": "^3.5.2"
   },
   "prettier": {
     "singleQuote": true
