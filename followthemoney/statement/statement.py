@@ -2,15 +2,13 @@ import hashlib
 import warnings
 from sqlalchemy.engine import Row
 from typing import cast
-from typing import Union, Any, Dict, Generator, Optional
+from typing import Any, Dict, Generator, Optional
 from typing_extensions import TypedDict, Self
 from rigour.time import datetime_iso, iso_datetime
 from rigour.boolean import bool_text
 
 from followthemoney.proxy import EntityProxy
 from followthemoney.statement.util import get_prop_type, BASE_ID
-
-ExtrasValue = Union[str, int, float, bool, None]
 
 
 class StatementDict(TypedDict):
@@ -27,7 +25,6 @@ class StatementDict(TypedDict):
     first_seen: Optional[str]
     last_seen: Optional[str]
     origin: Optional[str]
-    extras: Optional[Dict[str, ExtrasValue]]
 
 
 class Statement(object):
@@ -57,7 +54,6 @@ class Statement(object):
         "first_seen",
         "last_seen",
         "origin",
-        "extras",
     ]
 
     def __init__(
@@ -75,7 +71,6 @@ class Statement(object):
         canonical_id: Optional[str] = None,
         last_seen: Optional[str] = None,
         origin: Optional[str] = None,
-        extras: Optional[Dict[str, ExtrasValue]] = None,
     ):
         self.entity_id = entity_id
         self.canonical_id = canonical_id or entity_id
@@ -89,7 +84,6 @@ class Statement(object):
         self.last_seen = last_seen or first_seen
         self.external = external
         self.origin = origin
-        self.extras = extras
         if id is None:
             id = self.generate_key()
         self.id = id
@@ -113,7 +107,6 @@ class Statement(object):
             "last_seen": self.last_seen,
             "external": self.external,
             "origin": self.origin,
-            "extras": self.extras,
             "id": self.id,
         }
 
@@ -199,7 +192,6 @@ class Statement(object):
             canonical_id=data.get("canonical_id", None),
             last_seen=data.get("last_seen", None),
             origin=data.get("origin", None),
-            extras=data.get("extras", None),
         )
 
     @classmethod
