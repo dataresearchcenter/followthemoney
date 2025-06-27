@@ -48,16 +48,16 @@ class CSVSource(Source):
 
     def _parse_filters(self, filters: ItemsView[str, Any]) -> FilterList:
         filters_set: FilterList = []
-        for (key, value) in filters:
+        for key, value in filters:
             values = set(cast(List[Optional[str]], ensure_list(value)))
             filters_set.append((key, values))
         return filters_set
 
     def check_filters(self, data: Record) -> bool:
-        for (k, v) in self.filters_set:
+        for k, v in self.filters_set:
             if data.get(k) not in v:
                 return False
-        for (k, v) in self.filters_not_set:
+        for k, v in self.filters_not_set:
             if data.get(k) in v:
                 return False
         return True
