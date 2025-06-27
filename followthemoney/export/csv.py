@@ -1,15 +1,19 @@
 import csv
-from _csv import _writer as csv_writer
-from io import TextIOWrapper
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from io import TextIOWrapper
+from typing import Any, Dict, List, Optional, Protocol, Tuple
 
 from followthemoney.proxy import EntityProxy
 from followthemoney.export.common import Exporter
 from followthemoney.schema import Schema
 from followthemoney.util import PathLike
 
-CSVWriter = csv_writer
+
+class CSVWriter(Protocol):
+    @property
+    def dialect(self) -> Any: ...
+    def writerow(self, row: Any) -> Any: ...
+    def writerows(self, rows: Any) -> None: ...
 
 
 class CSVMixin(object):
