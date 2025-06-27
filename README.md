@@ -30,6 +30,16 @@ There's also a number of viewers for the RDF schema definitions generated from F
 * [WebVOWL](https://service.tib.eu/webvowl/#iri=https://followthemoney.tech/ns/ftm.xml)
 * RDF/OWL specification in [XML](https://followthemoney.tech/ns/ftm.xml).
 
+## Installation
+
+You can install `followthemomey` via PyPI like this:
+
+```bash
+pip install followthemoney
+```
+
+The most tricky dependency of `followthemoney` is `pyicu`, which helps us to perform certain text operations. Please [review their documentation](https://gitlab.pyicu.org/main/pyicu#installing-pyicu) if you run into any issues with ICU.
+
 ## Development environment
 
 For local development with a virtualenv:
