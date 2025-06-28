@@ -4,7 +4,7 @@ title: Entity and Schema API
 
 # Entity and Schema API
 
-The core interfaces of _followthemoney_ are simple: each running instance of the library has a [Model][followthemoney.model.Model] singleton, which holds a set of [Schema][followthemoney.schema.Schema] definitions (e.g. `schema:Person`). Each schema defines a set of `properties` (e.g. `name`, `birthDate`) which give meaning to how values can be associated with entities of a given schema.
+The core interfaces of `followthemoney` are simple: each running instance of the library has a [Model][followthemoney.model.Model] singleton, which holds a set of [Schema][followthemoney.schema.Schema] definitions (e.g. `schema:Person`). Each schema defines a set of `properties` (e.g. `name`, `birthDate`) which give meaning to how values can be associated with entities of a given schema.
 
 The `model` is also used to instantiate [entity proxies][followthemoney.proxy.EntityProxy] – objects that allow the creation and use of entity data, based on the rules defined by an associated schema.
 

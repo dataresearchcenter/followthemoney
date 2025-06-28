@@ -73,4 +73,7 @@ nav:
       - Schema: python/schema.md
       - EntityProxy: python/proxy.md
   - Community:
-      - Credits: docs/credits.md
+      - Users of FtM: community/projects.md
+      - Tools and applications: community/stack.md
+      - Data catalogs: community/catalogs.md
+      - Credits: community/credits.md
