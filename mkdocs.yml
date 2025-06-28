@@ -3,8 +3,8 @@ repo_url: https://github.com/opensanctions/followthemoney
 
 theme:
   name: material
-  # logo: https://assets.opensanctions.org/images/ura/logo_white.png
-  favicon: https://assets.opensanctions.org/images/favicon-32x32.png
+  logo: /public/logo.svg
+  favicon: /public/favicon.png
   palette:
     primary: custom
     accent: custom
@@ -41,4 +41,14 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
-  - Overview: index.md
+  - Home: index.md
+  - Concepts:
+      - Introduction: concepts/index.md
+      - Entities: concepts/entities.md
+      - References: concepts/references.md
+      - Streams: concepts/streams.md
+  - Model:
+      - Property types:
+          - Property types: model/types/index.md
+          - Country: model/types/country.md
+          - Dates: model/types/date.md
