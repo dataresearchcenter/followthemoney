@@ -1,3 +1,4 @@
+from typing import Any
 from followthemoney import model
 from followthemoney import registry
 from followthemoney.property import Property
@@ -18,6 +19,10 @@ def define_env(env):
         if val:
             return ":material-check:"
         return ":material-close:"
+
+    @env.macro
+    def doc_string(val: Any) -> str:
+        return val.__doc__ or ""
 
     @env.macro
     def schema_ref(schema: Schema | str) -> str:
@@ -42,3 +47,9 @@ def define_env(env):
         s = model.get(name)
         assert s is not None, f"Schema not in model: `{name}`"
         return s
+
+    @env.macro
+    def select_type(name: str) -> PropertyType:
+        t = registry.get(name)
+        assert t is not None, f"Property type not in model: `{name}`"
+        return t

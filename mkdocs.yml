@@ -67,11 +67,8 @@ nav:
       - FAQ: docs/faq.md
       - Custom schema: docs/custom.md
   - Model:
-      - Explorer: explorer/index.md
-      - Property types:
-          - Overview: explorer/types/index.md
-          - Country: explorer/types/country.md
-          - Dates: explorer/types/date.md
+      - Entity schemata: explorer/schemata/index.md
+      - Property types: explorer/types/index.md
   - Python API:
       - Introduction: python/index.md
       - Model: python/model.md
