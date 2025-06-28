@@ -40,14 +40,14 @@ This will yield a line-based JSON stream of every company in Moldova, their dire
 
 ![Screenshot of a terminal window. The terminal shows the output of the `ftm map` command to generate the Moldovan company data.](/public/images/docs/cli/mapping-result.png)
 
-You might note, however, that this actually generates multiple entity fragments for each company (i.e. multiple entities with the same ID). This is due to the way the md_companies mapping is written: each query section generates a partial company record. In order to mitigate this, you will need to perform entity aggregation:
+You might note, however, that this actually generates multiple [entity fragments](fragments.md) for each company (i.e. multiple entities with the same ID). This is due to the way the `md_companies` mapping is written: each query section generates a partial company record. In order to mitigate this, you will need to perform entity aggregation:
 
 ```bash
 curl -o md_companies.yml https://raw.githubusercontent.com/alephdata/aleph/main/mappings/md_companies.yml
 ftm map md_companies.yml | ftm aggregate > moldova.ijson
 ```
 
-The call for `ftm aggregate` will retain the entire dataset in memory, which is impossible to do for large databases. In such cases, it's recommended to use an on-disk entity aggregation tool, `followthemoney-store`.
+The invocation of `ftm aggregate` will retain the entire dataset in memory, which is impossible to do for large databases. In such cases, it's recommended to use an on-disk entity aggregation tool, `followthemoney-store`.
 
 ### Loading data from a local CSV file
 
