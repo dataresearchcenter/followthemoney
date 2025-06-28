@@ -24,7 +24,7 @@ schema = model.get('Person')
 prop = schema.get('birthDate')
 
 # You can also import the type registry that lets you access type info easily:
-from followthemoney.types import registry
+from followthemoney import registry
 assert prop.type == registry.date
 
 ## Working with entities and entity proxies
