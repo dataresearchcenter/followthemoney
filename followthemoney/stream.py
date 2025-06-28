@@ -2,8 +2,8 @@ from typing import Any, Dict, List, Optional, Set
 
 from rigour.names import pick_name
 
-from followthemoney.model import Model
 from followthemoney.proxy import EntityProxy
+from followthemoney.schema import Schema
 
 
 def _defined(*args: Optional[str]) -> List[str]:
@@ -16,12 +16,12 @@ class StreamEntity(EntityProxy):
 
     def __init__(
         self,
-        model: Model,
+        schema: Schema,
         data: Dict[str, Any],
         key_prefix: Optional[str] = None,
         cleaned: bool = True,
     ):
-        super().__init__(model, data, key_prefix=key_prefix, cleaned=cleaned)
+        super().__init__(schema, data, key_prefix=key_prefix, cleaned=cleaned)
         self._caption: Optional[str] = data.get("caption")
         self.datasets: Set[str] = set(data.get("datasets", []))
         self.referents: Set[str] = set(data.get("referents", []))
