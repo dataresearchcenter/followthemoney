@@ -4,7 +4,7 @@ title: Introduction
 
 # Introduction
 
-followthemoney (FtM) defines a simple data model for storing complex object graphs. You will need to understand three concepts: entities, entity references, and entity streams.
+FollowTheMoney (FtM) defines a simple data model for storing complex object graphs. You will need to understand three concepts: entities, entity references, and entity streams.
 
 ## Entities
 
@@ -22,7 +22,7 @@ Entities are often expressed as snippets of JSON, with three standard fields: a 
 }
 ```
 
-Property names are defined by the _schemata_. For example, a `schema:Person` has a nationality, while a `schema:Company` allows for setting a jurisdiction. Both properties, however, have the same property type, `type:country`).
+Property names are defined by the _schemata_. For example, a `schema:Person` has a nationality, while a `schema:Company` allows for setting a jurisdiction (Both properties, however, have the same property type, `type:country`).
 
 ## References
 
@@ -39,11 +39,10 @@ Entities can reference other entities. This is achieved via a special property t
 }
 ```
 
-<Callout emoji="ℹ️">
+!!! info
     Applications using FtM data usually need to resolve references bi-directionally. In the context of the example above, they will need to access the person based on it's ID in order to follow the holder link, but also query an inverted index to retrieve all the passports which reference a given person.
 
     In Aleph this is achieved using ElasticSearch and exposed via the `/api/2/entities/<id>/expand` API endpoint.
-</Callout>
 
 ### Interstitial entities
 

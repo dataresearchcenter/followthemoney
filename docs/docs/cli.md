@@ -1,14 +1,10 @@
----
-title: CLI
----
+# Command-line tool
 
-# CLI
+The `ftm` command-line tool can be used to generate, process and export [streams of entities](index.md) in a line-based JSON format. Typical uses would include:
 
-The `ftm` command-line tool can be used to generate, process and export streams of entities in a line-based JSON format. Typical uses would include:
-
-* Generating FollowTheMoney entities by applying an [entity mapping to structured data tables](/docs/mappings) (CSV, SQL).
-* Converting an existing stream of FollowTheMoney entities into another format, such as CSV, Excel, Gephi GEXF or Neo4J's Cypher language.
-* Converting data in complex formats, such as the Open Contracting Data Standard, into FollowTheMoney entities.
+* Generating entities by applying an [entity mapping to structured data tables](mappings.md) (CSV, SQL).
+* Converting an existing stream of entities into another format, such as CSV, Excel, Gephi GEXF or Neo4J's Cypher language.
+* Converting data in complex formats, such as the Open Contracting Data Standard, into entities.
 
 ## Installation
 
@@ -19,30 +15,21 @@ pip install followthemoney
 ftm --help
 ```
 
-### Optional: Enhanced transliteration support
+!!! info
+    One of the jobs of followthemoney is to transliterate text from various scripts to support the comparison of names and other data. For this reason, the projects depends on `pyicu`, a Python binding for the International Components for Unicode tool.
 
-One of the jobs of followthemoney is to transliterate text from various alphabets into the latin script to support the comparison of names. The normal tool used for this is prone to fail with certain alphabets, e.g. the Azeri language. For that reason, we recommend also installing ICU (International components for Unicode).
+    On a Debian-based Linux system, installing ICU is relatively simple:
 
-On a Debian-based Linux system, installing ICU is relatively simple:
+    ```bash
+    apt install libicu-dev
+    pip install pyicu
+    ```
 
-```bash
-apt install libicu-dev
-pip install pyicu
-```
-
-The Mac OS version of installing ICU is a bit complicated, and requires you to have Homebrew installed:
-
-```bash
-brew install icu4c
-env CFLAGS=-I/usr/local/opt/icu4c/include
-env LDFLAGS=-L/usr/local/opt/icu4c/lib
-PATH=$PATH:/usr/local/opt/icu4c/bin
-pip install pyicu
-```
+    For other platforms, please [refer to the pyciu documentation](https://gitlab.pyicu.org/main/pyicu#installing-pyicu) to get help with the required steps.
 
 ## Executing a data mapping
 
-Probably the most common task for `ftm` is to generate FollowTheMoney entities from some structured data source. This is done using a YAML-formatted mapping file, [described here](/docs/mappings). With such a YAML file in hand, you can generate entities like this:
+Probably the most common task for `ftm` is to generate entities from some structured data source. This is done using a YAML-formatted mapping file, [described here](mappings.md). With such a YAML file in hand, you can generate entities like this:
 
 ```bash
 curl -o md_companies.yml https://raw.githubusercontent.com/alephdata/aleph/main/mappings/md_companies.yml
@@ -51,11 +38,7 @@ ftm map md_companies.yml
 
 This will yield a line-based JSON stream of every company in Moldova, their directors and principal shareholders.
 
-<Image
-  src="/assets/pages/docs/cli/mapping-result.png"
-  alt="Screenshot of a terminal window. The terminal shows the output of the `ftm map` command to generate the Moldovan company data."
-  density={2}
-/>
+![Screenshot of a terminal window. The terminal shows the output of the `ftm map` command to generate the Moldovan company data.](/public/images/docs/cli/mapping-result.png)
 
 You might note, however, that this actually generates multiple entity fragments for each company (i.e. multiple entities with the same ID). This is due to the way the md_companies mapping is written: each query section generates a partial company record. In order to mitigate this, you will need to perform entity aggregation:
 
@@ -87,15 +70,10 @@ cat us_ofac.ijson | ftm validate | ftm export-excel -o OFAC.xlsx
 
 Since writing the binary data of an Excel file to standard output is awkward, it is mandatory to include a file name with the `-o` option.
 
-<Image
-  src="/assets/pages/docs/cli/export-excel.png"
-  alt="Screenshot of Microsoft Excel showing the export from the example above. The Excel file has multiple sheets, one for each entity type (e.g. People, Companies, and Ownerships)."
-  density={2}
-/>
+![Screenshot of Microsoft Excel showing the export from the example above. The Excel file has multiple sheets, one for each entity type (e.g. People, Companies, and Ownerships).](/public/images/docs/cli/export-excel.png)
 
-<Callout theme="danger">
+!!! warning
   When exporting to Excel format, it's easy to generate a workbook larger than what Microsoft Excel and similar office programs can actually open. Only export small and mid-size datasets.
-</Callout>
 
 When exporting to CSV format using `ftm export-csv`, the exporter will usually generate multiple output files, one for each schema of entities present in the input stream of FollowTheMoney entities. To handle this, it expects to be given a directory name:
 
@@ -125,11 +103,7 @@ curl -o us_ofac.ijson https://storage.googleapis.com/occrp-data-exports/us_ofac/
 cat us_ofac.ijson | ftm export-cypher | cypher-shell -u user -p password
 ```
 
-<Image
-  src="/assets/pages/docs/cli/export-cypher.png"
-  alt="Screenshot of FtM entities imported to a Neo4J instance."
-  density={2}
-/>
+![Screenshot of FtM entities imported to a Neo4J instance.](/public/images/docs/cli/export-cypher.png)
 
 By default, this will only make explicit edges based on entity to entity relationships. If you want to reify specific property types, use the `-e` option:
 
@@ -181,11 +155,7 @@ curl -o us_ofac.ijson https://storage.googleapis.com/occrp-data-exports/us_ofac/
 cat us_ofac.ijson | ftm validate | ftm export-gexf -e iban -o ofac.gexf
 ```
 
-<Image
-  src="/assets/pages/docs/cli/export-gephi.png"
-  alt="Screenshot of Gephi. A small trove of emails has been visualized as a network. The entity schema type has been used to color nodes, while the size is based on the amount of inbound links (i.e. In-Degree)."
-  density={2}
-/>
+![Screenshot of Gephi. A small trove of emails has been visualized as a network. The entity schema type has been used to color nodes, while the size is based on the amount of inbound links (i.e. In-Degree).](/public/images/docs/cli/export-gephi.png)
 
 ## Exporting entities to RDF/Linked Data
 
@@ -246,6 +216,5 @@ ftm store iterate -d us_ofac | alephclient write-entities -f us_ofac
 ftm store delete -d us_ofac
 ```
 
-<Callout theme="danger">
+!!! warning
   When aggregating entities with large fragments of text, a size limit applies. By default, no entity is allowed to grow larger than 50MB of raw text. Additional text fragments are discarded with a warning.
-</Callout>

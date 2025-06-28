@@ -19,6 +19,9 @@ release: clean dist
 docker:
 	docker build -t opensanctions/followthemoney .
 
+docs: default-model ontology
+	python 
+
 build: default-model ontology
 
 ontology:

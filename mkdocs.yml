@@ -43,12 +43,17 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Concepts:
-      - Introduction: concepts/index.md
-      - Entities: concepts/entities.md
-      - References: concepts/references.md
-      - Streams: concepts/streams.md
+      - Introduction: docs/index.md
+      - Command line: docs/cli.md
+      - Mappings: docs/mappings.md
+      - Entity fragmentation: docs/fragments.md
+      - Python API: docs/api.md
+      - FAQ: docs/faq.md
+      - Custom schema: docs/custom.md
   - Model:
       - Property types:
-          - Property types: model/types/index.md
-          - Country: model/types/country.md
-          - Dates: model/types/date.md
+          - Overview: explorer/types/index.md
+          - Country: explorer/types/country.md
+          - Dates: explorer/types/date.md
+  - Project:
+      - Credits: docs/credits.md
