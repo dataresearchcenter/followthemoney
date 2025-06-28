@@ -164,7 +164,7 @@ public class StatementEntity extends Entity {
             String dataset = getDatasets().iterator().next();
             String stmtId = Statement.makeId(dataset, id, Statement.ID_PROP, value, external);
             Instant instant = Instant.now();
-            Statement idStatement = new Statement(stmtId, id, id, schema, Statement.ID_PROP, dataset, value, null, null, false, instant.getEpochSecond(), instant.getEpochSecond());
+            Statement idStatement = new Statement(stmtId, id, id, schema, Statement.ID_PROP, dataset, null, value, null, null, false, instant.getEpochSecond(), instant.getEpochSecond());
             idStatements.clear();
             idStatements.add(idStatement);
             return idStatement;
