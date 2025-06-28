@@ -22,11 +22,11 @@ Entities are often expressed as snippets of JSON, with three standard fields: a 
 }
 ```
 
-Property names are defined by the _schemata_. For example, a `schema:Person` has a nationality, while a `schema:Company` allows for setting a jurisdiction (Both properties, however, have the same property type, `type:country`).
+Property names are defined by the [_schemata_](../explorer/schemata/index.md). For example, a {{ schema_ref('Person') }} has a {{ prop_ref('Person:nationality') }}, while a {{ schema_ref('Company') }} allows for setting a {{ prop_ref('LegalEntity:jurisdiction') }} (Both properties, however, have the same property type, {{ type_ref('country') }}).
 
 ## References
 
-Entities can reference other entities. This is achieved via a special property type, `entity`. Properties of this type simply store the ID of another entity. For example, a `schema:Passport` entity can be linked to a `schema:Person` entity via its holder property:
+Entities can reference other entities. This is achieved via a special property type, `entity`. Properties of this type simply store the ID of another entity. For example, a {{ schema_ref('Passport') }} entity can be linked to a {{ schema_ref('Person') }} entity via its {{ prop_ref('Identification:holder') }} property:
 
 ```json
 {
@@ -48,7 +48,7 @@ Entities can reference other entities. This is achieved via a special property t
 
 A link between two entities will have its own attributes. For example, an investigator looking at a person that owns a company might want to know when that interest was acquired, and also what percentage of shares the person holds.
 
-This is addressed by making interstitial entities. In the example above, an `schema:Ownership` entity would be created, with references to the person as its owner property and to the company as its asset property. That entity can then define further properties, including `startDate` and `percentage`:
+This is addressed by making interstitial entities. In the example above, an {{ schema_ref('Ownership') }} entity would be created, with references to the person as its owner property and to the company as its asset property. That entity can then define further properties, including {{ prop_ref('Interval:startDate') }} and {{ prop_ref('Ownership:percentage') }}:
 
 ```json
 {
@@ -64,7 +64,7 @@ This is addressed by making interstitial entities. In the example above, an `sch
 ```
 
 !!! warning
-  It is tempting to simplify this model by assuming that entities derived from `schema:Thing` are node entities, and those derived from `schema:Interval` are edges. This assumption is false and will lead to nasty bugs in your code.
+    It is tempting to simplify this model by assuming that entities derived from {{ schema_ref('Thing') }} are node entities, and those derived from {{ schema_ref('Interval') }} are edges. This assumption is false and will lead to nasty bugs in your code.
 
 ## Streams
 

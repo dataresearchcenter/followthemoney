@@ -40,7 +40,7 @@ def define_env(env):
             schema, name = prop.schema.name, prop.name
         else:
             schema, name = prop.split(":")
-        return f"[`{prop}`](/explorer/schemata/{schema}#{name})"
+        return f"[`{name}`](/explorer/schemata/{schema}#{name})"
 
     @env.macro
     def select_schema(name: str) -> Schema:
