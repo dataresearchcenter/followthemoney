@@ -30,7 +30,7 @@ For a reference of how schema definitions are designed, use the following resour
 
 Operators can modify the active FtM model by setting the environment variable `FTM_MODEL_PATH` to a directory that contains an alternate set of YAML schema description files. The simplest way to do this would be to download the existing YAML schema set [from FtM source](https://github.com/opensanctions/followthemoney/tree/master/followthemoney/schema) and make edits in a new directory.
 
-This raises an difficult question: How mutable is the FtM model in reality? FtM uses specific schemata in its tests, but that wouldn't be a fatal hindrance. However, the [OpenAleph](https://openaleph.org) and [ingestors](https://github.com/openaleph/ingest-file) have built-in assumptions about a larger subsection of the schema. For example, ingestors require all schemata descendant from {{ schema_ref('Document') }} and {{ schema_ref('Mention') }}. Aleph assumes that the {{ schema_ref('LegalEntity') }}, {{ schema_ref('Person') }} and {{ schema_ref('Document') }} types exist.
+This raises an difficult question: How mutable is the FtM model in reality? FtM uses specific schemata in its tests, but that wouldn't be a fatal hindrance. However, the [OpenAleph](https://openaleph.org) and [ingestors](https://github.com/openaleph/ingest-file) have built-in assumptions about a larger subsection of the schema. For example, ingestors require all schemata descendant from {{ schema_ref('Document') }} and {{ schema_ref('Mention') }}. OpenAleph assumes that the {{ schema_ref('Person') }}, {{ schema_ref('LegalEntity') }} and {{ schema_ref('Document') }} types exist.
 
 In practice, we would recommend these policies when modifying the FtM model in an Aleph deployment:
 
