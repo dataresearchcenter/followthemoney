@@ -2,7 +2,7 @@
 
 # {{ schema.label }}
 
-{{ schema.description }}
+{{ schema.description or "" }}
 
 ## Inheritance
 
