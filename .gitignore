@@ -4,7 +4,6 @@
 *.egg-info
 .vscode/
 .idea
-.tox/
 .mypy_cache/
 .env
 .coverage
@@ -24,3 +23,5 @@ js/compiled
 js/.awcache
 js/.rpt2_cache
 docs/public/ns/ftm.xml
+node_modules
+.astro
