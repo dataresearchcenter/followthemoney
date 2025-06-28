@@ -1,3 +1,6 @@
+# mkdocs
+site
+
 *.pyc
 *.log
 .DS_Store

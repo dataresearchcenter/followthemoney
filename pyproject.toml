@@ -71,6 +71,7 @@ docs = [
     "mkdocs>=1.4.0",
     "mkdocs-material>=9.0.0",
     "mkdocs-gen-files",
+    "mkdocs-macros-plugin",
     "mkdocstrings[python]",
 ]
 
