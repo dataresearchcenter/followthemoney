@@ -17,7 +17,13 @@ classDiagram
   {{ s.name }} <-- {{ schema.name }}
   {% for se in s.extends %}
   {{ se.name }} <-- {{ s.name }}
+  {% for sse in se.extends %}
+  {{ sse.name }} <-- {{ se.name }}
   {% endfor %}
+  {% endfor %}
+  {% endfor %}
+  {% for s in schema.descendants %}
+  {{ schema.name }} <-- {{ s.name }}
   {% endfor %}
 ```
 
@@ -65,6 +71,6 @@ entities, for example in a network graph or in a timeline.
 
 | Name | Label | Description | Type |
 | ---- | ----- | ----------- | ---- |
-{% for prop in schema.properties.values() %}| {{ prop_ref(prop) }} | {{ prop.label }} | {{ prop.description or '' }} | {{ type_ref(prop.type) }} |
+{% for prop in schema.properties.values() %}| {{ prop_ref(prop) }}{ #{{ prop.name }} } | {{ prop.label }} | {{ prop.description or '' }} | {{ type_ref(prop.type) }} |
 {% endfor %}
 
