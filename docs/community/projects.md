@@ -4,7 +4,7 @@ Data exploration projects that make use off the FollowTheMoney stack described a
 
 - [OCCRP Aleph](https://aleph.occrp.org) – The global archive of research material for investigative reporting
 - [OpenSanctions](https://opensanctions.org) – OpenSanctions helps investigators find leads, allows companies to manage risk and enables technologists to build data-driven products
-- [Managed OpenAleph](https://openaleph.org/managed/) - Get a full managed software-as-a-service instance of OpenAleph
+- [Managed OpenAleph](https://openaleph.org/managed/) - Get a full managed software-as-a-service instance of [OpenAleph](https://www.openaleph.org)
 - [OpenSecurityData.eu](https://opensecuritydata.eu/) – Find companies, organizations or projects that receive European Union security funding
 - [Farmsubsidy.org](https://farmsubsidy.org) – Collecting and processing detailed data relating to payments and recipients of farm subsidies in every EU member state
 - [FollowTheGrant](https://followthegrant.org) – Data and investigations about potential conflicts of interest within academic research

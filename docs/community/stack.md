@@ -86,8 +86,8 @@ Building blocks for serving and searching FollowTheMoney datasets for web applic
 These libraries have been discontinued or merged with others:
 
 - [Aleph Data Desktop](https://github.com/alephdata/datadesktop) – desktop application for drawing investigative network diagrams.
-- [pantomime](https://github.com/alephdata/pantomime) – parsing and normalisation of internet MIME types in Python (discontinued, now in `rigour.mime`)
-- [fingerprints](https://github.com/opensanctions/fingerprints) – Name handling utilities for person and organisation names (discontinued, now in `rigour.names`)
-- [languagecodes](https://github.com/alephdata/languagecodes) – normalise the ISO 639 codes used to describe languages from two-letter codes to three letters, and vice versa (discontinued, now in `rigour.langs`)
-- [addressformatting](https://github.com/pudo-attic/addressformatting) – address formatter that can format addresses in multiple formats that are common in different countries (discontinued, now in `rigour.addresses`)
+- [pantomime](https://github.com/alephdata/pantomime) – parsing and normalisation of internet MIME types in Python (discontinued, now in [rigour.mime][])
+- [fingerprints](https://github.com/opensanctions/fingerprints) – Name handling utilities for person and organisation names (discontinued, now in [rigour.names][])
+- [languagecodes](https://github.com/alephdata/languagecodes) – normalise the ISO 639 codes used to describe languages from two-letter codes to three letters, and vice versa (discontinued, now in [rigour.langs][])
+- [addressformatting](https://github.com/pudo-attic/addressformatting) – address formatter that can format addresses in multiple formats that are common in different countries (discontinued, now in [rigour.addresses][])
 - [followthemoney-predict](https://github.com/alephdata/followthemoney-predict) - previous entity comparison/linkage codebase.
