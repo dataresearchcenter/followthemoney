@@ -69,8 +69,8 @@ entities, for example in a network graph or in a timeline.
 
 ## Properties
 
-| Name | Label | Description | Type |
-| ---- | ----- | ----------- | ---- |
-{% for prop in schema.properties.values() %}| {{ prop_ref(prop) }}{ #{{ prop.name }} } | {{ prop.label }} | {{ prop.description or '' }} | {{ type_ref(prop.type) }} |
+| Name | Label | Type |
+| ---- | ----- | ---- |
+{% for prop in schema.properties.values() %}| {{ prop_ref(prop) }}{ #{{ prop.name }} } | {{ prop.label }} {% if prop.description %}<br><em>{{ prop.description }}</em>{% endif %} | {{ type_ref(prop.type) }} |
 {% endfor %}
 

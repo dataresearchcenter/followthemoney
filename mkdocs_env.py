@@ -41,7 +41,8 @@ def define_env(env):
             schema, name = prop.schema.name, prop.name
         else:
             schema, name = prop.split(":")
-        return f"[`{name}`](/explorer/schemata/{schema}.md#{name})"
+        qname = ":".join((schema, name))
+        return f"[`{qname}`](/explorer/schemata/{schema}#{name})"
 
     @env.macro
     def select_schema(name: str) -> Schema:
