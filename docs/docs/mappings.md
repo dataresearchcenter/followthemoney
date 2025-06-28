@@ -14,9 +14,9 @@ In order to map data to the FollowTheMoney model, you will need the following:
 * a tool to process the mapping
 * and a mapping file \(to direct the tool\).
 
-**Source data** can be either a CSV \(comma-separated values\) file using the UTF-8 character encoding, or a valid [connection string](https://docs.sqlalchemy.org/en/13/core/engines.html#database-urls) to connect to a SQL database. Using SQL as a source also lets you perform JOINs within the database while mapping data.
+**Source data** can be either a CSV \(comma-separated values\) file using the UTF-8 character encoding, or a valid [connection string](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls) to connect to a SQL database. Using SQL as a source also lets you perform JOINs within the database while mapping data.
 
-In order to **execute a mapping**, you need to install the [ftm command-line](/docs/cli) utility.
+In order to **execute a mapping**, you need to install the [ftm command-line](cli.md) utility.
 
 To write a **mapping file**, you will first need to identify:
 
@@ -46,7 +46,7 @@ gb_parliament_57:
 
 The mapping file specifies a dataset name \(`gb_parliament_57`\) and uses a single query to pull data from a CSV file \(the dataset is from the excellent EveryPolitician project\). The query generates a `Person` entity, which maps the CSV's `id` column to a key, and the CSV's `name`column to the property `name`
 
-Try saving this file to your computer and executing it with the [ftm command-line tool](/docs/cli):
+Try saving this file to your computer and executing it with the [ftm command-line tool](cli.md):
 
 ```
 ftm map brexitonians.yml
@@ -58,7 +58,7 @@ The command will output a `Person` entity (formatted as a JSON object) for every
 
 However, the source CSV file has far more detail on each MP, from e-mail addresses to political party affiliation. To include this data in `gb_parliament_57` , we need to map each CSV column to the respective property as defined in the FollowTheMoney schema. The properties vary based on the type of entity \(a `Person` will have different properties from a `Company`\).
 
-To find out what properties exist for a particular schema, you can [check out the YAML-based schema definitions](https://github.com/alephdata/followthemoney/tree/master/followthemoney/schema) on GitHub or the [Model Explorer](/explorer).
+To find out what properties exist for a particular schema, you can [check out the YAML-based schema definitions](https://github.com/opensanctions/followthemoney/tree/master/followthemoney/schema) on GitHub or the [Model Explorer](../explorer/index.md).
 
 Here's an updated mapping file, which maps additional columns from the CSV file to properties in the `Person` schemata \(`email`, `nationality`, and `alias`\).
 
@@ -107,7 +107,7 @@ gb_parliament_57:
               column: group
 ```
 
-When run this will create twice as many entities as before: the MPs, and parties. Note how each party is generated multiple times \(once for each of its members\). When you're using the command-line, you will need to perform [entity aggregation](/docs/cli#aggregating-entities-using-ftm-store) to merge these duplicates.
+When run this will create twice as many entities as before: the MPs, and parties. Note how each party is generated multiple times \(once for each of its members\). When you're using the command-line, you will need to perform [entity aggregation](aggregation.md) to merge these duplicates.
 
 ### Creating relationships between entities
 
@@ -144,7 +144,7 @@ gb_parliament_57:
               entity: member
 ```
 
-When loaded into a FollowTheMoney-compatible tool such as [OpenAleph](https://openaleph.org), this mapping would now show browsable entities for the member and each party, and list the memberships on each of their profile pages. You can also export this data [to a more conventional node-graph data model](/docs/cli#exporting-data-to-a-network-graph) for use in Neo4J or Gephi.
+When loaded into a FollowTheMoney-compatible tool such as [OpenAleph](https://openaleph.org), this mapping would now show browsable entities for the member and each party, and list the memberships on each of their profile pages. You can also export this data [to a more conventional node-graph data model](cli.md#exporting-data-to-a-network-graph) for use in Neo4J or Gephi.
 
 ## A more realistic complex mapping
 

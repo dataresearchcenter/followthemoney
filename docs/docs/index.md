@@ -70,4 +70,4 @@ This is addressed by making interstitial entities. In the example above, an `sch
 
 Many tools in the FtM ecosystem use streams of entities to transfer or store information. Entity streams are simply sequences of entity objects that have been serialised to JSON as single lines without any indentation, each entity separated by a newline.
 
-Entity streams are read and produced by virtually every part of the [CLI](/docs/cli), the Aleph API, and they're also supported by the ingestors. When stored to disk as a file, the extensions .ftm or .ijson should be used.
+Entity streams are read and produced by virtually every part of the [CLI](cli.md), the Aleph API, and they're also supported by the ingestors. When stored to disk as a file, the extensions .ftm or .ijson should be used.

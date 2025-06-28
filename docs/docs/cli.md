@@ -38,7 +38,7 @@ ftm map md_companies.yml
 
 This will yield a line-based JSON stream of every company in Moldova, their directors and principal shareholders.
 
-![Screenshot of a terminal window. The terminal shows the output of the `ftm map` command to generate the Moldovan company data.](/public/images/docs/cli/mapping-result.png)
+![Screenshot of a terminal window. The terminal shows the output of the `ftm map` command to generate the Moldovan company data.](../public/images/docs/cli/mapping-result.png)
 
 You might note, however, that this actually generates multiple [entity fragments](fragments.md) for each company (i.e. multiple entities with the same ID). This is due to the way the `md_companies` mapping is written: each query section generates a partial company record. In order to mitigate this, you will need to perform entity aggregation:
 
@@ -57,6 +57,8 @@ Another peculiarity of `ftm map` is that the source data is actually referenced 
 cat people_of_interest.csv | ftm map-csv people_of_interest.yml | ftm aggregate
 ```
 
+See the [mappings documentation](mappings.md) for more detail the mapping syntax and usage.
+
 ## Exporting entities to Excel or CSV
 
 FollowTheMoney data can be exported to tabular formats, such as modern Excel (XLSX) files, and comma-separated values (CSV). Since each schema of entities has a different set of properties it makes sense to turn each schema into a separate table: `People` go into one, `Directorships` into another.
@@ -70,7 +72,7 @@ cat us_ofac.ijson | ftm validate | ftm export-excel -o OFAC.xlsx
 
 Since writing the binary data of an Excel file to standard output is awkward, it is mandatory to include a file name with the `-o` option.
 
-![Screenshot of Microsoft Excel showing the export from the example above. The Excel file has multiple sheets, one for each entity type (e.g. People, Companies, and Ownerships).](/public/images/docs/cli/export-excel.png)
+![Screenshot of Microsoft Excel showing the export from the example above. The Excel file has multiple sheets, one for each entity type (e.g. People, Companies, and Ownerships).](../public/images/docs/cli/export-excel.png)
 
 !!! warning
   When exporting to Excel format, it's easy to generate a workbook larger than what Microsoft Excel and similar office programs can actually open. Only export small and mid-size datasets.
@@ -103,7 +105,7 @@ curl -o us_ofac.ijson https://storage.googleapis.com/occrp-data-exports/us_ofac/
 cat us_ofac.ijson | ftm export-cypher | cypher-shell -u user -p password
 ```
 
-![Screenshot of FtM entities imported to a Neo4J instance.](/public/images/docs/cli/export-cypher.png)
+![Screenshot of FtM entities imported to a Neo4J instance.](../public/images/docs/cli/export-cypher.png)
 
 By default, this will only make explicit edges based on entity to entity relationships. If you want to reify specific property types, use the `-e` option:
 
@@ -155,7 +157,7 @@ curl -o us_ofac.ijson https://storage.googleapis.com/occrp-data-exports/us_ofac/
 cat us_ofac.ijson | ftm validate | ftm export-gexf -e iban -o ofac.gexf
 ```
 
-![Screenshot of Gephi. A small trove of emails has been visualized as a network. The entity schema type has been used to color nodes, while the size is based on the amount of inbound links (i.e. In-Degree).](/public/images/docs/cli/export-gephi.png)
+![Screenshot of Gephi. A small trove of emails has been visualized as a network. The entity schema type has been used to color nodes, while the size is based on the amount of inbound links (i.e. In-Degree).](../public/images/docs/cli/export-gephi.png)
 
 ## Exporting entities to RDF/Linked Data
 
@@ -186,7 +188,7 @@ Depending on how large the OCDS dataset is, you may want to use `followthemoney-
 
 ## Aggregating entities using ftm-store
 
-While the method of streaming FollowTheMoney entities is very convenient, there are situations where not all information about an entity is known at the time at which it is generated. For example, think of a [mapping](/docs/mappings) that loads company names from one CSV file, while the corresponding addresses are in a second, separate CSV table. In such cases, it is easier to generate two entities with the same ID and to merge them later.
+While the method of streaming FollowTheMoney entities is very convenient, there are situations where not all information about an entity is known at the time at which it is generated. For example, think of a [mapping](mappings.md) that loads company names from one CSV file, while the corresponding addresses are in a second, separate CSV table. In such cases, it is easier to generate two entities with the same ID and to merge them later.
 
 Merging such entity fragments requires sorting all the entities in the given dataset by their ID in order to aggregate their properties. For small datasets, this can be done in application memory using the `ftm aggregate`command.
 

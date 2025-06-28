@@ -4,7 +4,7 @@ title: Network Graphs
 
 # Network Graphs
 
-FollowTheMoney includes tooling to export data to a network graph. The FtM command-line tool includes the following exporters:
+FollowTheMoney includes tooling to export data to a network graph. The FtM [command-line tool](cli.md) includes the following exporters:
 
 * `ftm export-gexf` turns a stream of FtM entity into a GEXF (Graph EXchange Format) file suitable for import into NetworkX and Gephi.
 * `ftm export-cypher` produces a stream of CYPHER commands that can be used to create a dataset in a Neo4J or Memgraph database.
@@ -14,7 +14,7 @@ FollowTheMoney includes tooling to export data to a network graph. The FtM comma
 
 Below are some notes about the semantics of followthemoney (FtM) as a graph, and how it might be converted to a (Neo4J-style) property graph model. This is how we’ve been thinking about it in the past, and we can change it, but it would almost certainly require adaptation of the FtM model and the complete re-generation of all Aleph data from scratch to do cleanly.
 
-1. The normal case for what a link is in FtM is a property value (see [References](/docs#references)). When turning this into a property graph model, both the `schema:Passport` and the `schema:Person` become nodes, and the holder property becomes an edge with no attributes attached to it.
+1. The normal case for what a link is in FtM is a property value (see [References](index.md#references)). When turning this into a property graph model, both the `schema:Passport` and the `schema:Person` become nodes, and the holder property becomes an edge with no attributes attached to it.
 
 2. Sometimes we want to talk about the inverse of one of these edges. That’s why holder has an inverse, passports that is added to the `schema:Person` schema. This is mostly used to store the labels that should be used to talk about the passports linked to a person. But it’s a stub that cannot be written.
 
