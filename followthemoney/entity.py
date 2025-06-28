@@ -1,18 +1,24 @@
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, TypeVar
 
 from rigour.names import pick_name
 
 from followthemoney.proxy import EntityProxy
 from followthemoney.schema import Schema
+from followthemoney.statement.util import BASE_ID
+
+VE = TypeVar("VE", bound="ValueEntity")
 
 
 def _defined(*args: Optional[str]) -> List[str]:
     return [arg for arg in args if arg is not None]
 
 
-class StreamEntity(EntityProxy):
-    """This is used to retain extra attributes in the entity when doing streaming
-    command-line operations where the statement data is not available."""
+class ValueEntity(EntityProxy):
+    """
+    This class has the extended attributes from `StatementEntity` but without
+    statements. Useful for streaming around. Starting from followthemoeny 4.0,
+    applications should use this entity class as the base class.
+    """
 
     def __init__(
         self,
@@ -28,17 +34,23 @@ class StreamEntity(EntityProxy):
         self.first_seen: Optional[str] = data.get("first_seen")
         self.last_seen: Optional[str] = data.get("last_seen")
         self.last_change: Optional[str] = data.get("last_change")
-        self.target: Optional[bool] = data.get("target", False)
-        self.context = {}
 
-    def merge(self: "StreamEntity", other: "StreamEntity") -> "StreamEntity":
+        # add data from statement dict if present.
+        # this updates the dataset and referents set
+        for stmt_data in data.pop("statements", []):
+            self.datasets.add(stmt_data["dataset"])
+            if stmt_data["entity_id"] != self.id:
+                self.referents.add(stmt_data["entity_id"])
+            if stmt_data["prop"] != BASE_ID:
+                self.add(stmt_data["prop"], stmt_data["value"])
+
+    def merge(self: "ValueEntity", other: "ValueEntity") -> "ValueEntity":
         merged = super().merge(other)
         merged._caption = pick_name(_defined(self._caption, other._caption))
         merged.referents.update(other.referents)
         merged.datasets.update(other.datasets)
         self.first_seen = min(_defined(self.first_seen, other.first_seen), default=None)
         self.last_seen = max(_defined(self.last_seen, other.last_seen), default=None)
-        self.target = self.target or other.target
         changed = _defined(self.last_change, other.last_change)
         self.last_change = max(changed, default=None)
         return merged
@@ -51,7 +63,6 @@ class StreamEntity(EntityProxy):
             "properties": self.properties,
             "referents": list(self.referents),
             "datasets": list(self.datasets),
-            "target": self.target,
         }
         if self.first_seen is not None:
             data["first_seen"] = self.first_seen

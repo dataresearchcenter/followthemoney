@@ -1,3 +1,4 @@
+from followthemoney.entity import ValueEntity, VE
 from followthemoney.model import Model
 from followthemoney.schema import Schema
 from followthemoney.property import Property
@@ -26,4 +27,6 @@ __all__ = [
     "Statement",
     "StatementEntity",
     "SE",
+    "ValueEntity",
+    "VE",
 ]

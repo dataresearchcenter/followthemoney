@@ -1,6 +1,6 @@
 from followthemoney.dataset.dataset import Dataset
 from followthemoney.statement.entity import StatementEntity
-from followthemoney.stream import StreamEntity
+from followthemoney.entity import ValueEntity
 
 
 EXAMPLE = {
@@ -10,8 +10,8 @@ EXAMPLE = {
 }
 
 
-def test_stream_entity():
-    se = StreamEntity.from_dict(EXAMPLE)
+def test_value_entity():
+    se = ValueEntity.from_dict(EXAMPLE)
     assert se.schema.name == "Person"
     assert se.id == "jane"
     assert se.caption == "Jane Doe"
@@ -24,24 +24,36 @@ def test_stream_entity():
         "properties": {"name": ["Jane Doe"], "birthDate": ["1976"]},
         "referents": [],
         "datasets": [],
-        "target": False,
     }
 
     # with dataset
     data = {**EXAMPLE, **{"datasets": ["test"]}}
-    se = StreamEntity.from_dict(data)
+    se = ValueEntity.from_dict(data)
     assert se.datasets == {"test"}
 
-    # StatementEntity -> StreamEntity
+    # StatementEntity -> ValueEntity
     ds = Dataset({"name": "test", "title": "Test"})
     sp = StatementEntity.from_data(ds, EXAMPLE)
-    se = StreamEntity.from_dict(sp.to_dict())
+    se = ValueEntity.from_dict(sp.to_dict())
     assert sp.id == se.id == "jane"
     assert sp.datasets == se.datasets == {"test"}
 
-    # StreamEntity -> StatementEntity
+    # ValueEntity -> StatementEntity
     data = {**EXAMPLE, **{"datasets": ["test"]}}
-    se = StreamEntity.from_dict(data)
+    se = ValueEntity.from_dict(data)
     sp = StatementEntity.from_data(ds, se.to_dict())
     assert sp.id == se.id == "jane"
     assert sp.datasets == se.datasets == {"test"}
+
+    # with statements list in payload
+    data = sp.to_statement_dict()
+    s1 = data["statements"][0]
+    # patch other entity id & dataset
+    s1["entity_id"] = "jane1"
+    s1["dataset"] = "other"
+    data["statements"][0] = s1
+
+    se = ValueEntity.from_dict(data)
+    assert se.referents == {"jane1"}
+    assert se.datasets == {"other", "test"}
+    assert se.caption == "Jane Doe"
