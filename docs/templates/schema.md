@@ -6,6 +6,21 @@
 
 ## Inheritance
 
+``` mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+  {% for s in schema.extends %}
+  {{ s.name }} <-- {{ schema.name }}
+  {% for se in s.extends %}
+  {{ se.name }} <-- {{ s.name }}
+  {% endfor %}
+  {% endfor %}
+```
+
 {% if schema.extends %}
 ### Extends
 {% for s in schema.extends %}
@@ -15,10 +30,12 @@
 
 {% if schema.descendants %}
 ### Descendants
-{{ schema.descendants }}
+{% for s in schema.descendants %}
+- {{ schema_ref(s) }}
+{% endfor %}
 {% endif %}
 
-{% if schema.matchable_schemata %}
+{% if schema.matchable_schemata | length > 1 %}
 ### Matchable with
 {% for s in schema.matchable_schemata %}
 {% if s.name != schema.name %}- {{ schema_ref(s) }}{% endif %}
@@ -46,8 +63,8 @@ entities, for example in a network graph or in a timeline.
 
 ## Properties
 
-| Name | Label | Type |
-| ---- | ----- | ---- |
-{% for prop in schema.properties.values() %}| {{ prop_ref(prop) }} | {{ prop.label }} | {{ type_ref(prop.type) }} |
+| Name | Label | Description | Type |
+| ---- | ----- | ----------- | ---- |
+{% for prop in schema.properties.values() %}| {{ prop_ref(prop) }} | {{ prop.label }} | {{ prop.description or '' }} | {{ type_ref(prop.type) }} |
 {% endfor %}
 
