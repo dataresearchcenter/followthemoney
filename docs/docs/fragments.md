@@ -18,9 +18,9 @@ To illustrate this problem, imagine a table with millions of rows that describes
 
 ## Database humpty-dumpty
 
-When [turning this data into FtM](/docs/mappings), we’d create three entities for each row: a `schema:Company`, a `schema:Person` and a `schema:Directorship` that connects the two.
+When [turning this data into FtM](/docs/mappings), we’d create three entities for each row: a {{ schema_ref('Company') }}, a {{ schema_ref('Person') }} and a {{ schema_ref('Directorship') }} that connects the two.
 
-If we do this row by row, we’d eventually generate three `schema:Company` entities to represent two actual companies, and three `schema:Person` entities for two distinct people. Of course, we could write these to an ElasticSearch index sequentially - the later entities overwriting the earlier ones with the same ID.
+If we do this row by row, we’d eventually generate three {{ schema_ref('Company') }} entities to represent two actual companies, and three {{ schema_ref('Person') }} entities for two distinct people. Of course, we could write these to an ElasticSearch index sequentially - the later entities overwriting the earlier ones with the same ID.
 
 That works only as long as each version of each entity contains the same data. In our example, the first mention of John Smith includes his birth date, while the second does not. If we don\'t wish to lose that detail, we need to merge these fragments. While it\'s possible to perform such merges at index time, this has proven to be impractically slow because it requires fetching each entity before it is updated.
 
@@ -28,7 +28,7 @@ A better solution is to sort all generated fragments before indexing them. With 
 
 ## In practice
 
-In the FtM toolchain, there are two tools for doing entity aggregation: from the [command-line](/docs/cli) `ftm aggregate` will merge fragments in memory. Alternately the add-on library [followthemoney-store](https://github.com/alephdata/followthemoney-store) will perform the same operation in a SQLite or PostgreSQL database.
+In the FtM toolchain, there are two tools for doing entity aggregation: from the [command-line](cli.md) `ftm aggregate` will merge fragments in memory. Alternately the add-on library [followthemoney-store](https://github.com/alephdata/followthemoney-store) will perform the same operation in a SQLite or PostgreSQL database.
 
 ```bash
 # Generate entities from a CSV file and a mapping:
@@ -83,7 +83,7 @@ entity = dataset.get(entity_id)
 
 ## Fragment origins
 
-followthemoney-store is used across the tools built on FtM to capture and aggregate entity fragments. In Aleph, fragments for one entity might be written by different processes: the API, document ingestors, document NER analyzers or a translation backend. It is convenient to be able to flush all entity fragments from a particular origin, while leaving the other fragments intact. For example, this can be used to delete all data uploaded via the bulk API, while leaving document-based data in the same dataset intact.
+`followthemoney-store` is used across the tools built on FtM to capture and aggregate entity fragments. In Aleph, fragments for one entity might be written by different processes: the API, document ingestors, document NER analyzers or a translation backend. It is convenient to be able to flush all entity fragments from a particular origin, while leaving the other fragments intact. For example, this can be used to delete all data uploaded via the bulk API, while leaving document-based data in the same dataset intact.
 
 To support this, ftm-store has the notion of an origin for each fragment. If specified, this can be used to later delete or overwrite subsets of fragments.
 

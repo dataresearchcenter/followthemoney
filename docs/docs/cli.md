@@ -75,7 +75,7 @@ Since writing the binary data of an Excel file to standard output is awkward, it
 ![Screenshot of Microsoft Excel showing the export from the example above. The Excel file has multiple sheets, one for each entity type (e.g. People, Companies, and Ownerships).](../public/images/docs/cli/export-excel.png)
 
 !!! warning
-  When exporting to Excel format, it's easy to generate a workbook larger than what Microsoft Excel and similar office programs can actually open. Only export small and mid-size datasets.
+    When exporting to Excel format, it's easy to generate a workbook larger than what Microsoft Excel and similar office programs can actually open. Only export small and mid-size datasets.
 
 When exporting to CSV format using `ftm export-csv`, the exporter will usually generate multiple output files, one for each schema of entities present in the input stream of FollowTheMoney entities. To handle this, it expects to be given a directory name:
 
@@ -90,9 +90,9 @@ In the given directory, you will find files names `Person.csv`, `LegalEntity.csv
 
 FollowTheMoney sees every unit of information as an entity with a set of properties. To analyse this information as a network with nodes and edges, we need to decide what logic should rule the transformation of entities into nodes and edges. Different strategies are available:
 
-* Some entity schemata, such as `Directorship`, `Ownership`, `Family` or `Payment`, contain annotations that define how they can be transformed into an edge with a source and target.
-* Entities also naturally reference others. For example, an `Email` has an `emitters` property that refers to a `LegalEntity`, the sender. The `emitters` property connects the two entities and can also be turned into an edge.
-* Finally, some types of properties (e.g. `email`, `iban`, `names`) can be formed into nodes, with edges formed towards each node that derives from an entity with that property value. For example, an `address` node for "40 Wall Street" would show links to all the companies registered there, or a node representing the name "Frank Smith" would connect all the documents mentioning that name. It rarely makes sense to turn all property types into nodes, so the set of types that need to be [reified](<https://en.wikipedia.org/wiki/Reification_(computer_science)>) can be passed as options into the graph exporter.
+* Some entity schemata, such as {{ schema_ref('Directorship') }}, {{ schema_ref('Ownership') }}, {{ schema_ref('Family') }} or {{ schema_ref('Payment') }}, contain annotations that define how they can be transformed into an edge with a source and target.
+* Entities also naturally reference others. For example, an {{ schema_ref('Email') }} has an `emitters` property that refers to a {{ schema_ref('LegalEntity') }}, the sender. The `emitters` property connects the two entities and can also be turned into an edge.
+* Finally, some types of properties (e.g. {{ type_ref('email') }}, {{ type_ref('iban') }}, {{ type_ref('names') }}) can be formed into nodes, with edges formed towards each node that derives from an entity with that property value. For example, an {{ type_ref('address') }} node for "40 Wall Street" would show links to all the companies registered there, or a node representing the name "Frank Smith" would connect all the documents mentioning that name. It rarely makes sense to turn all property types into nodes, so the set of types that need to be [reified](<https://en.wikipedia.org/wiki/Reification_(computer_science)>) can be passed as options into the graph exporter.
 
 ### Cypher commands for Neo4J
 
@@ -174,7 +174,7 @@ By default, the RDF exporter tries to map each entity property to a fully-qualif
 
 ## Importing Open Contracting data
 
-The [Open Contracting Data Standard](https://standard.open-contracting.org/latest/en/) (OCDS) is commonly serialised as a series of JSON objects. `ftm` includes a function to transform a stream of OCDS objects into `Contract` and `ContractAward` entities. This was developed in particular to import data from the DIGIWHIST [OpenTender.eu](https://opentender.eu/all/download) site, so other implementations of OCDS may require extending the importer to accommodate other formats.
+The [Open Contracting Data Standard](https://standard.open-contracting.org/latest/en/) (OCDS) is commonly serialised as a series of JSON objects. `ftm` includes a function to transform a stream of OCDS objects into {{ schema_ref('Contract') }} and {{ schema_ref('ContractAward') }} entities. This was developed in particular to import data from the DIGIWHIST [OpenTender.eu](https://opentender.eu/all/download) site, so other implementations of OCDS may require extending the importer to accommodate other formats.
 
 Here's how you can convert all Cyprus government procurement data to FollowTheMoney objects:
 
