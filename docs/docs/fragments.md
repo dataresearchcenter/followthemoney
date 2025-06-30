@@ -4,11 +4,11 @@ title: 'Entity Fragmentation'
 
 # Entity Fragmentation
 
-Generating graph data is a difficult process. The size of the datasets we want to process using followthemoney (FtM) makes it impossible to incrementally build nodes and edges in memory like you would in [NetworkX](https://networkx.org/). Instead, we use a stream-based solution for constructing graph entities. That is why the toolkit supports _entity fragments_ and _aggregation_.
+Generating graph data is a difficult process. The size of the datasets we want to process using FtM makes it difficult to incrementally build nodes and edges in memory like you would in many data science workflows. Instead, we use a stream-based solution for constructing graph entities. That is why the toolkit supports _entity fragments_ and [_aggregation_](aggregation.md).
 
 ## Example
 
-To illustrate this problem, imagine a table with millions of rows that describes a set of people and the companies they control. Every company can have multiple directors, while each director might control multiple companies:
+To illustrate the problem, imagine a table with millions of rows that describes a set of people and the companies they control. Every company can have multiple directors, while each director might control multiple companies:
 
 | CompanyID | CompanyName            | DirectorName | DirectorIdNo | DirectorDoB |
 | --------- | ---------------------- | ------------ | ------------ | ----------- |
@@ -16,19 +16,26 @@ To illustrate this problem, imagine a table with millions of rows that describes
 | A71882    | Goldfish Ltd.          | John Smith   | PP827817     | NULL        |
 | A123      | Brilliant Amazing Ltd. | Jane Doe     | PP1988299    | 1983-06-24  |
 
-## Database humpty-dumpty
-
 When [turning this data into FtM](mappings.md), we’d create three entities for each row: a {{ schema_ref('Company') }}, a {{ schema_ref('Person') }} and a {{ schema_ref('Directorship') }} that connects the two.
 
-If we do this row by row, we’d eventually generate three {{ schema_ref('Company') }} entities to represent two actual companies, and three {{ schema_ref('Person') }} entities for two distinct people. Of course, we could write these to an ElasticSearch index sequentially - the later entities overwriting the earlier ones with the same ID.
+If we do this row by row, we’d eventually generate three {{ schema_ref('Company') }} entities to represent two actual companies, and three {{ schema_ref('Person') }} entities that describe two distinct people. The generated entities are _fragmented_, ie. multiple references to the same entity ID are generated at different times in the program.
 
-That works only as long as each version of each entity contains the same data. In our example, the first mention of John Smith includes his birth date, while the second does not. If we don\'t wish to lose that detail, we need to merge these fragments. While it\'s possible to perform such merges at index time, this has proven to be impractically slow because it requires fetching each entity before it is updated.
+Another example: a document processing pipeline may first receive a {{ schema_ref('Document') }} and store its checksum and file name, then submit it for a processing to a queue. There, a content extractor may output a body text, and then a separate process performing NLP analysis contributes annotations like the names of individuals and companies mentioned in the document. Again, each step in processing has emitted _fragments_ of the eventual entity.
 
-A better solution is to sort all generated fragments before indexing them. With this approach, all the entities generated from the source table would be written to disk or to a database, and then sorted using their ID. In the resulting entity set, all instances of each company and person are grouped and can be merged as they are read.
+Of course, we could treat each change to an entity as an update to a normal database backend, like an ElasticSearch index: fetch the existing entity, merge the changes, update the index. This, again, runs into scalability issues and race conditions in parallelized processing environments.
 
-## In practice
+A better solution is to store the generated entity fragments as they are produced and to [aggregate](#aggregation) (combine) them into full entities when needed - often during a search indexing or data export process. 
 
-In the FtM toolchain, there are two tools for doing entity aggregation: from the [command-line](cli.md) `ftm aggregate` will merge fragments in memory. Alternately the add-on library [followthemoney-store](https://github.com/alephdata/followthemoney-store) will perform the same operation in a SQLite or PostgreSQL database.
+## Entity aggregation {: #aggregation}
+
+Entity aggregation requires sorting all generated fragments so they can be iterated in sequence of the entity ID that they are a part of. There are several techniques for doing so:
+
+* **In-memory:** for small datasets, it can be easiest to load all fragments into memory in order to merge them. The [command-line](cli.md) tool `ftm aggregate` will do this.
+* **In a database:** the entity fragments are written to a SQL database, and then iterated as the result of a sorting query. The [followthemoney-store](https://github.com/alephdata/followthemoney-store) library allows you to do this in a SQLite or PostgreSQL database.
+* **Using flat files:** FtM's JSON exporter will emit data that can be sorted using the `sort` command-line tool. The `ftm sorted-aggregate` command will then aggregate the resulting stream of sorted entity data.
+* **Using statements:** the alternative [statement data model](statements.md) provides an alternative to the idea of _fragmentation_. Instead of splitting entities into partial entity fragments, they are divided into statements, which are even more granular. Statements can also [be aggregated](statements.md#aggregation).
+
+### Using followthemoney-store
 
 ```bash
 # Generate entities from a CSV file and a mapping:
@@ -81,7 +88,7 @@ for proxy in dataset.partials():
 entity = dataset.get(entity_id)
 ```
 
-## Fragment origins
+### Fragment origins
 
 `followthemoney-store` is used across the tools built on FtM to capture and aggregate entity fragments. In Aleph, fragments for one entity might be written by different processes: the API, document ingestors, document NER analyzers or a translation backend. It is convenient to be able to flush all entity fragments from a particular origin, while leaving the other fragments intact. For example, this can be used to delete all data uploaded via the bulk API, while leaving document-based data in the same dataset intact.
 

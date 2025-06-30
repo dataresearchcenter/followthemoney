@@ -8,7 +8,7 @@ title: FAQ
 
 It's a *data vernacular*: a pragmatic convention used by data practitioners. The objective is to model the metaphors and concepts used in a conversation between three financial crime investigators at a hotel bar - 11pm, 3 beers. 
 
-Data standards rely on formal governance to model a real-world domain with the ultimate goal of correctness. Given the breadth of the domain expressed in FtM schema (all of social and business relations on a global level), this would not be a realistic scope for a data standard.
+Data standards rely on formal governance to model a real-world domain with the ultimate goal of correctness. Given the breadth of the domain expressed in FtM schema (all of social and business relations on a global level), finding formal definitions for all of the domain's complexities would not be a realistic scope for a data standard.
 
 ## Why are all properties multi-valued?
 
