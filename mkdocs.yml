@@ -8,6 +8,7 @@ theme:
   palette:
     primary: custom
     accent: custom
+  custom_dir: docs/overrides
 extra_css: [stylesheets/extra.css]
 
 extra:
