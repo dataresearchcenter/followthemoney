@@ -16,7 +16,7 @@ ftm --help
 ```
 
 !!! info
-    One of the jobs of followthemoney is to transliterate text from various scripts to support the comparison of names and other data. For this reason, the projects depends on `pyicu`, a Python binding for the International Components for Unicode tool.
+    `followthemoney` transliterates text from various scripts to support the comparison of names and other data. For this reason, the projects depends on `pyicu`, a Python binding for the International Components for Unicode tool.
 
     On a Debian-based Linux system, installing ICU is relatively simple:
 
@@ -26,6 +26,7 @@ ftm --help
     ```
 
     For other platforms, please [refer to the pyciu documentation](https://gitlab.pyicu.org/main/pyicu#installing-pyicu) to get help with the required steps.
+
 
 ## Executing a data mapping
 
@@ -92,7 +93,7 @@ FollowTheMoney sees every unit of information as an entity with a set of propert
 
 * Some entity schemata, such as {{ schema_ref('Directorship') }}, {{ schema_ref('Ownership') }}, {{ schema_ref('Family') }} or {{ schema_ref('Payment') }}, contain annotations that define how they can be transformed into an edge with a source and target.
 * Entities also naturally reference others. For example, an {{ schema_ref('Email') }} has an `emitters` property that refers to a {{ schema_ref('LegalEntity') }}, the sender. The `emitters` property connects the two entities and can also be turned into an edge.
-* Finally, some types of properties (e.g. {{ type_ref('email') }}, {{ type_ref('iban') }}, {{ type_ref('names') }}) can be formed into nodes, with edges formed towards each node that derives from an entity with that property value. For example, an {{ type_ref('address') }} node for "40 Wall Street" would show links to all the companies registered there, or a node representing the name "Frank Smith" would connect all the documents mentioning that name. It rarely makes sense to turn all property types into nodes, so the set of types that need to be [reified](<https://en.wikipedia.org/wiki/Reification_(computer_science)>) can be passed as options into the graph exporter.
+* Finally, some types of properties (e.g. {{ type_ref('email') }}, {{ type_ref('identifier') }}, {{ type_ref('name') }}) can be formed into nodes, with edges formed towards each node that derives from an entity with that property value. For example, an {{ type_ref('address') }} node for "40 Wall Street" would show links to all the companies registered there, or a node representing the name "Frank Smith" would connect all the documents mentioning that name. It rarely makes sense to turn all property types into nodes, so the set of types that need to be [reified](<https://en.wikipedia.org/wiki/Reification_(computer_science)>) can be passed as options into the graph exporter.
 
 ### Cypher commands for Neo4J
 

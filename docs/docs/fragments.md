@@ -18,7 +18,7 @@ To illustrate this problem, imagine a table with millions of rows that describes
 
 ## Database humpty-dumpty
 
-When [turning this data into FtM](/docs/mappings), we’d create three entities for each row: a {{ schema_ref('Company') }}, a {{ schema_ref('Person') }} and a {{ schema_ref('Directorship') }} that connects the two.
+When [turning this data into FtM](mappings.md), we’d create three entities for each row: a {{ schema_ref('Company') }}, a {{ schema_ref('Person') }} and a {{ schema_ref('Directorship') }} that connects the two.
 
 If we do this row by row, we’d eventually generate three {{ schema_ref('Company') }} entities to represent two actual companies, and three {{ schema_ref('Person') }} entities for two distinct people. Of course, we could write these to an ElasticSearch index sequentially - the later entities overwriting the earlier ones with the same ID.
 

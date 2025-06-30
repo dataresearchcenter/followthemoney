@@ -1,5 +1,5 @@
 from typing import Any
-from followthemoney import model
+from followthemoney import model, __version__
 from followthemoney import registry
 from followthemoney.property import Property
 from followthemoney.schema import Schema
@@ -13,6 +13,7 @@ def define_env(env):
 
     env.variables["model"] = model
     env.variables["registry"] = registry
+    env.variables["ftm_version"] = __version__
 
     @env.macro
     def bool_icon(val: bool) -> str:
@@ -28,11 +29,11 @@ def define_env(env):
     def schema_ref(schema: Schema | str) -> str:
         if isinstance(schema, Schema):
             schema = schema.name
-        return f"[`{schema}`](/explorer/schemata/{schema}/)"
+        return f"[`{schema}`](/explorer/schemata/{schema}.md)"
 
     @env.macro
     def type_ref(type_: PropertyType | str) -> str:
-        return f"[`{type_}`](/explorer/types/{type_}/)"
+        return f"[`{type_}`](/explorer/types/{type_}.md)"
 
     @env.macro
     def prop_ref(prop: Property | str) -> str:
@@ -40,7 +41,7 @@ def define_env(env):
             schema, name = prop.schema.name, prop.name
         else:
             schema, name = prop.split(":")
-        return f"[`{name}`](/explorer/schemata/{schema}/#{name})"
+        return f"[`{name}`](/explorer/schemata/{schema}.md#{name})"
 
     @env.macro
     def select_schema(name: str) -> Schema:

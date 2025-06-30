@@ -9,3 +9,5 @@ String type properties are used for short descriptive text, such as a sector cla
 ## Python API
 
 ::: followthemoney.types.StringType
+    options:
+        heading_level: 3

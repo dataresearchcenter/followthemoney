@@ -10,3 +10,5 @@ Backends should use full search text indexing to handle text fields.
 ## Python API
 
 ::: followthemoney.types.TextType
+    options:
+        heading_level: 3
