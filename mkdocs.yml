@@ -50,6 +50,7 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.blocks.caption
   - tables
   - attr_list
   - md_in_html
@@ -64,6 +65,7 @@ nav:
       - Command line: docs/cli.md
       - Mappings: docs/mappings.md
       - Fragments & aggregation: docs/fragments.md
+      - Namespaces: docs/namespace.md
       - Statements: docs/statements.md
       - Matching: docs/matching.md
       - Datasets & catalogs: docs/metadata.md
@@ -79,6 +81,7 @@ nav:
       - EntityProxy: python/proxy.md
       - Property: python/property.md
       - Statements: python/statements.md
+      - Type registry: python/registry.md
       - Other functions: python/lib.md
   - Other bindings: libraries.md
   - FAQ: docs/faq.md
