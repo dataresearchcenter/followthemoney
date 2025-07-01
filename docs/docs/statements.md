@@ -2,7 +2,7 @@
 
 The primary unit of the FollowTheMoney (FTM) data model is an entity, defined by a schema like Person, Company, or Ownership, an ID, and a set of properties like their name, birth date or jurisdiction. Sometimes, however, there’s a need to store additional information about each value assigned to a property: the name property value “John Doe”, for example, may be sourced from a specific dataset, first seen by a crawler at a particular time, or we might know the language it’s written in. 
 
-`Statements` capture details about such property value metadata. Often, a statement is a row in a JSON/CSV file or SQL database, identifying the ID of the entity it belongs to, the property it describes, a value, and various other metadata. Multiple statements can be assembled into an FtM entity (a `StatementEntity`), and any FtM entity can be unrolled into a corresponding set of statements. 
+`Statements` capture details about such property value metadata. Often, a statement is a row in a JSON/CSV file or SQL database, identifying the ID of the entity it belongs to, the property it describes, a value, and various other metadata. Multiple statements can be assembled into an FtM entity (a [StatementEntity][followthemoney.statement.entity.StatementEntity]), and any FtM entity can be unrolled into a corresponding set of statements. 
 
 Statements have multiple benefits in processing FtM data:
 

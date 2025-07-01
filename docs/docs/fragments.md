@@ -4,7 +4,7 @@ title: 'Entity Fragmentation'
 
 # Entity Fragmentation
 
-Generating graph data is a difficult process. The size of the datasets we want to process using FtM makes it difficult to incrementally build nodes and edges in memory like you would in many data science workflows. Instead, we use a stream-based solution for constructing graph entities. That is why the toolkit supports _entity fragments_ and [_aggregation_](aggregation.md).
+Generating graph data is a difficult process. The size of the datasets we want to process using FtM makes it difficult to incrementally build nodes and edges in memory like you would in many data science workflows. Instead, we use a stream-based solution for constructing graph entities. That is why the toolkit supports _entity fragments_ and [_aggregation_](#aggregation).
 
 ## Example
 

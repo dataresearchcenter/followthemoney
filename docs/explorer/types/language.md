@@ -15,7 +15,7 @@ Additional values can be introduced in FtM type enumerations within minor releas
 | `{{code}}` | {{label}} |
 {%- endfor -%}
 
-.
+
 
 ## Python API
 

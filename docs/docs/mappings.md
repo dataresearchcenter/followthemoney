@@ -107,7 +107,7 @@ gb_parliament_57:
               column: group
 ```
 
-When run this will create twice as many entities as before: the MPs, and parties. Note how each party is generated multiple times \(once for each of its members\). When you're using the command-line, you will need to perform [entity aggregation](aggregation.md) to merge these duplicates.
+When run this will create twice as many entities as before: the MPs, and parties. Note how each party is generated multiple times \(once for each of its members\). When you're using the command-line, you will need to perform [entity aggregation](fragments.md#aggregation) to merge these duplicates.
 
 ### Creating relationships between entities
 

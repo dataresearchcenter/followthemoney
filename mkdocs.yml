@@ -78,6 +78,8 @@ nav:
       - Schema: python/schema.md
       - EntityProxy: python/proxy.md
       - Property: python/property.md
+      - Statements: python/statements.md
+      - Other functions: python/lib.md
   - Other bindings: libraries.md
   - FAQ: docs/faq.md
   - Community:
