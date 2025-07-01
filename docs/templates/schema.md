@@ -32,29 +32,11 @@
 
 | Relation | Schemata | 
 | -------- | -------- |
-| Properties inherited from | {% if schema.extends | length() %}{% for s in schema.extends %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
-| More precise schemata | {% if schema.descendants | length() %}{% for s in schema.descendants %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
+| **Properties inherited from:** | {% if schema.extends | length() %}{% for s in schema.extends %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
+| **More precise schemata:** | {% if schema.descendants | length() %}{% for s in schema.descendants %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
 {%- if schema.matchable -%}
-| Matchable with | {% if schema.matchable_schemata | length() %}{% for s in schema.matchable_schemata %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
+| **Matchable with:** | {% if schema.matchable_schemata | length() %}{% for s in schema.matchable_schemata %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
 {%- endif -%}
-
-## How to use it in a graph or timeline
-
-FollowTheMoney has well-defined semantics for different representations of
-entities, for example in a network graph or in a timeline.
-
-{% if schema.edge %}
-When using this schema in a [graph representation](/docs/graphs.md), it should be represented as an **edge**.
-{% else %}
-When using this schema in a [graph representation](/docs/graphs.md), it should be represented as a **node**.
-{% endif %}
-
-| Semantic | Property |
-| -------- | -------- |
-{%- if schema.source_prop -%}| Edge source | {{ prop_ref(schema.source_prop) }} |{% endif %}
-{%- if schema.target_prop -%}| Edge target | {{ prop_ref(schema.target_prop) }} |{% endif %}
-| Temporal start | {% if schema.temporal_start %}{% for prop in schema.temporal_start_props %}{{ prop_ref(prop) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %}|
-| Temporal end | {% if schema.temporal_end %}{% for prop in schema.temporal_end_props %}{{ prop_ref(prop) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %}|
 
 
 ## Properties
@@ -76,3 +58,20 @@ When using this schema in a [graph representation](/docs/graphs.md), it should b
 | ---- | ----- | ---- |
 {% for prop in sorted_props(schema) %}| {{ prop_ref(prop) }}{ #{{ prop.name }} } {{ prop_caption_icon(prop) }} {{ prop_hidden_icon(prop) }} {{ prop_featured_icon(prop) }} {{ prop_matchable_icon(prop) }} | {{ prop.label }} {% if prop.description %}<br><em>{{ prop.description }}</em>{% endif %} | {{ type_ref(prop.type) }} |
 {% endfor %}
+
+## How to use it in a graph or timeline
+
+FtM has well-defined semantics for different representations of entities, for example in a network graph or in a timeline.
+
+{% if schema.edge %}
+When using this schema in a [graph representation](/docs/graphs.md), it should be represented as an **edge**.
+{% else %}
+When using this schema in a [graph representation](/docs/graphs.md), it should be represented as a **node**.
+{% endif %}
+
+| Semantic | Property |
+| -------- | -------- |
+{%- if schema.source_prop -%}| Edge source | {{ prop_ref(schema.source_prop) }} |{% endif %}
+{%- if schema.target_prop -%}| Edge target | {{ prop_ref(schema.target_prop) }} |{% endif %}
+| Temporal start | {% if schema.temporal_start %}{% for prop in schema.temporal_start_props %}{{ prop_ref(prop) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %}|
+| Temporal end | {% if schema.temporal_end %}{% for prop in schema.temporal_end_props %}{{ prop_ref(prop) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %}|

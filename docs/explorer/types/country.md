@@ -6,7 +6,7 @@ FtM's model of political geography is an evolving part of the toolkit. After fir
 The model has now matured to distinguish several concepts:
 
 * **Territories** are units of political geography. They can overlap or contradict each other in terms of the physical space they occupy. As long as someone claims to hold political power in a place, this can be reason for FtM to model it.
-* **Jurisdictions** are territories which impose their own legal regime, often with regards to the formation of companies. All countries are jurisdictions, but some countries are subdivided into smaller jurisdictions - think Dubai as part of the UAE, Delaware as part of the US.
+* **Jurisdictions** are territories which impose their own legal regime, often with regards to the formation of companies. Most countries are jurisdictions, but some countries are subdivided into smaller jurisdictions - think Dubai as part of the UAE, Delaware as part of the US.
 * **Countries** are UN member states. Beyond that, certain territories are countries in practice (think Kosovo). To go with the old adage: A country is a territory [with an army and a navy](https://en.wikipedia.org/wiki/A_language_is_a_dialect_with_an_army_and_navy).
 
 {% include 'templates/type.md' %}

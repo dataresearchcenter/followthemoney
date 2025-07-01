@@ -58,7 +58,7 @@ The command will output a `Person` entity (formatted as a JSON object) for every
 
 However, the source CSV file has far more detail on each MP, from e-mail addresses to political party affiliation. To include this data in `gb_parliament_57` , we need to map each CSV column to the respective property as defined in the FollowTheMoney schema. The properties vary based on the type of entity \(a `Person` will have different properties from a `Company`\).
 
-To find out what properties exist for a particular schema, you can [check out the YAML-based schema definitions](https://github.com/opensanctions/followthemoney/tree/master/followthemoney/schema) on GitHub or the [Model Explorer](../explorer/index.md).
+To find out what properties exist for a particular schema, you can [check out the YAML-based schema definitions](https://github.com/opensanctions/followthemoney/tree/master/followthemoney/schema) on GitHub or the [Model Explorer](../explorer/schemata/index.md).
 
 Here's an updated mapping file, which maps additional columns from the CSV file to properties in the `Person` schemata \(`email`, `nationality`, and `alias`\).
 

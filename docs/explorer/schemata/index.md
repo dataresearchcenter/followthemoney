@@ -1,6 +1,6 @@
 # Entity schemata
 
-Explore the default data model shipped with FollowTheMoney. It includes [{{ model.schemata | length }} schemata][schemata], focussed on the domain of financial crime, corruption investigations, and document forensics.
+Explore the default data model shipped with FollowTheMoney. It includes {{ model.schemata | length }} schemata, focussed on the domain of financial crime, corruption investigations, and document forensics.
 
 | Name | Label | Abstract | Generated | Matchable | Hidden |
 | ---- | ----- | -------- | --------- | --------- | ------ |
