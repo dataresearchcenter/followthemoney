@@ -1,4 +1,6 @@
 from typing import Any, Generator, Set
+from rigour.mime.types import LABELS
+from rigour.territories import get_territories
 from followthemoney import model, __version__
 from followthemoney import registry
 from followthemoney.property import Property
@@ -14,6 +16,8 @@ def define_env(env):
     env.variables["model"] = model
     env.variables["registry"] = registry
     env.variables["ftm_version"] = __version__
+    env.variables["rigour_mime_types"] = LABELS
+    env.variables["rigour_territories"] = get_territories()
     env.variables["NULL"] = "-"
 
     @env.macro

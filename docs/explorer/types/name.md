@@ -2,3 +2,9 @@
 # {{ type.plural }}
 
 {% include 'templates/type.md' %}
+
+## Python API
+
+::: followthemoney.types.NameType
+    options:
+        heading_level: 3

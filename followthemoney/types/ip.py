@@ -15,8 +15,8 @@ class IpType(PropertyType):
 
     name = "ip"
     group = "ips"
-    label = _("IP-Address")
-    plural = _("IP-Addresses")
+    label = _("IP Address")
+    plural = _("IP Addresses")
     matchable = True
     pivot = True
     max_length = 64

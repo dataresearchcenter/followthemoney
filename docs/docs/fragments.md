@@ -32,8 +32,8 @@ Entity aggregation requires sorting all generated fragments so they can be itera
 
 * **In-memory:** for small datasets, it can be easiest to load all fragments into memory in order to merge them. The [command-line](cli.md) tool `ftm aggregate` will do this.
 * **In a database:** the entity fragments are written to a SQL database, and then iterated as the result of a sorting query. The [followthemoney-store](https://github.com/alephdata/followthemoney-store) library allows you to do this in a SQLite or PostgreSQL database.
-* **Using flat files:** FtM's JSON exporter will emit data that can be sorted using the `sort` command-line tool. The `ftm sorted-aggregate` command will then aggregate the resulting stream of sorted entity data.
-* **Using statements:** the alternative [statement data model](statements.md) provides an alternative to the idea of _fragmentation_. Instead of splitting entities into partial entity fragments, they are divided into statements, which are even more granular. Statements can also [be aggregated](statements.md#aggregation).
+* **Using flat files:** FtM's JSON exporter will emit data that can be sorted using the generic `sort` command-line tool. The `ftm sorted-aggregate` command will then aggregate the resulting stream of sorted entity data.
+* **Using statements:** the [statement data model](statements.md) provides an alternative to the idea of _fragmentation_. Instead of splitting entities into partial entity fragments, they are divided into statements, which are even more granular. Statements [can also be aggregated](statements.md#aggregation).
 
 ### Using followthemoney-store
 
