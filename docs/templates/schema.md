@@ -34,7 +34,9 @@
 | -------- | -------- |
 | Properties inherited from | {% if schema.extends | length() %}{% for s in schema.extends %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
 | More precise schemata | {% if schema.descendants | length() %}{% for s in schema.descendants %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
+{%- if schema.matchable -%}
 | Matchable with | {% if schema.matchable_schemata | length() %}{% for s in schema.matchable_schemata %}{{ schema_ref(s) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %} |
+{%- endif -%}
 
 ## How to use it in a graph or timeline
 
@@ -42,9 +44,9 @@ FollowTheMoney has well-defined semantics for different representations of
 entities, for example in a network graph or in a timeline.
 
 {% if schema.edge %}
-When using this entity schema in a [graph representation](/docs/graphs.md), it should be represented as an _Edge_.
+When using this schema in a [graph representation](/docs/graphs.md), it should be represented as an **edge**.
 {% else %}
-When using this entity schema in a [graph representation](/docs/graphs.md), it should be represented as a _Node_.
+When using this schema in a [graph representation](/docs/graphs.md), it should be represented as a **node**.
 {% endif %}
 
 | Semantic | Property |
