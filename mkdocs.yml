@@ -78,7 +78,7 @@ nav:
       - Introduction: python/index.md
       - Model: python/model.md
       - Schema: python/schema.md
-      - EntityProxy: python/proxy.md
+      - Entity: python/entity.md
       - Property: python/property.md
       - Statements: python/statements.md
       - Type registry: python/registry.md
