@@ -122,6 +122,7 @@ class Statement(object):
         data.pop("extras", None)  # not supported in SQL
         data["first_seen"] = iso_datetime(self.first_seen)
         data["last_seen"] = iso_datetime(self.last_seen)
+        data["prop_type"] = self.prop_type
         return data
 
     def __hash__(self) -> int:
