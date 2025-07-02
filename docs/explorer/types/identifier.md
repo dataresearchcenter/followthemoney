@@ -7,7 +7,7 @@ Used for registration numbers and other codes assigned by an authority to identi
 
 ## Identifier formats
 
-Identifiers are further defined by the format specified for them. These validators will enforce specific schemes, often validated by length or using a checksum mechanism.
+Identifier properties can specify a `format`, which names a more precise validation mechanism for values assigned to these properties. The validators will enforce constraints on value length or use a checksum mechanism (as defined in [rigour.ids][]). Some identifiers are considered as `strong`, meaning they are part of a well-defined, often global, numbering scheme.
 
 | Code | Label | Strong | Description | 
 | ---- | ----- | ------ | ----------- |
