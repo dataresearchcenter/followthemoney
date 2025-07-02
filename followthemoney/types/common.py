@@ -248,14 +248,14 @@ class EnumType(PropertyType):
 
     def clean_text(
         self,
-        code: str,
+        text: str,
         fuzzy: bool = False,
         format: Optional[str] = None,
         proxy: Optional["EntityProxy"] = None,
     ) -> Optional[str]:
         """All code values are cleaned to be lowercase and trailing whitespace is
         removed."""
-        code = code.lower().strip()
+        code = text.lower().strip()
         if code not in self.codes:
             return None
         return code
