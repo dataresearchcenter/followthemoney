@@ -1,10 +1,14 @@
-# Datasets and data catalogs 
+# Datasets and data catalogs
+
+FollowTheMoney entities are often grouped into datasets, which might can the source or purpose of the set. Providing metadata on the sources can add to the usability of FtM data products, so we've set up a simple specification for metadata exchange.
+
+Since normal FtM entity streams do not contain dataset metadata, a [ValueEntity][followthemoney.entity.ValueEntity] exists, which puts in place a link between dataset metadata and individual entities. Users of the [statement data model](statements.md) need to specify a dataset for each statement they generate.
 
 ## Data catalogs
 
 Metadata is published in two different forms: as a dataset index file, or as a data catalog. Catalogs combine the metadata for multiple datasets into one file, with metadata for each dataset included in an array named `datasets`.
 
-## Dataset metadata
+## Dataset metadata {: #dataset}
 
 The most important piece of metadata for any dataset is its `name`. Names are lowercase, underscore-linked short identifiers (eg. `us_ofac_sdn`) used in the actual entity data to reference a data source. Inside the metadata (or a catalog entry), the following fields can be found:
 
@@ -44,3 +48,10 @@ The most important piece of metadata for any dataset is its `name`. Names are lo
 |             | `mime_type_label` | Human-readable label for the MIME type                 |
 |             | `title`           | Title of the resource                                  |
 |             | `size`            | Size of the resource in bytes                          |
+
+
+## Relevant standards
+
+The dataset specification in FtM is largely based on Google's [schema.org/Dataset](https://schema.org/Dataset), which allows for SEO-friendly markup on dataset pages. Various similar specifications exist, for example the W3C's [Data Catalog Vocabulary (DCAT)](https://www.w3.org/TR/vocab-dcat-3/) and the [Frictionless Data Package](https://specs.frictionlessdata.io/data-package/).
+
+All of these specifications are roughly compatible, and it should be easy to import or export FtM metadata into any of them. 

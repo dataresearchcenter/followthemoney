@@ -2,7 +2,7 @@
 
 FollowTheMoney (FtM) is a data model for financial crime investigations and document forensics.
 
-It contains definitions of the [entities](docs/index.md) relevant in such research (like [people](explorer/schemata/Person.md) or [companies](explorer/schemata/Company.md)) and tools that let you generate, validate, and export such data easily. Entities can reference each other, thus creating a graph of relationships. The [ontology defined by FtM](explorer/schemata/index.md) also includes a model for various types of [documents](explorer/schemata/Document.md) that might be used as evidence in investigations.
+It contains definitions of the [entities](docs/index.md) relevant in such research (like [people](explorer/schemata/Person.md) or [companies](explorer/schemata/Company.md)) and tools that let you generate, validate, and export such data easily. Entities can reference each other, creating a graph of relevant relationships. The [ontology defined by FtM](explorer/schemata/index.md) also includes a model for various types of [documents](explorer/schemata/Document.md) that might be used as evidence in investigations.
 
 ## What is FtM used for?
 

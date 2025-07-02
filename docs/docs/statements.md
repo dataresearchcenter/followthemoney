@@ -22,7 +22,7 @@ As a database schema, this results in a table with the following columns:
 | ``value`` | string | 65535 | Actual value of the property for the entity. If multiple values are indicated in the source data, each of them will result in a separate statement. |
 | ``lang`` | string | 3 | Language (3 letter code) of the value, if it is known. |
 | ``original_value`` | string | 65535 | Property value before it was cleaned (e.g. country name vs. code, unparsed date). |
-| ``dataset`` | string | 255 | Source dataset identifier (same as the dataset name). |
+| ``dataset`` | string | 255 | [Source dataset](metadata.md#dataset) identifier (same as the dataset name). |
 | ``origin`` | string | 255 | A descriptor of the mechanism which generated this statement, eg. a processing phase or source file name. |
 | ``schema`` | string | 255 | Type of the given entity. Statements related to one entity can indicate more or less specific schemata, e.g. {{ schema_ref('LegalEntity') }} and {{ schema_ref('Company') }} (the resulting entity would be a {{ schema_ref('Company') }}). If the statements reflect schemata that cannot be merged, an exception will be raised. |
 | ``first_seen`` | iso_ts | | First date when the processing pipeline found this value linked to the given entity. Please note that this only records values after July 2021, when we started tracking the data - more realistic evidence of when an entity was added to the given data source can be found in the ``createdAt`` property. |
