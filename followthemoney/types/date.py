@@ -57,9 +57,12 @@ class DateType(PropertyType):
         return dampen(4, 10, prefix)
 
     def to_datetime(self, value: str) -> Optional[datetime]:
+        """Convert a date string to a datetime object in UTC for handling in Python. This will convert the unset
+        fields beyond the prefix to the first possible value, e.g. `2021-02` will become `2021-02-01T00:00:00Z`."""
         return parse(value).dt
 
     def to_number(self, value: str) -> Optional[float]:
+        """Convert a date string to a number, which is the number of seconds since the epoch (1970-01-01T00:00:00Z)."""
         date = self.to_datetime(value)
         if date is None:
             return None

@@ -7787,11 +7787,11 @@
     "ip": {
       "description": "Internet protocol addresses. This supports both addresses used\nby the protocol versions 4 (e.g. `192.168.1.143`) and 6\n(e.g. `0:0:0:0:0:ffff:c0a8:18f`).",
       "group": "ips",
-      "label": "IP-Address",
+      "label": "IP Address",
       "matchable": true,
       "maxLength": 64,
       "pivot": true,
-      "plural": "IP-Addresses"
+      "plural": "IP Addresses"
     },
     "json": {
       "description": "An encoded JSON object. This is used to store raw HTTP headers for documents\nand some other edge cases. It's a really bad idea and we should try to get rid\nof JSON properties.",

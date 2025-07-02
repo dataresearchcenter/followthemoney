@@ -36,6 +36,8 @@ class UrlType(PropertyType):
         return clean_url(text)
 
     def compare(self, left: str, right: str) -> float:
+        """Compare two URLs and return a float indicating how similar they are. This ignores
+        fragments and peforms hard URL normalisation."""
         return compare_urls(left, right)
 
     def _specificity(self, value: str) -> float:
