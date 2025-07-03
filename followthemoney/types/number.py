@@ -38,7 +38,16 @@ class NumberType(PropertyType):
         """Parse a number into a numeric value and a unit. The numeric value is
         aligned with the decimal and separator settings. The unit is stripped of
         whitespace and returned as a string. If no unit is found, None is
-        returned. If no number is found, None is returned for both values."""
+        returned. If no number is found, None is returned for both values.
+
+        Args:
+            value (str): The string to parse.
+            decimal (str): The character used as the decimal separator.
+            separator (str): The character used to separate thousands, lakhs, or crores.
+
+        Returns:
+            A tuple of (number, unit), where number is a string and unit is a string or None.
+        """
         value = value.replace(separator, "")
         if decimal != self.DECIMAL:
             value = value.replace(decimal, self.DECIMAL)
@@ -58,6 +67,15 @@ class NumberType(PropertyType):
         return number, unit
 
     def to_number(self, value: str) -> Optional[float]:
+        """Convert a number string to a float. The string is parsed and the unit is
+        discarded if present.
+
+        Args:
+            value (str): The string to convert.
+
+        Returns:
+            Optional[float]: The parsed float value, or None if parsing fails.
+        """
         try:
             number, _ = self.parse(value)
             if number is None:
@@ -67,7 +85,15 @@ class NumberType(PropertyType):
             return None
 
     def caption(self, value: str, format: Optional[str] = None) -> str:
-        """Return a caption for the number. This is used for display purposes."""
+        """Return a caption for the number. This is used for display purposes.
+
+        Args:
+            value (str): The string to format.
+            format (Optional[str]): An optional format string to use for formatting the number.
+
+        Returns:
+            str: The formatted number string, possibly with a unit.
+        """
         number, unit = self.parse(value)
         if number is None:
             return value
