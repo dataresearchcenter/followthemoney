@@ -60,7 +60,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Concepts:
+  - Learning:
       - Introduction: docs/index.md
       - Command line: docs/cli.md
       - Mappings: docs/mappings.md
@@ -71,7 +71,7 @@ nav:
       - Datasets & catalogs: docs/metadata.md
       - Graph exports: docs/graphs.md
       - Custom schema: docs/custom.md
-  - Model:
+  - Reference:
       - Entity schemata: explorer/schemata/index.md
       - Property types: explorer/types/index.md
   - Python API:
