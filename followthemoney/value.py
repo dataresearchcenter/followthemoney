@@ -1,17 +1,22 @@
 from typing import Any, List, Mapping, Sequence, Set, Union
 from datetime import datetime, date, timezone
+import typing
 from prefixdate import DatePrefix
 
 from followthemoney.util import sanitize_text
 
-Value = Union[str, int, float, bool, date, datetime, DatePrefix, None]
+if typing.TYPE_CHECKING:
+    from followthemoney.proxy import E
+
+Value = Union[str, int, float, bool, date, datetime, DatePrefix, None, "E"]
 Values = Union[Value, Sequence[Value], Set[Value]]
 
 
 def string_list(value: Any, sanitize: bool = False) -> List[str]:
     """Convert a value - which may be a list or set - to a list of strings."""
-    # This function is called in the inner loop of placing values into entities, so it's unrolled to
-    # avoid the overhead of a comparatively heavy ops like `isinstance`.
+    # This function is called in the inner loop of placing values into entities,
+    # so it's unrolled to avoid the overhead of a comparatively heavy ops like
+    # `isinstance`.
     if value is None:
         return []
     type_ = type(value)
@@ -54,4 +59,7 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
         if text is None:
             return []
         return [text]
+    # EntityProxy
+    if hasattr(value, "id") and value.id:
+        return [value.id]
     raise TypeError("Cannot convert %r to string list" % value)
