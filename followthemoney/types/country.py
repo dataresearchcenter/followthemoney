@@ -4,7 +4,7 @@ from babel.core import Locale
 from rigour.territories import get_territory, get_ftm_countries
 
 from followthemoney.types.common import EnumType, EnumValues
-from followthemoney.util import defer as _
+from followthemoney.util import const, defer as _
 
 if TYPE_CHECKING:
     from followthemoney.proxy import EntityProxy
@@ -16,8 +16,8 @@ class CountryType(EnumType):
     a number of unusual and controversial designations (e.g. the Soviet Union,
     Transnistria, Somaliland, Kosovo)."""
 
-    name = "country"
-    group = "countries"
+    name = const("country")
+    group = const("countries")
     label = _("Country")
     plural = _("Countries")
     matchable = True
