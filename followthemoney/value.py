@@ -25,7 +25,7 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
             value = sanitize_text(value)
             if value is None:
                 return []
-        return [value]
+        return [value] if len(value) > 0 else []
     if type_ is int:
         return [str(value)]
     if type_ is float:
@@ -53,15 +53,15 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
     # Entity dict
     if isinstance(value, Mapping):
         return string_list(value.get("id"), sanitize=sanitize)
+    if isinstance(value, (str, bytes)):
+        # Handle sub-classes of str, bytes - always sanitize
+        text = sanitize_text(value)
+        if text is None:
+            return []
+        return [text]
     if isinstance(value, Sequence):
         stexts: List[str] = []
         for inner in value:
             stexts.extend(string_list(inner, sanitize=sanitize))
         return stexts
-    if isinstance(value, (str, bytes)):
-        # Handle sub-classes of str
-        text = sanitize_text(value)
-        if text is None:
-            return []
-        return [text]
     raise TypeError("Cannot convert %r to string list" % value)
