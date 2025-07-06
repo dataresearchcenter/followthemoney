@@ -50,7 +50,7 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
         return [text] if text is not None else []
     # EntityProxy
     try:
-        return [value.id]
+        return string_list(value.id, sanitize=sanitize)
     except AttributeError:
         pass
     if isinstance(value, Sequence):
