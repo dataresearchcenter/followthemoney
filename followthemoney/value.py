@@ -1,17 +1,22 @@
 from typing import Any, List, Mapping, Sequence, Set, Union
 from datetime import datetime, date, timezone
+import typing
 from prefixdate import DatePrefix
 
 from followthemoney.util import sanitize_text
 
-Value = Union[str, int, float, bool, date, datetime, DatePrefix, None]
+if typing.TYPE_CHECKING:
+    from followthemoney.proxy import EntityProxy
+
+Value = Union[str, int, float, bool, date, datetime, DatePrefix, None, "EntityProxy"]
 Values = Union[Value, Sequence[Value], Set[Value]]
 
 
 def string_list(value: Any, sanitize: bool = False) -> List[str]:
     """Convert a value - which may be a list or set - to a list of strings."""
-    # This function is called in the inner loop of placing values into entities, so it's unrolled to
-    # avoid the overhead of a comparatively heavy ops like `isinstance`.
+    # This function is called in the inner loop of placing values into entities,
+    # so it's unrolled to avoid the overhead of a comparatively heavy ops like
+    # `isinstance`.
     if value is None:
         return []
     type_ = type(value)
@@ -20,7 +25,7 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
             value = sanitize_text(value)
             if value is None:
                 return []
-        return [value]
+        return [value] if len(value) > 0 else []
     if type_ is int:
         return [str(value)]
     if type_ is float:
@@ -40,18 +45,23 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
         return texts
     if isinstance(value, DatePrefix):
         return [value.text] if value.text else []
+    # EntityProxy
+    try:
+        return string_list(value.id, sanitize=sanitize)
+    except AttributeError:
+        pass
+    # Entity dict
     if isinstance(value, Mapping):
-        text = value.get("id")
-        return [text] if text is not None else []
+        return string_list(value.get("id"), sanitize=sanitize)
+    if isinstance(value, (str, bytes)):
+        # Handle sub-classes of str, bytes - always sanitize
+        text = sanitize_text(value)
+        if text is None:
+            return []
+        return [text]
     if isinstance(value, Sequence):
         stexts: List[str] = []
         for inner in value:
             stexts.extend(string_list(inner, sanitize=sanitize))
         return stexts
-    if isinstance(value, (str, bytes)):
-        # Handle sub-classes of str
-        text = sanitize_text(value)
-        if text is None:
-            return []
-        return [text]
     raise TypeError("Cannot convert %r to string list" % value)

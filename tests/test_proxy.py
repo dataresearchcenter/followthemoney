@@ -390,3 +390,13 @@ def test_value_deduplication_cleaned():
         cleaned=True,
     )
     assert proxy.get("name") == ["ACME, Inc."]
+
+
+def test_value_entity_add():
+    proxy = EntityProxy.from_dict({
+        "id": "rel",
+        "schema": "Directorship",
+        "properties": {}
+    })
+    proxy.add("director", ENTITY)
+    assert proxy.get("director") == ["test"]
