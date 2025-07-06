@@ -4009,6 +4009,16 @@
           "qname": "LegalEntity:uniqueEntityId",
           "type": "identifier"
         },
+        "uscCode": {
+          "description": "Unified Social Credit Identifier",
+          "format": "uscc",
+          "label": "USCC",
+          "matchable": true,
+          "maxLength": 64,
+          "name": "uscCode",
+          "qname": "LegalEntity:uscCode",
+          "type": "identifier"
+        },
         "userAccounts": {
           "label": "User accounts",
           "matchable": true,
