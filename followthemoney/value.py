@@ -48,6 +48,11 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
     if isinstance(value, Mapping):
         text = value.get("id")
         return [text] if text is not None else []
+    # EntityProxy
+    try:
+        return [value.id]
+    except AttributeError:
+        pass
     if isinstance(value, Sequence):
         stexts: List[str] = []
         for inner in value:
@@ -59,7 +64,4 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
         if text is None:
             return []
         return [text]
-    # EntityProxy
-    if hasattr(value, "id") and value.id:
-        return [value.id]
     raise TypeError("Cannot convert %r to string list" % value)
