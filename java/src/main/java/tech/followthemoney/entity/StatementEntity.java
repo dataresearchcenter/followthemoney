@@ -22,6 +22,10 @@ import tech.followthemoney.model.Schema;
 import tech.followthemoney.statement.Statement;
 
 public class StatementEntity extends Entity {
+    /*
+     * StatementEntity represents an entity that is defined by a set of statements.
+     */
+
     private final static Logger log = LoggerFactory.getLogger(StatementEntity.class);
     private final Map<Property, List<Statement>> properties;
     private final List<Statement> idStatements;
