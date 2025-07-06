@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Any, List, Optional, TypedDict
 
 from followthemoney.exc import InvalidModel
 from followthemoney.types import registry
-from followthemoney.util import gettext, get_entity_id
+from followthemoney.util import gettext, get_entity_id, const
 
 if TYPE_CHECKING:
     from followthemoney.schema import Schema
@@ -76,10 +76,10 @@ class Property:
         self.schema = schema
 
         #: Machine-readable name for this property.
-        self.name = name
+        self.name = const(name)
 
         #: Qualified property name, which also includes the schema name.
-        self.qname = "%s:%s" % (schema.name, self.name)
+        self.qname = const("%s:%s" % (schema.name, self.name))
         if self.name in self.RESERVED:
             raise InvalidModel("Reserved name: %s" % self.name)
 

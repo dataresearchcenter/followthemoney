@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 from hashlib import sha1
 from babel import Locale
@@ -34,6 +35,11 @@ def gettext(*args: Optional[str], **kwargs: Dict[str, str]) -> str:
 
 def defer(text: str) -> str:
     return text
+
+
+def const(text: str) -> str:
+    """Convert the given text to a runtime constant."""
+    return sys.intern(text.strip())
 
 
 def set_model_locale(locale: Locale) -> None:

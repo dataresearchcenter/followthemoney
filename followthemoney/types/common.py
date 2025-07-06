@@ -6,7 +6,7 @@ from normality import stringify
 from typing import Any, Dict, Optional, Sequence, Callable, TYPE_CHECKING, TypedDict
 
 from followthemoney.value import Value
-from followthemoney.util import get_locale
+from followthemoney.util import get_locale, const
 from followthemoney.util import gettext, sanitize_text
 
 if TYPE_CHECKING:
@@ -29,7 +29,7 @@ class PropertyTypeToDict(TypedDict, total=False):
 class PropertyType(object):
     """Base class for all property types."""
 
-    name: str = "any"
+    name: str = const("any")
     """A machine-facing, variable safe name for the given type."""
 
     group: Optional[str] = None
