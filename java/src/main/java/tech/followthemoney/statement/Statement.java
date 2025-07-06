@@ -10,6 +10,9 @@ import tech.followthemoney.model.Property;
 import tech.followthemoney.model.Schema;
 
 public class Statement {
+    /* 
+     * Statement represents a single value of a property related to an entity in the data model.
+     */
     // private static final String DEFAULT_LANG = "und";
     private static final String EMPTY = "".intern();
     public static final String ID_PROP = "id".intern();

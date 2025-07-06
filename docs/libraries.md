@@ -65,7 +65,7 @@ public class FtMLibraryDemo {
 }
 ```
 
-As we have not yet figured out how to upload Javadoc for this library, we again recommend studying the test cases contained in the `java/src/test` folder of the FtM repository.
+To learn more about the usage, [explore the Javadoc](https://javadoc.io/doc/tech.followthemoney/followthemoney) for this library. We recommend also exploring the test cases contained in the `java/src/test` folder of the FtM repository.
 
 ## ICIJ Java Bindings
 
