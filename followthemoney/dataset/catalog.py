@@ -2,22 +2,38 @@ import yaml
 from typing import Optional, Dict, Any, Generic, Set, Type, List
 
 from followthemoney.types import registry
-from followthemoney.dataset.dataset import DS
+from followthemoney.dataset.dataset import DS, DatasetModel
 from followthemoney.exc import MetadataException
-from followthemoney.dataset.util import type_check
+from followthemoney.dataset.util import OperationalBase, SerializableModel, type_check
 from followthemoney.util import PathLike
+
+
+class CatalogModel(SerializableModel):
+    datasets: List[DatasetModel]
 
 
 class DataCatalog(Generic[DS]):
     """A data catalog is a collection of datasets. It provides methods for retrieving or
     creating datasets, and for checking if a dataset exists in the catalog."""
 
-    def __init__(self, dataset_type: Type[DS], data: Dict[str, Any]) -> None:
+    Model = CatalogModel
+    model: CatalogModel
+
+    def __init__(
+        self,
+        dataset_type: Type[DS],
+        data: Dict[str, Any],
+        model: Optional[Type[CatalogModel]] = CatalogModel,
+    ) -> None:
         self.dataset_type = dataset_type
         self.datasets: List[DS] = []
         for ddata in data.get("datasets", []):
             self.make_dataset(ddata)
         self.updated_at = type_check(registry.date, data.get("updated_at"))
+
+        datasets = [d.model for d in self.datasets]
+        self.Model = model or CatalogModel
+        self.model = self.Model(**{**data, "datasets": datasets})
 
     def add(self, dataset: "DS") -> None:
         """Add a dataset to the catalog. If the dataset already exists, it will be updated."""

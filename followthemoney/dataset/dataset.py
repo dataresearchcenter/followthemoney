@@ -1,25 +1,25 @@
-import yaml
-import logging
+from datetime import datetime
 from functools import cached_property
+import logging
 from typing import TYPE_CHECKING
-from typing_extensions import Self
 from typing import Any, Dict, List, Optional, Set, Type, TypeVar
 
-from followthemoney.types import registry
+from pydantic import HttpUrl, field_validator, model_validator
+from typing_extensions import Self
+import yaml
+
 from followthemoney.dataset.coverage import DataCoverage
 from followthemoney.dataset.publisher import DataPublisher
 from followthemoney.dataset.resource import DataResource
 from followthemoney.dataset.util import (
     Named,
-    cleanup,
+    OperationalBase,
+    SerializableModel,
     dataset_name_check,
-    string_list,
-    type_check,
-    type_require,
-    datetime_check,
-    int_check,
 )
+from followthemoney.exc import MetadataException
 from followthemoney.util import PathLike
+from followthemoney.value import string_list
 
 if TYPE_CHECKING:
     from followthemoney.dataset.catalog import DataCatalog
@@ -28,40 +28,75 @@ DS = TypeVar("DS", bound="Dataset")
 log = logging.getLogger(__name__)
 
 
-class Dataset(Named):
+class DatasetModel(SerializableModel):
+    name: str
+    title: str
+    license: Optional[HttpUrl] = None
+    summary: Optional[str] = None
+    description: Optional[str] = None
+    url: Optional[HttpUrl] = None
+    updated_at: Optional[datetime] = None
+    last_export: Optional[datetime] = None
+    entity_count: Optional[int] = None
+    thing_count: Optional[int] = None
+    version: Optional[str] = None
+    category: Optional[str] = None
+    tags: List[str] = []
+    publisher: DataPublisher | None = None
+    coverage: DataCoverage | None = None
+    resources: List[DataResource] = []
+    children: Set[str] = set()
+
+    @field_validator("name", mode="after")
+    @classmethod
+    def check_name(cls, value: str) -> str:
+        return dataset_name_check(value)
+
+    @model_validator(mode="before")
+    @classmethod
+    def ensure_data(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            if "name" not in data:
+                raise MetadataException("Missing dataset name")
+            data["title"] = data.get("title", data["name"])
+            children = set(
+                [
+                    *data.get("children", []),
+                    *data.get("datasets", []),
+                    *data.get("scopes", []),
+                ]
+            )
+            data["children"] = children
+        return data
+
+    def get_resource(self, name: str) -> DataResource:
+        for res in self.resources:
+            if res.name == name:
+                return res
+        raise ValueError("No resource named %r!" % name)
+
+
+class Dataset(Named, OperationalBase):
     """A container for entities, often from one source or related to one topic.
     A dataset is a set of data, sez W3C."""
 
-    def __init__(self: Self, data: Dict[str, Any]) -> None:
+    Model = DatasetModel
+    model: DatasetModel
+
+    def __init__(
+        self: Self,
+        data: Dict[str, Any],
+        model: Optional[Type[DatasetModel]] = DatasetModel,
+    ) -> None:
         name = dataset_name_check(data.get("name"))
         super().__init__(name)
-        self.title = type_require(registry.string, data.get("title", name))
-        self.license = type_check(registry.url, data.get("license"))
-        self.summary = type_check(registry.string, data.get("summary"))
-        self.description = type_check(registry.string, data.get("description"))
-        self.url = type_check(registry.url, data.get("url"))
-        self.updated_at = datetime_check(data.get("updated_at"))
-        self.last_export = datetime_check(data.get("last_export"))
-        self.last_change = datetime_check(data.get("last_change"))
-        self.entity_count = int_check(data.get("entity_count"))
-        self.thing_count = int_check(data.get("thing_count"))
-        self.version = type_check(registry.string, data.get("version"))
-        self.category = type_check(registry.string, data.get("category"))
-        self.tags = string_list(data.get("tags", []))
-
-        pdata = data.get("publisher")
-        self.publisher = DataPublisher(pdata) if pdata is not None else None
-
-        cdata = data.get("coverage")
-        self.coverage = DataCoverage(cdata) if cdata is not None else None
-        self.resources: List[DataResource] = []
-        for rdata in data.get("resources", []):
-            if rdata is not None:
-                self.resources.append(DataResource(rdata))
 
         self._children = set(string_list(data.get("children", [])))
         self._children.update(string_list(data.get("datasets", [])))
         self.children: Set[Self] = set()
+
+        self.Model = model or DatasetModel
+        self.model = self.Model(**data)
 
     @cached_property
     def is_collection(self: Self) -> bool:
@@ -93,41 +128,8 @@ class Dataset(Named):
     def __repr__(self) -> str:
         return f"<Dataset({self.name})>"  # pragma: no cover
 
-    def to_dict(self: Self) -> Dict[str, Any]:
-        data: Dict[str, Any] = {
-            "name": self.name,
-            "title": self.title,
-            "license": self.license,
-            "summary": self.summary,
-            "description": self.description,
-            "url": self.url,
-            "version": self.version,
-            "updated_at": self.updated_at,
-            "last_export": self.last_export,
-            "last_change": self.last_change,
-            "entity_count": self.entity_count,
-            "thing_count": self.thing_count,
-            "category": self.category,
-            "tags": self.tags,
-            "resources": [r.to_dict() for r in self.resources],
-        }
-        children = [c for c in self._children if c != self.name]
-        if len(children):
-            data["children"] = children
-        datasets = [c.name for c in self.datasets if c != self]
-        if len(datasets):
-            data["datasets"] = datasets
-        if self.coverage is not None:
-            data["coverage"] = self.coverage.to_dict()
-        if self.publisher is not None:
-            data["publisher"] = self.publisher.to_dict()
-        return cleanup(data)
-
     def get_resource(self, name: str) -> DataResource:
-        for res in self.resources:
-            if res.name == name:
-                return res
-        raise ValueError("No resource named %r!" % name)
+        return self.model.get_resource(name)
 
     @classmethod
     def from_path(

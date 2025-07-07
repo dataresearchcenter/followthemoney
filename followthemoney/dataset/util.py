@@ -1,10 +1,12 @@
-from normality import stringify, slugify
-from prefixdate import parse as prefix_parse
-from typing import Any, Dict, List, Optional
+from typing import Annotated, Any, Dict, List, Optional, Type
 
+from normality import slugify, stringify
+from prefixdate import parse as prefix_parse
+from pydantic import BaseModel, BeforeValidator
+
+from followthemoney.exc import MetadataException
 from followthemoney.types import registry
 from followthemoney.types.common import PropertyType
-from followthemoney.exc import MetadataException
 
 
 def type_check(type_: PropertyType, value: Any) -> Optional[str]:
@@ -18,7 +20,8 @@ def type_check(type_: PropertyType, value: Any) -> Optional[str]:
 
 
 def type_require(type_: PropertyType, value: Any) -> str:
-    """Check that the given metadata field is a valid string of the given FtM property type."""
+    """Check that the given metadata field is a valid string of the given FtM
+    property type."""
     text = stringify(value)
     if text is None:
         raise MetadataException("Invalid %s: %r" % (type_.name, value))
@@ -64,7 +67,31 @@ def cleanup(data: Dict[str, Any]) -> Dict[str, Any]:
     return data
 
 
-class Named(object):
+def type_check_date(value: Any) -> Optional[str]:
+    return type_check(registry.date, value)
+
+
+PartialDate = Annotated[str, BeforeValidator(type_check_date)]
+
+
+class SerializableModel(BaseModel):
+    def to_dict(self) -> Dict[str, Any]:
+        data = self.model_dump(mode="json")
+        return cleanup(data)
+
+
+class OperationalBase:
+
+    Model: Type[SerializableModel]
+    model: SerializableModel
+
+    def to_dict(self) -> Dict[str, Any]:
+        return self.model.to_dict()
+
+
+class Named:
+    name: str
+
     def __init__(self, name: str) -> None:
         self.name = name
 

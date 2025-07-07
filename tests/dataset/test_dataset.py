@@ -1,10 +1,12 @@
 import json
+from pydantic import ValidationError
 import pytest
 from pathlib import Path
 from typing import Any, Dict
 from tempfile import TemporaryDirectory
 
 from followthemoney.dataset import DataCatalog, Dataset
+from followthemoney.dataset.dataset import DatasetModel
 from followthemoney.exc import MetadataException
 
 
@@ -15,6 +17,7 @@ def test_donations_base(catalog_data: Dict[str, Any]):
     assert ds is not None, ds
     assert ds.name == "donations"
     assert not ds == "donations"
+    ds = ds.model
     assert ds.publisher is None
     assert "publisher" not in ds.to_dict()
     assert len(ds.resources) == 2, ds.resources
@@ -34,6 +37,7 @@ def test_company_dataset(catalog_data: Dict[str, Any]):
     ds = catalog.get("company_data")
     assert ds is not None, ds
     assert ds.name == "company_data"
+    ds = ds.model
     assert ds.publisher is not None
     assert ds.publisher.country == "us"
     assert ds.publisher.country_label == "United States of America"
@@ -49,7 +53,7 @@ def test_company_dataset(catalog_data: Dict[str, Any]):
     assert other == ds, other
 
 
-def test_create(catalog_data: Dict[str, Any]):
+def test_create():
     catalog = DataCatalog(Dataset, {})
     assert len(catalog.datasets) == 0, catalog.datasets
 
@@ -58,6 +62,7 @@ def test_create(catalog_data: Dict[str, Any]):
 
     ds = catalog.make_dataset({"name": "test_dataset"})
     assert ds.name == "test_dataset"
+    ds = ds.model
     assert ds.title == "test_dataset"
     assert ds.license is None
     assert ds.summary is None
@@ -95,19 +100,21 @@ def test_from_path(catalog_path: Path):
             json.dump(ds.to_dict(), fh, indent=2)
 
         ds_load = Dataset.from_path(path)
+        ds_load = ds_load.model
         assert ds_load.name == ds.name
-        assert ds_load.title == ds.title
+        assert ds_load.title == "Political party donations"
 
 
 def test_dataset_aleph_metadata(catalog_data: Dict[str, Any]):
     catalog = DataCatalog(Dataset, catalog_data)
     ds = catalog.require("leak")
+    ds = ds.model
     assert ds.category == "leak"
     assert ds.coverage is not None
     assert ds.coverage.frequency == "never"
 
     # invalid metadata
-    with pytest.raises(MetadataException):
+    with pytest.raises(ValidationError):
         meta = {
             "name": "invalid",
             "title": "Invalid metadata",
@@ -129,3 +136,15 @@ def test_dataset_name_validation():
         Dataset({"name": "ä_dataset"})
     with pytest.raises(MetadataException):
         Dataset({"name": "another.invalid.name"})
+
+
+def test_catalog_model(catalog_data: Dict[str, Any]):
+    catalog = DataCatalog(Dataset, catalog_data)
+    assert len(catalog.model.datasets) == 5
+    ds = catalog.model.datasets[0]
+    assert isinstance(ds, DatasetModel)
+
+    ds = catalog.require("donations").model
+    assert ds.title == "Political party donations"
+    res = ds.resources[0]
+    assert res.name == "donations.csv"
