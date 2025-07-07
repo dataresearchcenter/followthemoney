@@ -71,7 +71,7 @@ When using this schema in a [graph representation](/docs/graphs.md), it should b
 
 | Semantic | Property |
 | -------- | -------- |
-{%- if schema.source_prop -%}| Edge source | {{ prop_ref(schema.source_prop) }} |{% endif %}
-{%- if schema.target_prop -%}| Edge target | {{ prop_ref(schema.target_prop) }} |{% endif %}
 | Temporal start | {% if schema.temporal_start %}{% for prop in schema.temporal_start_props %}{{ prop_ref(prop) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %}|
 | Temporal end | {% if schema.temporal_end %}{% for prop in schema.temporal_end_props %}{{ prop_ref(prop) }}<br>{% endfor %}{% else %}{{ NULL }}{% endif %}|
+{% if schema.source_prop %}| Edge source | {{ prop_ref(schema.source_prop) }} |{% endif %}
+{% if schema.target_prop %}| Edge target | {{ prop_ref(schema.target_prop) }} |{% endif %}
