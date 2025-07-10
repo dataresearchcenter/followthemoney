@@ -1,5 +1,7 @@
 name: build
-on: [push]
+on:
+  - push
+  - workflow_dispatch
 
 permissions:
   id-token: write
@@ -30,7 +32,7 @@ jobs:
         run: |
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq libicu-dev
-          python -m pip install --upgrade pip wheel pyicu
+          python -m pip install --upgrade pip
           pip install -e ".[dev]"
       - name: Run checks for default model
         run: |
@@ -128,8 +130,8 @@ jobs:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
     steps:
       - uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -138,7 +140,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/alephdata/followthemoney
+          images: ghcr.io/opensanctions/followthemoney
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -155,14 +157,14 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           cache-from: type=gha
       - name: Build and push docker image
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

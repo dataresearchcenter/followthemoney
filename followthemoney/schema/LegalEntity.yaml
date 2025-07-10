@@ -102,6 +102,12 @@ LegalEntity:
     bvdId:
       label: Bureau van Dijk ID
       type: identifier
+    uscCode:
+      # cf. https://en.wikipedia.org/wiki/Unified_Social_Credit_Identifier
+      label: "USCC"
+      description: "Unified Social Credit Identifier"
+      type: identifier
+      format: uscc
     icijId:
       label: ICIJ ID
       description: "ID according to International Consortium for Investigative Journalists"

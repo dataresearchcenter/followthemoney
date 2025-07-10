@@ -1,8 +1,7 @@
 from babel.core import Locale
 
 from followthemoney.types.common import EnumType, EnumValues
-from followthemoney.rdf import URIRef, Identifier
-from followthemoney.util import gettext, defer as _
+from followthemoney.util import const, gettext, defer as _
 
 
 class TopicType(EnumType):
@@ -16,8 +15,8 @@ class TopicType(EnumType):
     enable queries such as _find all paths between a government procurement
     award and a politician_."""
 
-    name = "topic"
-    group = "topics"
+    name = const("topic")
+    group = const("topics")
     label = _("Topic")
     plural = _("Topics")
     matchable = False
@@ -90,6 +89,3 @@ class TopicType(EnumType):
 
     def _locale_names(self, locale: Locale) -> EnumValues:
         return {k: gettext(v) for (k, v) in self._TOPICS.items()}
-
-    def rdf(self, value: str) -> Identifier:
-        return URIRef(f"ftm:topic:{value}")

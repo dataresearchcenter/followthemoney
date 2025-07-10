@@ -4,13 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "followthemoney"
-version = "3.8.4"
+version = "3.8.5"
 description = "A data model for anti corruption data modeling and analysis."
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-    { name = "Organized Crime and Corruption Reporting Project", email = "data@occrp.org" },
+    # { name = "Organized Crime and Corruption Reporting Project", email = "data@occrp.org" },
     { name = "OpenSanctions", email = "info@opensanctions.org" },
+    { name = "DARC", email = "hi@dataresearchcenter.org" },
 ]
 classifiers = [
     "Intended Audience :: Developers",
@@ -25,16 +26,14 @@ dependencies = [
     "babel >= 2.14.0, < 3.0.0",
     "pyyaml >= 5.0.0, < 7.0.0",
     "types-PyYAML",
-    "sqlalchemy2-stubs",
     "banal >= 1.0.6, < 1.1.0",
-    "rigour >= 0.11.1, < 1.0.0",
+    "rigour >= 0.13.0, < 1.0.0",
     "click >= 8.0, < 9.0.0",
     "requests >= 2.21.0, < 3.0.0",
     "normality >= 2.4.0, < 3.0.0",
-    "sqlalchemy >= 1.4.49, < 3.0.0",
+    "sqlalchemy[mypy] >= 2.0.0, < 3.0.0",
     "countrynames >= 1.13.0, < 2.0.0",
     "prefixdate >= 0.4.0, < 1.0.0",
-    "fingerprints >= 1.0.1, < 2.0.0",
     "phonenumbers >= 8.12.22, < 10.0.0",
     "pytz >= 2021.1",
     "rdflib >= 6.2.0, < 7.2.0",
@@ -45,8 +44,8 @@ dependencies = [
 
 [project.urls]
 Documentation = "https://followthemoney.tech/"
-Repository = "https://github.com/alephdata/followthemoney.git"
-Issues = "https://github.com/alephdata/followthemoney/issues"
+Repository = "https://github.com/opensanctions/followthemoney.git"
+Issues = "https://github.com/opensanctions/followthemoney/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -68,6 +67,13 @@ dev = [
     "coverage>=4.1",
     "recommonmark>=0.4.0",
 ]
+docs = [
+    "mkdocs>=1.4.0",
+    "mkdocs-material>=9.0.0",
+    "mkdocs-gen-files",
+    "mkdocs-macros-plugin",
+    "mkdocstrings[python]",
+]
 
 [project.scripts]
 ftmutil = "followthemoney.cli.cli:cli"
@@ -86,6 +92,7 @@ excel = "followthemoney.cli.exports:export_excel"
 rdf = "followthemoney.cli.exports:export_rdf"
 gexf = "followthemoney.cli.exports:export_gexf"
 cypher = "followthemoney.cli.exports:export_cypher"
+statements = "followthemoney.cli.statement:entity_statements"
 
 [tool.hatch.build.targets.sdist]
 only-include = ["followthemoney", "LICENSE", "README.md"]
