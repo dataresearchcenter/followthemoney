@@ -1,70 +1,44 @@
-from normality import stringify, slugify
-from prefixdate import parse as prefix_parse
-from typing import Any, Dict, List, Optional
+from normality import slugify
+from typing import Annotated, Any
+from pydantic import BeforeValidator
 
 from followthemoney.types import registry
-from followthemoney.types.common import PropertyType
-from followthemoney.exc import MetadataException
 
 
-def type_check(type_: PropertyType, value: Any) -> Optional[str]:
-    text = stringify(value)
-    if text is None:
-        return None
-    cleaned = type_.clean_text(text)
-    if cleaned is None:
-        raise MetadataException("Invalid %s: %r" % (type_.name, value))
-    return cleaned
-
-
-def type_require(type_: PropertyType, value: Any) -> str:
-    """Check that the given metadata field is a valid string of the given FtM property type."""
-    text = stringify(value)
-    if text is None:
-        raise MetadataException("Invalid %s: %r" % (type_.name, value))
-    cleaned = type_.clean_text(text)
-    if cleaned is None:
-        raise MetadataException("Invalid %s: %r" % (type_.name, value))
-    return cleaned
-
-
-def datetime_check(value: Any) -> Optional[str]:
-    """Check that the given metadata field is a valid datetime."""
-    return prefix_parse(value).text
-
-
-def int_check(value: Any) -> Optional[int]:
-    """Check that the given metadata field is a valid integer."""
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
-
-
-def dataset_name_check(value: Any) -> str:
+def dataset_name_check(value: str) -> str:
     """Check that the given value is a valid dataset name. This doesn't convert
     or clean invalid names, but raises an error if they are not compliant to
     force the user to fix an invalid name"""
-    cleaned = type_require(registry.string, value)
-    if slugify(cleaned, sep="_") != cleaned:
-        raise MetadataException("Invalid %s: %r" % ("dataset name", value))
+    if slugify(value, sep="_") != value:
+        raise ValueError("Invalid %s: %r" % ("dataset name", value))
+    return value
+
+
+def type_check_date(value: Any) -> str:
+    """Check that the given value is a valid date string."""
+    cleaned = registry.date.clean(value)
+    if cleaned is None:
+        raise ValueError("Invalid date: %r" % value)
     return cleaned
 
 
-def string_list(value: Any) -> List[str]:
-    if value is None:
-        return []
-    return [type_require(registry.string, s) for s in value]
+PartialDate = Annotated[str, BeforeValidator(type_check_date)]
 
 
-def cleanup(data: Dict[str, Any]) -> Dict[str, Any]:
-    for key, value in list(data.items()):
-        if value is None:
-            data.pop(key)
-    return data
+def type_check_country(value: Any) -> str:
+    """Check that the given value is a valid country code."""
+    cleaned = registry.country.clean(value)
+    if cleaned is None:
+        raise ValueError("Invalid country code: %r" % value)
+    return cleaned
 
 
-class Named(object):
+CountryCode = Annotated[str, BeforeValidator(type_check_country)]
+
+
+class Named:
+    name: str
+
     def __init__(self, name: str) -> None:
         self.name = name
 

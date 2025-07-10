@@ -1,38 +1,30 @@
-from typing import Optional, Dict, Any
+from datetime import datetime
+from typing import Optional
+from pydantic import BaseModel, HttpUrl, field_validator
 
 from followthemoney.types import registry
-from followthemoney.dataset.util import Named, cleanup
-from followthemoney.dataset.util import type_check, type_require
 
 
-class DataResource(Named):
+class DataResource(BaseModel):
     """A downloadable resource that is part of a dataset."""
 
-    def __init__(self, data: Dict[str, Any]) -> None:
-        name = type_require(registry.string, data.get("name", data.get("path")))
-        super().__init__(name)
-        self.url = type_require(registry.url, data.get("url"))
-        self.checksum = type_check(registry.checksum, data.get("checksum"))
-        self.timestamp = type_check(registry.date, data.get("timestamp"))
-        self.mime_type = type_check(registry.mimetype, data.get("mime_type"))
-        self.title = type_check(registry.string, data.get("title"))
-        self.size = int(data["size"]) if "size" in data else None
+    name: str
+    url: Optional[HttpUrl] = None
+    checksum: Optional[str] = None
+    timestamp: Optional[datetime] = None
+    mime_type: Optional[str] = None
+    title: Optional[str] = None
+    size: Optional[int] = None
+
+    @field_validator("mime_type", mode="after")
+    @classmethod
+    def ensure_mime_type(cls, value: str) -> Optional[str]:
+        if not registry.mimetype.validate(value):
+            raise ValueError(f"Invalid MIME type: {value!r}")
+        return value
 
     @property
     def mime_type_label(self) -> Optional[str]:
         if self.mime_type is None:
             return None
         return registry.mimetype.caption(self.mime_type)
-
-    def to_dict(self) -> Dict[str, Any]:
-        data = {
-            "name": self.name,
-            "url": self.url,
-            "checksum": self.checksum,
-            "timestamp": self.timestamp,
-            "mime_type": self.mime_type,
-            "mime_type_label": self.mime_type_label,
-            "title": self.title,
-            "size": self.size,
-        }
-        return cleanup(data)

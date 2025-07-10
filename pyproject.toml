@@ -40,6 +40,7 @@ dependencies = [
     "networkx >= 2.5, < 3.5",
     "openpyxl >= 3.0.5, < 4.0.0",
     "orjson >= 3.7, < 4.0",
+    "pydantic (>=2.11.7,<3.0.0)",
 ]
 
 [project.urls]
