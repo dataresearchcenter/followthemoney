@@ -2,45 +2,33 @@ import yaml
 from typing import Optional, Dict, Any, Generic, Set, Type, List
 
 from followthemoney.types import registry
-from followthemoney.dataset.dataset import DS, DatasetModel
+from followthemoney.dataset.dataset import DS
 from followthemoney.exc import MetadataException
-from followthemoney.dataset.util import OperationalBase, SerializableModel, type_check
 from followthemoney.util import PathLike
-
-
-class CatalogModel(SerializableModel):
-    datasets: List[DatasetModel]
 
 
 class DataCatalog(Generic[DS]):
     """A data catalog is a collection of datasets. It provides methods for retrieving or
     creating datasets, and for checking if a dataset exists in the catalog."""
 
-    Model = CatalogModel
-    model: CatalogModel
-
-    def __init__(
-        self,
-        dataset_type: Type[DS],
-        data: Dict[str, Any],
-        model: Optional[Type[CatalogModel]] = CatalogModel,
-    ) -> None:
+    def __init__(self, dataset_type: Type[DS], data: Dict[str, Any]) -> None:
         self.dataset_type = dataset_type
         self.datasets: List[DS] = []
         for ddata in data.get("datasets", []):
             self.make_dataset(ddata)
-        self.updated_at = type_check(registry.date, data.get("updated_at"))
-
-        datasets = [d.model for d in self.datasets]
-        self.Model = model or CatalogModel
-        self.model = self.Model(**{**data, "datasets": datasets})
+        self.updated_at: Optional[str] = None
+        if "updated_at" in data:
+            raw = data.get("updated_at")
+            self.updated_at = registry.date.clean(raw)
+            if self.updated_at is None:
+                raise MetadataException("Invalid update date: %r" % raw)
 
     def add(self, dataset: "DS") -> None:
         """Add a dataset to the catalog. If the dataset already exists, it will be updated."""
         for existing in self.datasets:
-            if existing.name in dataset._children:
+            if existing.name in dataset.model.children:
                 dataset.children.add(existing)
-            if dataset.name in existing._children:
+            if dataset.name in existing.model.children:
                 existing.children.add(dataset)
         self.datasets.append(dataset)
 

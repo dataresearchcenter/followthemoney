@@ -1,12 +1,12 @@
 from typing import Optional
 
-from pydantic import HttpUrl, field_validator
+from pydantic import BaseModel, HttpUrl
 
-from followthemoney.dataset.util import SerializableModel, type_require
+from followthemoney.dataset.util import CountryCode
 from followthemoney.types import registry
 
 
-class DataPublisher(SerializableModel):
+class DataPublisher(BaseModel):
     """Publisher information, eg. the government authority."""
 
     name: str
@@ -14,14 +14,9 @@ class DataPublisher(SerializableModel):
     name_en: Optional[str] = None
     acronym: Optional[str] = None
     description: Optional[str] = None
-    country: Optional[str] = None
+    country: Optional[CountryCode] = None
     official: Optional[bool] = False
     logo_url: Optional[HttpUrl] = None
-
-    @field_validator("country", mode="after")
-    @classmethod
-    def ensure_country(cls, value: str) -> str:
-        return type_require(registry.country, value)
 
     @property
     def country_label(self) -> Optional[str]:

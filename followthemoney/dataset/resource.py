@@ -1,9 +1,7 @@
 from datetime import datetime
 from typing import Optional
-
 from pydantic import BaseModel, HttpUrl, field_validator
 
-from followthemoney.dataset.util import type_check
 from followthemoney.types import registry
 
 
@@ -20,8 +18,10 @@ class DataResource(BaseModel):
 
     @field_validator("mime_type", mode="after")
     @classmethod
-    def ensure_mime_type(cls, value: Optional[str]) -> Optional[str]:
-        return type_check(registry.mimetype, value)
+    def ensure_mime_type(cls, value: str) -> Optional[str]:
+        if not registry.mimetype.validate(value):
+            raise ValueError(f"Invalid MIME type: {value!r}")
+        return value
 
     @property
     def mime_type_label(self) -> Optional[str]:
