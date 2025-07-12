@@ -26,13 +26,25 @@ CSV_COLUMNS = [
     "schema",
     "value",
     "dataset",
+    "origin",
     "lang",
     "original_value",
     "external",
     "first_seen",
     "last_seen",
-    "origin",
     "id",
+]
+LEGACY_PACK_COLUMNS = [
+    "entity_id",
+    "prop",
+    "value",
+    "dataset",
+    "lang",
+    "original_value",
+    "target",
+    "external",
+    "first_seen",
+    "last_seen",
 ]
 
 
@@ -63,32 +75,31 @@ def read_pack_statements(fh: BinaryIO) -> Generator[Statement, None, None]:
 
 
 def read_pack_statements_decoded(fh: TextIO) -> Generator[Statement, None, None]:
+    headers: Optional[List[str]] = None
     for row in csv.reader(fh, dialect=csv.unix_dialect):
-        (
-            entity_id,
-            prop,
-            value,
-            dataset,
-            lang,
-            original,
-            _,
-            external,
-            first_seen,
-            last_seen,
-        ) = row[:10]
-        schema, _, prop = unpack_prop(prop)
+        if headers is None:
+            if "entity_id" in row and "prop" in row:
+                headers = row
+            else:
+                # This is a legacy pack file, with no headers.
+                headers = LEGACY_PACK_COLUMNS
+            continue
+        data = dict(zip(headers, row))
+        schema, _, prop = unpack_prop(data["prop"])
         yield Statement(
-            entity_id=entity_id,
+            entity_id=data["entity_id"],
             prop=prop,
             schema=schema,
-            value=value,
-            dataset=dataset,
-            lang=lang or None,
-            original_value=original or None,
-            first_seen=first_seen,
-            external=external == "t",
-            canonical_id=entity_id,
-            last_seen=last_seen,
+            value=data["value"],
+            dataset=data["dataset"],
+            lang=data.get("lang") or None,
+            original_value=data.get("original_value") or None,
+            origin=data.get("origin"),
+            first_seen=data["first_seen"],
+            external=data["external"] == "t",
+            canonical_id=data["entity_id"],
+            last_seen=data["last_seen"],
+            id=data.get("id"),
         )
 
 
@@ -191,6 +202,20 @@ class PackStatementWriter(StatementWriter):
             dialect=csv.unix_dialect,
             quoting=csv.QUOTE_MINIMAL,
         )
+        columns = [
+            "entity_id",
+            "prop",
+            "value",
+            "dataset",
+            "lang",
+            "original_value",
+            "origin",
+            "external",
+            "first_seen",
+            "last_seen",
+            "id",
+        ]
+        self.writer.writerow(columns)
         self._batch: List[List[Optional[str]]] = []
 
     def write(self, stmt: Statement) -> None:
@@ -203,10 +228,11 @@ class PackStatementWriter(StatementWriter):
             stmt.dataset,
             stmt.lang,
             stmt.original_value,
-            None,
+            stmt.origin,
             "t" if stmt.external else None,
             stmt.first_seen,
             stmt.last_seen,
+            stmt.id,
         ]
         self._batch.append(row)
         if len(self._batch) >= CSV_BATCH:
