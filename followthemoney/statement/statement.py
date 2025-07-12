@@ -112,17 +112,15 @@ class Statement(object):
 
     def to_csv_row(self) -> Dict[str, Optional[str]]:
         data = cast(Dict[str, Optional[str]], self.to_dict())
-        data.pop("extras", None)  # not supported in CSV
         data["external"] = bool_text(self.external)
-        data["prop_type"] = self.prop_type
+        data["prop_type"] = get_prop_type(self.schema, self.prop)
         return data
 
     def to_db_row(self) -> Dict[str, Any]:
         data = cast(Dict[str, Any], self.to_dict())
-        data.pop("extras", None)  # not supported in SQL
         data["first_seen"] = iso_datetime(self.first_seen)
         data["last_seen"] = iso_datetime(self.last_seen)
-        data["prop_type"] = self.prop_type
+        data["prop_type"] = get_prop_type(self.schema, self.prop)
         return data
 
     def __hash__(self) -> int:
