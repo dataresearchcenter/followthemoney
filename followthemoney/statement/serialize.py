@@ -32,7 +32,6 @@ CSV_COLUMNS = [
     "external",
     "first_seen",
     "last_seen",
-    "origin",
     "id",
 ]
 LEGACY_PACK_COLUMNS = [
@@ -94,7 +93,7 @@ def read_pack_statements_decoded(fh: TextIO) -> Generator[Statement, None, None]
             value=data["value"],
             dataset=data["dataset"],
             lang=data.get("lang") or None,
-            original_value=data.get("original") or None,
+            original_value=data.get("original_value") or None,
             origin=data.get("origin"),
             first_seen=data["first_seen"],
             external=data["external"] == "t",
