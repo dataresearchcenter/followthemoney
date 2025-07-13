@@ -22,7 +22,7 @@ transform data in various ways. You can find a tutorial here:
 Besides the introductions, there is also a full reference documentation for the
 library and the contained ontology: 
 
-* https://followthemoney.tech/explorer/
+* https://followthemoney.tech/explorer/schemata/
 
 There's also a number of viewers for the RDF schema definitions generated from FollowTheMoney, eg:
 
@@ -58,7 +58,7 @@ make test
 
 ## Releasing
 
-We release a lot of version of `followthemoney` because even small changes to the code base require a pypi release to begin being used in `aleph`. To this end, here's the steps for making a release:
+We release a lot of version of `followthemoney` because even small changes to the code base require a pypi release to begin being used in downstream applications. To this end, here's the steps for making a release:
 
 ```bash
 git pull --rebase

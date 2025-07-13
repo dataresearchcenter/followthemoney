@@ -20,13 +20,13 @@ docker:
 	docker build -t opensanctions/followthemoney .
 
 docs: default-model ontology
-	python 
+	mkdocs build -c -d site
 
 build: default-model ontology
 
 ontology:
-	mkdir -p docs/public/ns
-	python followthemoney/ontology.py docs/public/ns/
+	mkdir -p site/ns
+	python followthemoney/ontology.py site/ns/
 
 default-model:
 	ftm dump-model -o js/src/defaultModel.json
@@ -39,7 +39,7 @@ translate:
 	pybabel compile -d followthemoney/translations -D followthemoney -f
 
 clean:
-	rm -rf dist build .eggs coverage-report .coverage
+	rm -rf dist build site .eggs coverage-report .coverage
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 	find . -name '*.pyc' -exec rm -f {} +
