@@ -1,6 +1,7 @@
 import csv
 import click
 import orjson
+import logging
 from io import TextIOWrapper
 from pathlib import Path
 from types import TracebackType
@@ -11,6 +12,7 @@ from rigour.boolean import text_bool
 from followthemoney.statement.statement import Statement, StatementDict
 from followthemoney.statement.util import unpack_prop
 
+log = logging.getLogger(__name__)
 
 JSON = "json"
 CSV = "csv"
@@ -85,15 +87,19 @@ def read_pack_statements_decoded(fh: TextIO) -> Generator[Statement, None, None]
                 headers = LEGACY_PACK_COLUMNS
             continue
         data = dict(zip(headers, row))
-        schema, _, prop = unpack_prop(data["prop"])
+        try:
+            schema, _, prop = unpack_prop(data["prop"])
+        except TypeError:
+            log.error("Invalid property in pack statement: %s" % data["prop"])
+            continue
         yield Statement(
             entity_id=data["entity_id"],
             prop=prop,
             schema=schema,
             value=data["value"],
             dataset=data["dataset"],
-            lang=data.get("lang") or None,
-            original_value=data.get("original_value") or None,
+            lang=data["lang"] or None,
+            original_value=data["original_value"] or None,
             origin=data.get("origin"),
             first_seen=data["first_seen"],
             external=data["external"] == "t",

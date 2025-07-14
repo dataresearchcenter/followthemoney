@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Any, cast
 from typing import Dict, List, Optional, Set, TypedDict, Union
 from banal import ensure_list, ensure_dict, as_bool
-from functools import lru_cache
+from functools import cache
 
 from followthemoney.property import Property, PropertySpec, PropertyToDict, ReverseSpec
 from followthemoney.types import registry
@@ -382,12 +382,12 @@ class Schema:
                         self._matchable_schemata.add(schema)
         return self._matchable_schemata
 
-    @lru_cache(maxsize=None)
+    @cache
     def can_match(self, other: "Schema") -> bool:
         """Check if an schema can match with another schema."""
         return other in self.matchable_schemata
 
-    @lru_cache(maxsize=None)
+    @cache
     def is_a(self, other: Union[str, "Schema"]) -> bool:
         """Check if the schema or one of its parents is the same as the given
         candidate ``other``."""

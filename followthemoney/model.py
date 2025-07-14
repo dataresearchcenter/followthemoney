@@ -1,6 +1,6 @@
 import os
 import yaml
-from functools import lru_cache
+from functools import cache
 from typing import TYPE_CHECKING, Any
 from typing import Dict, Generator, Iterator, Optional, Set, TypedDict, Union
 
@@ -118,7 +118,7 @@ class Model(object):
             for entity in gen.map(record).values():
                 yield entity
 
-    @lru_cache(maxsize=None)
+    @cache
     def common_schema(
         self, left: Union[str, Schema], right: Union[str, Schema]
     ) -> Schema:
