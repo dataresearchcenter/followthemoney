@@ -1,4 +1,4 @@
-from typing import Any, List, Mapping, Sequence, Set, Union
+from typing import Any, Iterable, List, Mapping, Set, Union
 from datetime import datetime, date, timezone
 import typing
 from prefixdate import DatePrefix
@@ -9,7 +9,7 @@ if typing.TYPE_CHECKING:
     from followthemoney.proxy import EntityProxy
 
 Value = Union[str, int, float, bool, date, datetime, DatePrefix, None, "EntityProxy"]
-Values = Union[Value, Sequence[Value], Set[Value]]
+Values = Union[Value, Iterable[Value]]
 
 
 def string_list(value: Any, sanitize: bool = False) -> List[str]:
@@ -59,7 +59,7 @@ def string_list(value: Any, sanitize: bool = False) -> List[str]:
         if text is None:
             return []
         return [text]
-    if isinstance(value, Sequence):
+    if isinstance(value, Iterable):
         stexts: List[str] = []
         for inner in value:
             stexts.extend(string_list(inner, sanitize=sanitize))
