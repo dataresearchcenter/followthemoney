@@ -71,13 +71,9 @@ class Dataset:
     Model = DatasetModel
 
     def __init__(self: Self, data: Dict[str, Any]) -> None:
-        self._model = self.Model.model_validate(data)
-        self.name = self._model.name
+        self.model = self.Model.model_validate(data)
+        self.name = self.model.name
         self.children: Set[Self] = set()
-
-    @property
-    def model(self) -> DatasetModel:
-        return self._model
 
     @cached_property
     def is_collection(self: Self) -> bool:
