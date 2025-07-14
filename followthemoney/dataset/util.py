@@ -1,6 +1,8 @@
+from datetime import datetime
 from normality import slugify
 from typing import Annotated, Any
-from pydantic import BeforeValidator
+from rigour.time import datetime_iso
+from pydantic import AfterValidator, BeforeValidator, HttpUrl, PlainSerializer
 
 from followthemoney.types import registry
 
@@ -36,23 +38,18 @@ def type_check_country(value: Any) -> str:
 CountryCode = Annotated[str, BeforeValidator(type_check_country)]
 
 
-class Named:
-    name: str
+def type_check_http_url(v: str) -> str:
+    url = HttpUrl(v)
+    return str(url)
 
-    def __init__(self, name: str) -> None:
-        self.name = name
 
-    def __eq__(self, other: Any) -> bool:
-        try:
-            return not not self.name == other.name
-        except AttributeError:
-            return False
+Url = Annotated[str, AfterValidator(type_check_http_url)]
 
-    def __lt__(self, other: Any) -> bool:
-        return self.name.__lt__(other.name)
 
-    def __hash__(self) -> int:
-        return hash(self.name)
+def serialize_dt(dt: datetime) -> str:
+    text = datetime_iso(dt)
+    assert text is not None, "Invalid datetime: %r" % dt
+    return text
 
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}({self.name!r})>"
+
+DateTimeISO = Annotated[datetime, PlainSerializer(serialize_dt)]

@@ -1,34 +1,34 @@
 import yaml
 import logging
-from datetime import datetime
 from functools import cached_property
 from typing import TYPE_CHECKING
 from typing_extensions import Self
 from typing import Any, Dict, List, Optional, Set, Type, TypeVar
-from pydantic import BaseModel, HttpUrl, field_validator, model_validator
+from pydantic import BaseModel, field_validator, model_validator
 
 from followthemoney.dataset.coverage import DataCoverage
 from followthemoney.dataset.publisher import DataPublisher
 from followthemoney.dataset.resource import DataResource
-from followthemoney.dataset.util import Named, dataset_name_check
+from followthemoney.dataset.util import Url, DateTimeISO, dataset_name_check
 from followthemoney.util import PathLike
 
 if TYPE_CHECKING:
     from followthemoney.dataset.catalog import DataCatalog
 
 DS = TypeVar("DS", bound="Dataset")
+
 log = logging.getLogger(__name__)
 
 
 class DatasetModel(BaseModel):
     name: str
     title: str
-    license: Optional[HttpUrl] = None
+    license: Optional[Url] = None
     summary: Optional[str] = None
     description: Optional[str] = None
-    url: Optional[HttpUrl] = None
-    updated_at: Optional[datetime] = None
-    last_export: Optional[datetime] = None
+    url: Optional[Url] = None
+    updated_at: Optional[DateTimeISO] = None
+    last_export: Optional[DateTimeISO] = None
     entity_count: Optional[int] = None
     thing_count: Optional[int] = None
     version: Optional[str] = None
@@ -64,16 +64,20 @@ class DatasetModel(BaseModel):
         raise ValueError("No resource named %r!" % name)
 
 
-class Dataset(Named):
+class Dataset:
     """A container for entities, often from one source or related to one topic.
     A dataset is a set of data, sez W3C."""
 
     Model = DatasetModel
 
     def __init__(self: Self, data: Dict[str, Any]) -> None:
-        self.model = self.Model.model_validate(data)
-        super().__init__(self.model.name)
+        self._model = self.Model.model_validate(data)
+        self.name = self._model.name
         self.children: Set[Self] = set()
+
+    @property
+    def model(self) -> DatasetModel:
+        return self._model
 
     @cached_property
     def is_collection(self: Self) -> bool:
@@ -135,3 +139,12 @@ class Dataset(Named):
 
         catalog = DataCatalog(cls, {})
         return catalog.make_dataset(data)
+
+    def __eq__(self, other: Any) -> bool:
+        try:
+            return not not self.name == other.name
+        except AttributeError:
+            return False
+
+    def __lt__(self, other: Any) -> bool:
+        return self.name.__lt__(other.name)

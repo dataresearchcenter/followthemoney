@@ -1,7 +1,7 @@
-from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, HttpUrl, field_validator
+from pydantic import BaseModel, field_validator
 
+from followthemoney.dataset.util import Url, DateTimeISO
 from followthemoney.types import registry
 
 
@@ -9,9 +9,9 @@ class DataResource(BaseModel):
     """A downloadable resource that is part of a dataset."""
 
     name: str
-    url: Optional[HttpUrl] = None
+    url: Optional[Url] = None
     checksum: Optional[str] = None
-    timestamp: Optional[datetime] = None
+    timestamp: Optional[DateTimeISO] = None
     mime_type: Optional[str] = None
     title: Optional[str] = None
     size: Optional[int] = None
