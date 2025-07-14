@@ -17,5 +17,5 @@ To learn more, explore the [projects using FtM](community/projects.md) and the [
 
 !["You follow drugs, you get drug addicts and drug dealers. But you start to follow the money, and you don't know where the fuck it's gonna take you."](/public/images/lester.png)
 /// caption
-*"You start to [follow the money](https://www.youtube.com/watch?v=9qtIbWNMwKY), and you don't know where the fuck it's gonna take you."* Image: [HBO](https://www.hbo.com/the-wire/cast-and-crew/lester-freamon).
+*"You start to [follow the money](https://www.youtube.com/watch?v=ShWe-4mtV8w), and you don't know where the fuck it's gonna take you."* Image: [HBO](https://www.hbo.com/the-wire/cast-and-crew/lester-freamon).
 ///
