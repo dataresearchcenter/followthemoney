@@ -3,6 +3,9 @@ from rigour.names import NamePartTag, NameTypeTag
 from followthemoney.schema import Schema
 
 
+# Define the mapping of property names to name part tags.
+# This is used to tag the parts of the name with their type by using
+# `Name.tag_text` with the value of the property to mark name parts.
 PROP_PART_TAGS = (
     ("firstName", NamePartTag.GIVEN),
     ("lastName", NamePartTag.FAMILY),
@@ -17,6 +20,7 @@ PROP_PART_TAGS = (
 
 
 def schema_type_tag(schema: Schema) -> NameTypeTag:
+    """Return the name type tag for the given schema."""
     if schema.is_a("Person"):
         return NameTypeTag.PER
     elif schema.is_a("Organization"):
