@@ -147,7 +147,7 @@ class StatementEntity(EntityProxy):
 
     def add_statement(self, stmt: Statement) -> None:
         schema = self.schema
-        if not schema.is_a(stmt.schema):
+        if schema.name != stmt.schema and not schema.is_a(stmt.schema):
             try:
                 self.schema = schema.model.common_schema(schema, stmt.schema)
             except InvalidData as exc:
@@ -163,7 +163,8 @@ class StatementEntity(EntityProxy):
                 else:
                     self.last_change = max(self.last_change, stmt.first_seen)
         else:
-            self._statements.setdefault(stmt.prop, set())
+            if stmt.prop not in self._statements:
+                self._statements[stmt.prop] = set()
             self._statements[stmt.prop].add(stmt)
 
     def get(self, prop: P, quiet: bool = False) -> List[str]:

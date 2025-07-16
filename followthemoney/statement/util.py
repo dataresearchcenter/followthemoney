@@ -1,3 +1,4 @@
+import sys
 from functools import cache
 from typing import Tuple
 
@@ -27,4 +28,4 @@ def get_prop_type(schema: str, prop: str) -> str:
 def unpack_prop(id: str) -> Tuple[str, str, str]:
     schema, prop = id.split(":", 1)
     prop_type = get_prop_type(schema, prop)
-    return schema, prop_type, prop
+    return sys.intern(schema), prop_type, sys.intern(prop)

@@ -6,9 +6,10 @@ from followthemoney.types import registry
 from followthemoney.value import Value, Values
 from followthemoney.proxy import EntityProxy, E
 from followthemoney.statement import Statement, StatementEntity, SE
+from followthemoney.dataset import Dataset, DefaultDataset, DS
 from followthemoney.util import set_model_locale
 
-__version__ = "3.8.5"
+__version__ = "4.0.1"
 
 # Data model singleton
 model = Model.instance()
@@ -24,6 +25,9 @@ __all__ = [
     "EntityProxy",
     "E",
     "registry",
+    "Dataset",
+    "DefaultDataset",
+    "DS",
     "Statement",
     "StatementEntity",
     "SE",
