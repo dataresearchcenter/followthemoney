@@ -479,7 +479,23 @@ class Schema:
         return self.name.__lt__(other.name)
 
     def __hash__(self) -> int:
+        if not hasattr(self, '_hash'):
+            # This can happen during unpickling before __setstate__ is called
+            self._hash = hash("<Schema(%r)>" % getattr(self, 'name', 'Unknown'))
         return self._hash
+
+    def __getstate__(self) -> Dict[str, Any]:
+        """Custom pickling support for __slots__ classes."""
+        state = {}
+        for slot in self.__slots__:
+            if hasattr(self, slot):
+                state[slot] = getattr(self, slot)
+        return state
+
+    def __setstate__(self, state: Dict[str, Any]) -> None:
+        """Custom unpickling support for __slots__ classes."""
+        for slot, value in state.items():
+            setattr(self, slot, value)
 
     def __repr__(self) -> str:
         return "<Schema(%r)>" % self.name

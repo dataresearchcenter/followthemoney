@@ -1,7 +1,7 @@
 import re
 from banal import is_mapping, as_bool
 from rigour.ids import get_identifier_format
-from typing import TYPE_CHECKING, Any, List, Optional, TypedDict
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, TypedDict
 
 from followthemoney.exc import InvalidModel
 from followthemoney.types import registry
@@ -207,6 +207,10 @@ class Property:
         return self._hash == hash(other)
 
     def __hash__(self) -> int:
+        if not hasattr(self, '_hash'):
+            # This can happen during unpickling before __setstate__ is called
+            qname = getattr(self, 'qname', 'Unknown')
+            self._hash = hash("<Property(%r)>" % qname)
         return self._hash
 
     def to_dict(self) -> PropertyToDict:
@@ -238,6 +242,19 @@ class Property:
 
     def __repr__(self) -> str:
         return "<Property(%r)>" % self.qname
+
+    def __getstate__(self) -> Dict[str, Any]:
+        """Custom pickling support for __slots__ classes."""
+        state = {}
+        for slot in self.__slots__:
+            if hasattr(self, slot):
+                state[slot] = getattr(self, slot)
+        return state
+
+    def __setstate__(self, state: Dict[str, Any]) -> None:
+        """Custom unpickling support for __slots__ classes."""
+        for slot, value in state.items():
+            setattr(self, slot, value)
 
     def __str__(self) -> str:
         return self.qname
