@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID as nodeRandomUUID } from 'crypto';
 import { Entity, IEntityDatum } from './entity';
 import { Namespace } from './namespace';
 import { Property } from './property';
@@ -93,13 +93,25 @@ export class Model {
   }
 
   /**
+   * Generate a new random UUID.
+   * 
+   * @returns a new UUID.
+   */
+  generateRandomId(): string {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID(); // Browser
+    }
+    return nodeRandomUUID();  // Node.js
+  }
+
+  /**
    * Make a new object with the given schema, and generate a random ID for
    * it.
    *
    * @param schema Schema name or object
    */
   async createEntity(schema: string | Schema, namespace?: Namespace): Promise<Entity> {
-    const rawId = uuidv4();
+    const rawId = this.generateRandomId();
     const id = namespace ? await namespace.sign(rawId) : rawId;
     return this.getEntity({
       id,
