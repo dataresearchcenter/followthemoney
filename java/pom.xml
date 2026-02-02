@@ -5,7 +5,7 @@
 
     <groupId>tech.followthemoney</groupId>
     <artifactId>followthemoney</artifactId>
-    <version><!-- bump -->4.5.0</version>
+    <version><!-- bump -->4.5.1</version>
     <packaging>jar</packaging>
 
     <name>followthemoney</name>
@@ -35,7 +35,7 @@
     </developers>
 
     <properties>
-        <jackson.version>2.20.1</jackson.version>
+        <jackson.version>2.21.0</jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
@@ -45,7 +45,7 @@
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>6.0.1</version>
+                <version>6.0.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -117,7 +117,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.14.1</version>
+                    <version>3.15.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -174,7 +174,7 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.9.0</version>
+                        <version>0.10.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <deploymentName>${project.groupId}:${project.artifactId}:${project.version}</deploymentName>
