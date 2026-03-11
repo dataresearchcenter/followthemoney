@@ -5,7 +5,7 @@
 
     <groupId>tech.followthemoney</groupId>
     <artifactId>followthemoney</artifactId>
-    <version><!-- bump -->4.6.0</version>
+    <version><!-- bump -->4.6.2</version>
     <packaging>jar</packaging>
 
     <name>followthemoney</name>
@@ -113,7 +113,7 @@
                 <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.5.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
