@@ -1,29 +1,20 @@
 from contextlib import contextmanager
 import os
-import json
 import yaml
 import click
 import orjson
 from pathlib import Path
-from warnings import warn
-from typing import Any, BinaryIO, Generator, List, Optional, TextIO, Type
-from banal import is_mapping, is_listish, ensure_list
+from typing import Any, BinaryIO, Generator, Type
+from banal import is_listish, ensure_list
 
 from followthemoney.export.common import Exporter
+from followthemoney.entity import ValueEntity
 from followthemoney.proxy import E, EntityProxy
 from followthemoney.util import MEGABYTE, PathLike
 
 MAX_LINE = 200 * MEGABYTE
 InPath = click.Path(dir_okay=False, readable=True, path_type=Path, allow_dash=True)
 OutPath = click.Path(dir_okay=False, writable=True, path_type=Path, allow_dash=True)
-
-
-def write_object(stream: TextIO, obj: Any) -> None:
-    warn("write_object() is deprecated.", DeprecationWarning, stacklevel=2)
-    if hasattr(obj, "to_dict"):
-        obj = obj.to_dict()
-    data = json.dumps(obj)
-    stream.write(data + "\n")
 
 
 def write_entity(fh: BinaryIO, entity: EntityProxy) -> None:
@@ -34,43 +25,6 @@ def write_entity(fh: BinaryIO, entity: EntityProxy) -> None:
     sort_data.update(data)
     out = orjson.dumps(sort_data, option=orjson.OPT_APPEND_NEWLINE)
     fh.write(out)
-
-
-def _read_one(data: Any, cleaned: bool = True) -> Generator[EntityProxy, None, None]:
-    if is_mapping(data) and "schema" in data:
-        yield EntityProxy.from_dict(data, cleaned=cleaned)
-
-
-def read_entities(
-    stream: TextIO, cleaned: bool = True, max_line: int = MAX_LINE
-) -> Generator[EntityProxy, None, None]:
-    warn("read_entities() is deprecated.", DeprecationWarning, stacklevel=2)
-    while True:
-        line = stream.readline(max_line)
-        if not line:
-            return
-        data = json.loads(line)
-        entities = ensure_list(data)
-        if is_mapping(data):
-            if "entities" in data:
-                entities = data.get("entities", data)
-            if "layout" in data:
-                entities = data.get("layout", {}).get("entities", data)
-        for entity in ensure_list(entities):
-            yield from _read_one(entity, cleaned=cleaned)
-
-
-def read_entity(
-    stream: TextIO, cleaned: bool = True, max_line: int = MAX_LINE
-) -> Optional[Any]:
-    warn("read_entity() is deprecated.", DeprecationWarning, stacklevel=2)
-    line = stream.readline(max_line)
-    if not line:
-        return None
-    data = json.loads(line)
-    for entity in _read_one(data, cleaned=cleaned):
-        return entity
-    return data
 
 
 def binary_entities(
@@ -107,7 +61,7 @@ def path_writer(path: PathLike) -> Generator[BinaryIO, None, None]:
 
 def export_stream(exporter: Exporter, path: Path) -> None:
     try:
-        for entity in path_entities(path, EntityProxy):
+        for entity in path_entities(path, ValueEntity):
             exporter.write(entity)
     except BrokenPipeError:
         raise click.Abort()
@@ -130,9 +84,10 @@ def resolve_includes(file_path: PathLike, data: Any) -> Any:
     multiple smaller fragments that are easier to maintain."""
     if is_listish(data):
         return [resolve_includes(file_path, i) for i in data]
-    if is_mapping(data):
-        include_paths: List[str] = ensure_list(data.pop("include", []))
-        for include_path in include_paths:
+    if isinstance(data, dict):
+        for include_path in ensure_list(data.pop("include", [])):
+            if include_path is None:
+                continue
             dir_prefix = os.path.dirname(file_path)
             include_path = os.path.join(dir_prefix, include_path)
             data.update(load_mapping_file(include_path))

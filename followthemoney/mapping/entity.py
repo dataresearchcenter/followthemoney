@@ -8,6 +8,7 @@ from normality import stringify
 from followthemoney.types import registry
 from followthemoney.util import key_bytes
 from followthemoney.proxy import EntityProxy
+from followthemoney.entity import ValueEntity
 from followthemoney.mapping.property import PropertyMapping
 from followthemoney.mapping.source import Record
 from followthemoney.exc import InvalidMapping
@@ -27,6 +28,7 @@ class EntityMapping(object):
         "keys",
         "id_column",
         "schema",
+        "dataset",
         "refs",
         "dependencies",
         "properties",
@@ -39,18 +41,20 @@ class EntityMapping(object):
         name: str,
         data: Dict[str, Any],
         key_prefix: Optional[str] = None,
+        dataset: Optional[str] = None,
     ) -> None:
         self.model = model
         self.name = name
+        self.dataset = dataset
 
         self.seed = sha1(key_bytes(key_prefix))
         self.seed.update(key_bytes(data.get("key_literal")))
 
         self.keys = keys_values(data, "key", "keys")
         self.id_column = stringify(data.get("id_column"))
-        if not len(self.keys) and self.id_column is None:
+        if len(self.keys) == 0 and self.id_column is None:
             raise InvalidMapping("No keys or ID: %r" % name)
-        if len(self.keys) and self.id_column is not None:
+        if len(self.keys) > 0 and self.id_column is not None:
             msg = "Please use only keys or id_column, not both: %r" % name
             raise InvalidMapping(msg)
 
@@ -95,7 +99,7 @@ class EntityMapping(object):
         digest = self.seed.copy()
         has_value = False
         for value in sorted(values):
-            if len(value):
+            if len(value) > 0:
                 has_value = True
                 digest.update(value)
         if has_value:
@@ -104,8 +108,11 @@ class EntityMapping(object):
 
     def map(
         self, record: Record, entities: Dict[str, EntityProxy]
-    ) -> Optional[EntityProxy]:
-        proxy = self.model.make_entity(self.schema)
+    ) -> Optional[ValueEntity]:
+        data: Dict[str, Any] = {}
+        if self.dataset is not None:
+            data["datasets"] = [self.dataset]
+        proxy = ValueEntity(self.schema, data, key_prefix=None, cleaned=True)
 
         # THIS IS HACKY
         # Some of the converters, e.g. for phone numbers, work better if they

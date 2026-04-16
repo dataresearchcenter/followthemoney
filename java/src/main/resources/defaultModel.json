@@ -5379,6 +5379,14 @@
           "stub": true,
           "type": "entity"
         },
+        "biography": {
+          "description": "A biographical narrative of the person.",
+          "label": "Biography",
+          "maxLength": 65000,
+          "name": "biography",
+          "qname": "Person:biography",
+          "type": "text"
+        },
         "birthCountry": {
           "label": "Country of birth",
           "matchable": true,
@@ -7139,7 +7147,6 @@
         },
         "wikipediaUrl": {
           "label": "Wikipedia Article",
-          "matchable": true,
           "maxLength": 4096,
           "name": "wikipediaUrl",
           "qname": "Thing:wikipediaUrl",
@@ -7449,6 +7456,7 @@
         "owner"
       ],
       "label": "Vehicle",
+      "matchable": true,
       "plural": "Vehicles",
       "properties": {
         "buildDate": {

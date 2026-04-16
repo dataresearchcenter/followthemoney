@@ -3,19 +3,25 @@ from pathlib import Path
 from typing import Iterable, Optional
 
 from followthemoney import model
-from followthemoney.proxy import EntityProxy
+from followthemoney.entity import ValueEntity
 from followthemoney.types import registry
+from followthemoney.dataset.parse import parse_query
+from followthemoney.dataset.query import DatasetQuery, match_datasets
 from followthemoney.cli.cli import cli
 from followthemoney.cli.util import InPath, OutPath, path_entities
 from followthemoney.cli.util import path_writer, write_entity
 
 
 def sieve_entity(
-    entity: EntityProxy,
+    entity: ValueEntity,
     schemata: Iterable[str],
     properties: Iterable[str],
     types: Iterable[str],
-) -> Optional[EntityProxy]:
+    dataset_query: Optional[DatasetQuery] = None,
+) -> Optional[ValueEntity]:
+    if dataset_query is not None:
+        if not match_datasets(dataset_query, entity.datasets):
+            return None
     for schema in schemata:
         if entity.schema.is_a(schema):
             return None
@@ -50,17 +56,30 @@ def sieve_entity(
     multiple=True,
     help="Filter out the given property types.",
 )
+@click.option(
+    "-d",
+    "--datasets",
+    type=str,
+    default=None,
+    help="Keep only entities matching a dataset query (e.g. 'a|b', 'a-b').",
+)
 def sieve(
     infile: Path,
     outfile: Path,
     schema: Iterable[str],
     property: Iterable[str],
     type: Iterable[str],
+    datasets: Optional[str],
 ) -> None:
+    dataset_query: Optional[DatasetQuery] = None
+    if datasets is not None:
+        dataset_query = parse_query(datasets)
     try:
         with path_writer(outfile) as outfh:
-            for entity in path_entities(infile, EntityProxy):
-                sieved = sieve_entity(entity, schema, property, type)
+            for entity in path_entities(infile, ValueEntity):
+                sieved = sieve_entity(
+                    entity, schema, property, type, dataset_query
+                )
                 if sieved is not None:
                     write_entity(outfh, sieved)
     except BrokenPipeError:
