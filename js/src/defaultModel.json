@@ -1222,14 +1222,6 @@
           "qname": "Company:oksmCode",
           "type": "string"
         },
-        "okvedCode": {
-          "description": "(RU, ОКВЭД) Russian classifier that categorizes businesses by their (primary and secondary) economic activities",
-          "label": "OKVED(2) Classifier",
-          "maxLength": 1024,
-          "name": "okvedCode",
-          "qname": "Company:okvedCode",
-          "type": "string"
-        },
         "pfrNumber": {
           "description": "(RU, ПФР) Pension Fund Registration number. AAA-BBB-CCCCCC, where AAA is organisation region, BBB is district, and CCCCCC is the number at a specific branch.",
           "label": "PFR Number",
@@ -3882,6 +3874,14 @@
           "qname": "LegalEntity:okpoCode",
           "type": "identifier"
         },
+        "okvedCode": {
+          "description": "Russian industry classifier code for economic activities",
+          "label": "OKVED",
+          "maxLength": 64,
+          "name": "okvedCode",
+          "qname": "LegalEntity:okvedCode",
+          "type": "identifier"
+        },
         "opencorporatesUrl": {
           "label": "OpenCorporates URL",
           "matchable": true,
@@ -4613,7 +4613,7 @@
           "type": "entity"
         },
         "periodEnd": {
-          "description": "End date of the period for which the position is occupied",
+          "description": "End date of the fixed office term. Unlike `endDate`, which tracks when an individual's mandate ends, `periodEnd` refers to the term itself and is the same for everyone holding the position during that period.",
           "label": "Period end",
           "matchable": true,
           "maxLength": 32,
@@ -4622,7 +4622,7 @@
           "type": "date"
         },
         "periodStart": {
-          "description": "Start date of the period for which the position is occupied",
+          "description": "Start date of the fixed office term (e.g. a parliamentary session). Unlike `startDate`, which tracks when an individual's mandate begins, `periodStart` refers to the term itself and is the same for everyone holding the position during that period.",
           "label": "Period start",
           "matchable": true,
           "maxLength": 32,
@@ -4670,10 +4670,13 @@
       ],
       "temporalExtent": {
         "end": [
-          "endDate"
+          "endDate",
+          "periodEnd"
         ],
         "start": [
           "startDate",
+          "periodStart",
+          "electionDate",
           "declarationDate",
           "date"
         ]
